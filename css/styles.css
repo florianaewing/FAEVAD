@@ -529,6 +529,34 @@ nav.top a[aria-current="page"] {
   font-size: clamp(1.3rem, 2.6vw, 1.7rem);
 }
 
+.venmo-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  background: #3D95CE;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 0.02em;
+  padding: 0 22px 0 12px;
+  margin-top: 20px;
+  border-radius: 3px;
+  transition: background 0.15s ease;
+}
+
+.venmo-button:hover,
+.venmo-button:focus-visible {
+  background: #2f7bab;
+}
+
+.venmo-mark {
+  width: 26px;
+  height: 26px;
+  flex: 0 0 auto;
+}
+
 .venmo-form {
   max-width: 480px;
   display: flex;
