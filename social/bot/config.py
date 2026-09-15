@@ -1,9 +1,8 @@
 """Loads bot credentials from a local .env file kept OUTSIDE this repo.
 
 Never point this at a file inside the FAEVAD repo -- these are live API
-secrets (Telegram bot token, Buffer API key, Reddit app credentials) and
-must never be committed. Default location:
-~/.config/faevad-social-bot/.env
+secrets (Telegram bot token, Buffer API key) and must never be committed.
+Default location: ~/.config/faevad-social-bot/.env
 """
 
 import os
@@ -22,11 +21,6 @@ class Config:
     buffer_api_key: str
     buffer_instagram_channel_id: str
     buffer_pinterest_channel_id: str
-    reddit_client_id: str
-    reddit_client_secret: str
-    reddit_refresh_token: str
-    reddit_subreddit: str
-    reddit_user_agent: str
 
 
 def load_config() -> Config:
@@ -50,11 +44,4 @@ def load_config() -> Config:
         buffer_api_key=require("BUFFER_API_KEY"),
         buffer_instagram_channel_id=require("BUFFER_INSTAGRAM_CHANNEL_ID"),
         buffer_pinterest_channel_id=require("BUFFER_PINTEREST_CHANNEL_ID"),
-        reddit_client_id=require("REDDIT_CLIENT_ID"),
-        reddit_client_secret=require("REDDIT_CLIENT_SECRET"),
-        reddit_refresh_token=require("REDDIT_REFRESH_TOKEN"),
-        reddit_subreddit=require("REDDIT_SUBREDDIT"),
-        reddit_user_agent=values.get(
-            "REDDIT_USER_AGENT", "faevad-social-bot/1.0"
-        ),
     )

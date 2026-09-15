@@ -8,9 +8,9 @@ day's caption. Whatever the artist replies with is used verbatim as the
 caption -- this bot never drafts or edits post text.
 
 Once a caption reply arrives, it posts to Instagram + Pinterest (via
-Buffer) and to Reddit (direct API -- Buffer doesn't support Reddit) in
-parallel, records the result in social/queue.yml, and commits + pushes
-that change to the repo.
+Buffer), records the result in social/queue.yml, and commits + pushes that
+change to the repo. Reddit and Facebook Marketplace are intentionally not
+part of this automated flow -- see platforms.py's module docstring.
 
 Setup: copy .env.example to ~/.config/faevad-social-bot/.env and fill in
 real credentials (never commit that file). See platforms.py for what each
@@ -82,7 +82,7 @@ def next_unposted_entry(queue: list[dict]) -> dict | None:
 def git_commit_and_push(entry: dict, piece_title: str) -> None:
     message = (
         f"Post catalog #{entry['catalog_number']} ({piece_title}) "
-        f"to Instagram/Pinterest/Reddit"
+        f"to Instagram/Pinterest"
     )
     subprocess.run(["git", "add", "social/queue.yml"], cwd=REPO_ROOT, check=True)
     subprocess.run(["git", "commit", "-m", message], cwd=REPO_ROOT, check=True)
@@ -131,7 +131,6 @@ async def handle_caption_reply(update: Update, context: ContextTypes.DEFAULT_TYP
     entry = next(e for e in queue if e["catalog_number"] == pending_number)
     artwork = load_artwork()
     piece = find_piece(artwork, entry["id"])
-    piece_url = f"{SITE_BASE_URL}/piece-{entry['id']}.html"
     image_url = f"{SITE_BASE_URL}/{piece['image']}"
 
     await update.message.reply_text("Posting now...")
@@ -145,14 +144,6 @@ async def handle_caption_reply(update: Update, context: ContextTypes.DEFAULT_TYP
         log.exception("Buffer post failed")
         results["instagram"] = f"error: {exc}"
         results["pinterest"] = f"error: {exc}"
-
-    try:
-        results["subreddit"] = platforms.post_to_reddit(
-            cfg, title=caption, url=piece_url
-        )
-    except Exception as exc:
-        log.exception("Reddit post failed")
-        results["subreddit"] = f"error: {exc}"
 
     entry["posted"] = True
     entry["post_date"] = dt.date.today().isoformat()

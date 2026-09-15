@@ -1,8 +1,5 @@
 """Posting integrations for the daily bot.
 
-Reddit: a real, stable OAuth API -- implemented and should work as-is once
-real credentials are in the config file.
-
 Buffer: REST app registration is closed to new developers; the current path
 for a single personal account is a GraphQL API at api.buffer.com using a
 personal API key (Bearer auth), generated from Buffer's own account
@@ -11,14 +8,18 @@ best-effort based on Buffer's documented auth pattern, NOT yet verified
 against their live schema -- Buffer's docs page 404'd when checked, and no
 personal API key existed yet to introspect the schema directly. Confirm/
 adjust BUFFER_CREATE_POST_MUTATION before relying on this in production.
+
+Reddit and Facebook Marketplace are intentionally NOT here -- neither has a
+usable free/hobbyist API path as of 2026 (Reddit closed personal-script
+token approval; Marketplace has no individual-seller API at all). Both are
+parked as a later headless-browser-automation phase, done knowingly with
+the ToS-violation/ban risk accepted -- see the roadmap memory. Do not add a
+direct-API integration for either here; there isn't one available.
 """
 
 import requests
 
 BUFFER_GRAPHQL_ENDPOINT = "https://api.buffer.com/graphql"
-
-REDDIT_ACCESS_TOKEN_URL = "https://www.reddit.com/api/v1/access_token"
-REDDIT_SUBMIT_URL = "https://oauth.reddit.com/api/submit"
 
 # TODO: verify against Buffer's actual GraphQL schema once a personal API
 # key exists (Buffer account -> Settings -> API). This is a best guess at
@@ -62,42 +63,3 @@ def post_to_buffer(cfg, image_url: str, caption: str) -> tuple[str, str]:
         cfg.buffer_api_key, cfg.buffer_pinterest_channel_id, caption, image_url
     )
     return instagram, pinterest
-
-
-def _reddit_access_token(cfg) -> str:
-    response = requests.post(
-        REDDIT_ACCESS_TOKEN_URL,
-        auth=(cfg.reddit_client_id, cfg.reddit_client_secret),
-        data={"grant_type": "refresh_token", "refresh_token": cfg.reddit_refresh_token},
-        headers={"User-Agent": cfg.reddit_user_agent},
-        timeout=30,
-    )
-    response.raise_for_status()
-    return response.json()["access_token"]
-
-
-def post_to_reddit(cfg, title: str, url: str) -> str:
-    """Submits a link post (title = the artist's caption, link = the piece's buy page)."""
-    access_token = _reddit_access_token(cfg)
-    response = requests.post(
-        REDDIT_SUBMIT_URL,
-        headers={
-            "Authorization": f"Bearer {access_token}",
-            "User-Agent": cfg.reddit_user_agent,
-        },
-        data={
-            "sr": cfg.reddit_subreddit,
-            "kind": "link",
-            "title": title,
-            "url": url,
-            "api_type": "json",
-            "resubmit": "true",
-        },
-        timeout=30,
-    )
-    response.raise_for_status()
-    data = response.json()
-    errors = data.get("json", {}).get("errors", [])
-    if errors:
-        raise RuntimeError(f"Reddit API error: {errors}")
-    return "ok"

@@ -7,12 +7,14 @@
 # purchasable, never a preview of unpublished work.
 #
 # posted / post_date / platforms are written by the bot itself after
-# posting — instagram/pinterest go via Buffer, subreddit via a direct Reddit
-# API call (Buffer doesn't support Reddit). Facebook Marketplace was dropped
-# from the automated flow entirely: no official API exists for an individual
-# seller to create listings, and unofficial/scraping automation risks the
-# account being flagged. Nothing here should be hand-edited except to add
-# new entries as new pieces go live on the site.
+# posting — instagram/pinterest go via Buffer. Reddit and Facebook
+# Marketplace are NOT part of this automated flow: neither has a usable
+# free/hobbyist posting API as of 2026 (Reddit closed personal-script token
+# approval; Marketplace never had one for individual sellers). Both are
+# parked as a later headless-browser-automation phase, done knowingly with
+# the ToS-violation/ban risk accepted — see the roadmap memory. Nothing
+# here should be hand-edited except to add new entries as new pieces go
+# live on the site.
 #
 # New pieces get appended here (next catalog_number) by the backlog
 # cataloguing sync script once they've been added to _data/artwork.yml and
@@ -26,7 +28,6 @@
   platforms:
     instagram:
     pinterest:
-    subreddit:
 
 - catalog_number: 2
   id: cluttered-desk
@@ -36,7 +37,6 @@
   platforms:
     instagram:
     pinterest:
-    subreddit:
 
 - catalog_number: 3
   id: second-floor-apartment
@@ -46,7 +46,6 @@
   platforms:
     instagram:
     pinterest:
-    subreddit:
 
 - catalog_number: 4
   id: the-workshop
@@ -56,7 +55,6 @@
   platforms:
     instagram:
     pinterest:
-    subreddit:
 
 - catalog_number: 5
   id: the-bedroom
@@ -66,7 +64,6 @@
   platforms:
     instagram:
     pinterest:
-    subreddit:
 
 - catalog_number: 6
   id: sky-goddess-two
@@ -76,7 +73,6 @@
   platforms:
     instagram:
     pinterest:
-    subreddit:
 
 - catalog_number: 7
   id: mysterious-strangers
@@ -86,7 +82,6 @@
   platforms:
     instagram:
     pinterest:
-    subreddit:
 
 - catalog_number: 8
   id: supplies
@@ -96,7 +91,6 @@
   platforms:
     instagram:
     pinterest:
-    subreddit:
 
 - catalog_number: 9
   id: the-knife
@@ -106,7 +100,6 @@
   platforms:
     instagram:
     pinterest:
-    subreddit:
 
 - catalog_number: 10
   id: dragon-hoard
@@ -116,7 +109,6 @@
   platforms:
     instagram:
     pinterest:
-    subreddit:
 
 - catalog_number: 11
   id: lost-in-the-music
@@ -126,7 +118,6 @@
   platforms:
     instagram:
     pinterest:
-    subreddit:
 
 - catalog_number: 12
   id: decrepit-shrine
@@ -136,7 +127,6 @@
   platforms:
     instagram:
     pinterest:
-    subreddit:
 
 - catalog_number: 13
   id: kind-of-blue
@@ -146,7 +136,6 @@
   platforms:
     instagram:
     pinterest:
-    subreddit:
 
 - catalog_number: 14
   id: death-arrives
@@ -156,7 +145,6 @@
   platforms:
     instagram:
     pinterest:
-    subreddit:
 
 - catalog_number: 15
   id: fanny-pack
@@ -166,7 +154,6 @@
   platforms:
     instagram:
     pinterest:
-    subreddit:
 
 - catalog_number: 16
   id: modern-knight
@@ -176,7 +163,6 @@
   platforms:
     instagram:
     pinterest:
-    subreddit:
 
 - catalog_number: 17
   id: ravenous-cuzco
@@ -186,7 +172,6 @@
   platforms:
     instagram:
     pinterest:
-    subreddit:
 
 - catalog_number: 18
   id: reposed-ariel
@@ -196,7 +181,6 @@
   platforms:
     instagram:
     pinterest:
-    subreddit:
 
 - catalog_number: 19
   id: scaling
@@ -206,7 +190,6 @@
   platforms:
     instagram:
     pinterest:
-    subreddit:
 
 - catalog_number: 20
   id: sky-goddess-one
@@ -216,7 +199,6 @@
   platforms:
     instagram:
     pinterest:
-    subreddit:
 
 - catalog_number: 21
   id: stories
@@ -226,7 +208,6 @@
   platforms:
     instagram:
     pinterest:
-    subreddit:
 
 - catalog_number: 22
   id: urban-mood
@@ -236,7 +217,6 @@
   platforms:
     instagram:
     pinterest:
-    subreddit:
 
 - catalog_number: 23
   id: bedtime
@@ -246,4 +226,3 @@
   platforms:
     instagram:
     pinterest:
-    subreddit:
