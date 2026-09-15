@@ -6,15 +6,19 @@
 # Per piece:
 #   id, title, medium, year, image, alt  — same as before.
 #
-#   print:     reproductions. Always buyable at a flat price while
+#   description  free text shown on the piece's own page (piece-<id>.html).
+#                Leave "" to hide the description section — fill these in
+#                whenever you have time, no other change needed.
+#
+#   print:     reproductions, sold in three sizes. Always buyable while
 #     available: true, so there's no "sold" state for prints — they can be
 #     reprinted any number of times.
-#       price        number, no symbol/commas
+#       available    true while print editions are offered at all
 #       currency     ISO code (only "USD" is rendered with a $ sign today)
-#       available    true while this print edition is offered
-#       stripe_link  Stripe Payment Link URL. Leave blank until it's created
-#                    in the Stripe Dashboard — the Buy button only renders
-#                    once this is filled in.
+#       tiers        one entry per size — size, price (number, no symbol),
+#                    and stripe_link. Leave a tier's stripe_link blank to
+#                    show "Coming soon" instead of a Buy button for that
+#                    size on the piece's buy page (buy-<id>.html).
 #
 #   original:  the one physical piece. One-time purchase, ships framed, and
 #     is gone once sold — so it DOES get a "sold" label. Price isn't listed;
@@ -41,11 +45,20 @@ collections:
         year: 2020
         image: "images/artwork/FrbdnKnxlg.jpg"
         alt: "Ink illustration of a coiled feathered serpent resting beside a potted plant, wicker baskets, and a bonsai tree"
+        description: ""
         print:
-          price: 15
-          currency: "USD"
           available: true
-          stripe_link: "https://buy.stripe.com/00waEZ9fj54Z9JNctvgEg0d"
+          currency: "USD"
+          tiers:
+            - size: "5x7"
+              price: 15
+              stripe_link: "https://buy.stripe.com/00waEZ9fj54Z9JNctvgEg0d"
+            - size: "8x10"
+              price: 30
+              stripe_link: ""
+            - size: "11x14"
+              price: 50
+              stripe_link: ""
         original:
           status: "available"
           stripe_link: ""
@@ -56,11 +69,20 @@ collections:
         year: 2022
         image: "images/artwork/ClutteredDesk.jpg"
         alt: "Ink illustration of a stack of books, candles, and a leafy potted plant piled on an open journal"
+        description: ""
         print:
-          price: 15
-          currency: "USD"
           available: true
-          stripe_link: "https://buy.stripe.com/8x28wRbnrgNH9JN2SVgEg0e"
+          currency: "USD"
+          tiers:
+            - size: "5x7"
+              price: 15
+              stripe_link: "https://buy.stripe.com/8x28wRbnrgNH9JN2SVgEg0e"
+            - size: "8x10"
+              price: 30
+              stripe_link: ""
+            - size: "11x14"
+              price: 50
+              stripe_link: ""
         original:
           status: "available"
           stripe_link: ""
@@ -71,11 +93,20 @@ collections:
         year: 2021
         image: "images/artwork/2ndFloorApt.jpg"
         alt: "Ink illustration of a figure in a baseball cap and sunglasses standing in a plant-filled apartment room beside a paper lantern lamp"
+        description: ""
         print:
-          price: 15
-          currency: "USD"
           available: true
-          stripe_link: "https://buy.stripe.com/7sY14p0IN6939JN2SVgEg0f"
+          currency: "USD"
+          tiers:
+            - size: "5x7"
+              price: 15
+              stripe_link: "https://buy.stripe.com/7sY14p0IN6939JN2SVgEg0f"
+            - size: "8x10"
+              price: 30
+              stripe_link: ""
+            - size: "11x14"
+              price: 50
+              stripe_link: ""
         original:
           status: "available"
           stripe_link: ""
@@ -86,11 +117,20 @@ collections:
         year: 2024
         image: "images/artwork/WorkShop.png"
         alt: "Ink illustration of a cluttered artist's workshop with jars of brushes, stacked books, and windows along the walls"
+        description: ""
         print:
-          price: 15
-          currency: "USD"
           available: true
-          stripe_link: "https://buy.stripe.com/6oUdRb3UZeFz2hleBDgEg0g"
+          currency: "USD"
+          tiers:
+            - size: "5x7"
+              price: 15
+              stripe_link: "https://buy.stripe.com/6oUdRb3UZeFz2hleBDgEg0g"
+            - size: "8x10"
+              price: 30
+              stripe_link: ""
+            - size: "11x14"
+              price: 50
+              stripe_link: ""
         original:
           status: "available"
           stripe_link: ""
@@ -101,11 +141,20 @@ collections:
         year: 2023
         image: "images/artwork/TheBedroom.jpg"
         alt: "Ink illustration of a bedroom interior with a rumpled bed, wall clock, armchair, and curtained window"
+        description: ""
         print:
-          price: 15
-          currency: "USD"
           available: true
-          stripe_link: "https://buy.stripe.com/6oU8wRfDHapjcVZeBDgEg0o"
+          currency: "USD"
+          tiers:
+            - size: "5x7"
+              price: 15
+              stripe_link: "https://buy.stripe.com/6oU8wRfDHapjcVZeBDgEg0o"
+            - size: "8x10"
+              price: 30
+              stripe_link: ""
+            - size: "11x14"
+              price: 50
+              stripe_link: ""
         original:
           status: "available"
           stripe_link: ""
@@ -116,11 +165,20 @@ collections:
         year: 2022
         image: "images/artwork/SkyGoddessTwo.jpg"
         alt: "Ink illustration of an arched, keyhole-shaped landscape framing a small cabin, trees, and a rising sun"
+        description: ""
         print:
-          price: 15
-          currency: "USD"
           available: true
-          stripe_link: "https://buy.stripe.com/fZu00lezD7d72hl513gEg0h"
+          currency: "USD"
+          tiers:
+            - size: "5x7"
+              price: 15
+              stripe_link: "https://buy.stripe.com/fZu00lezD7d72hl513gEg0h"
+            - size: "8x10"
+              price: 30
+              stripe_link: ""
+            - size: "11x14"
+              price: 50
+              stripe_link: ""
         original:
           status: "available"
           stripe_link: ""
@@ -131,11 +189,20 @@ collections:
         year: 2024
         image: "images/artwork/mysteriousStrangers.png"
         alt: "Ink illustration of hooded, ghost-like figures walking along a cobblestone path through a dark forest"
+        description: ""
         print:
-          price: 15
-          currency: "USD"
           available: true
-          stripe_link: "https://buy.stripe.com/bJe8wRdvz8hbbRVfFHgEg0p"
+          currency: "USD"
+          tiers:
+            - size: "5x7"
+              price: 15
+              stripe_link: "https://buy.stripe.com/bJe8wRdvz8hbbRVfFHgEg0p"
+            - size: "8x10"
+              price: 30
+              stripe_link: ""
+            - size: "11x14"
+              price: 50
+              stripe_link: ""
         original:
           status: "available"
           stripe_link: ""
@@ -146,11 +213,20 @@ collections:
         year: 2022
         image: "images/artwork/Supplies.jpg"
         alt: "Ink illustration of bottles, a glass jar, and shelves of stacked books on a wooden table beside a potted plant"
+        description: ""
         print:
-          price: 15
-          currency: "USD"
           available: true
-          stripe_link: "https://buy.stripe.com/fZu6oJajn8hb2hlgJLgEg0i"
+          currency: "USD"
+          tiers:
+            - size: "5x7"
+              price: 15
+              stripe_link: "https://buy.stripe.com/fZu6oJajn8hb2hlgJLgEg0i"
+            - size: "8x10"
+              price: 30
+              stripe_link: ""
+            - size: "11x14"
+              price: 50
+              stripe_link: ""
         original:
           status: "available"
           stripe_link: ""
@@ -161,11 +237,20 @@ collections:
         year: 2023
         image: "images/artwork/myKnife.png"
         alt: "Colored ink illustration of a large sheathed hunting knife with a patterned handle and mottled blade"
+        description: ""
         print:
-          price: 15
-          currency: "USD"
           available: true
-          stripe_link: "https://buy.stripe.com/7sY4gB3UZeFzf47bprgEg0j"
+          currency: "USD"
+          tiers:
+            - size: "5x7"
+              price: 15
+              stripe_link: "https://buy.stripe.com/7sY4gB3UZeFzf47bprgEg0j"
+            - size: "8x10"
+              price: 30
+              stripe_link: ""
+            - size: "11x14"
+              price: 50
+              stripe_link: ""
         original:
           status: "available"
           stripe_link: ""
@@ -176,11 +261,20 @@ collections:
         year: 2024
         image: "images/artwork/dragon_hoard.png"
         alt: "Colored ink illustration of a pink and green antlered dragon curled on a checkered floor surrounded by books and bottles"
+        description: ""
         print:
-          price: 15
-          currency: "USD"
           available: true
-          stripe_link: "https://buy.stripe.com/cNi3cx3UZdBv09dgJLgEg0k"
+          currency: "USD"
+          tiers:
+            - size: "5x7"
+              price: 15
+              stripe_link: "https://buy.stripe.com/cNi3cx3UZdBv09dgJLgEg0k"
+            - size: "8x10"
+              price: 30
+              stripe_link: ""
+            - size: "11x14"
+              price: 50
+              stripe_link: ""
         original:
           status: "available"
           stripe_link: ""
@@ -191,11 +285,20 @@ collections:
         year: 2024
         image: "images/artwork/LostInTheMusic.png"
         alt: "Colored ink portrait of a person with yellow hair and a blue-toned face, eyes closed, head tilted downward"
+        description: ""
         print:
-          price: 15
-          currency: "USD"
           available: true
-          stripe_link: "https://buy.stripe.com/fZudRb9fjgNH6xB8dfgEg0l"
+          currency: "USD"
+          tiers:
+            - size: "5x7"
+              price: 15
+              stripe_link: "https://buy.stripe.com/fZudRb9fjgNH6xB8dfgEg0l"
+            - size: "8x10"
+              price: 30
+              stripe_link: ""
+            - size: "11x14"
+              price: 50
+              stripe_link: ""
         original:
           status: "available"
           stripe_link: ""
@@ -206,11 +309,20 @@ collections:
         year: 2024
         image: "images/artwork/homolith1.png"
         alt: "Colored ink illustration of a stone creature resting before a crumbling brick shrine with a small pagoda lantern"
+        description: ""
         print:
-          price: 15
-          currency: "USD"
           available: true
-          stripe_link: "https://buy.stripe.com/4gM9AV6372WR1dh1ORgEg0m"
+          currency: "USD"
+          tiers:
+            - size: "5x7"
+              price: 15
+              stripe_link: "https://buy.stripe.com/4gM9AV6372WR1dh1ORgEg0m"
+            - size: "8x10"
+              price: 30
+              stripe_link: ""
+            - size: "11x14"
+              price: 50
+              stripe_link: ""
         original:
           status: "available"
           stripe_link: ""
@@ -221,11 +333,20 @@ collections:
         year: 2024
         image: "images/artwork/KindOfBlue.jpg"
         alt: "Colored ink illustration of a person writing at a desk in a moonlit room, lit by a lamp and blue-toned curtains"
+        description: ""
         print:
-          price: 15
-          currency: "USD"
           available: true
-          stripe_link: "https://buy.stripe.com/4gMaEZ4Z30OJ5txbprgEg0n"
+          currency: "USD"
+          tiers:
+            - size: "5x7"
+              price: 15
+              stripe_link: "https://buy.stripe.com/4gMaEZ4Z30OJ5txbprgEg0n"
+            - size: "8x10"
+              price: 30
+              stripe_link: ""
+            - size: "11x14"
+              price: 50
+              stripe_link: ""
         original:
           status: "available"
           stripe_link: ""
@@ -236,11 +357,20 @@ collections:
         year: 2023
         image: "images/artwork/DeathArrives.jpg"
         alt: "Colored ink illustration of a hooded skeletal figure holding a scythe, flanked by black wings and a red aura"
+        description: ""
         print:
-          price: 15
-          currency: "USD"
           available: true
-          stripe_link: "https://buy.stripe.com/6oUeVf4Z37d71dhfFHgEg0q"
+          currency: "USD"
+          tiers:
+            - size: "5x7"
+              price: 15
+              stripe_link: "https://buy.stripe.com/6oUeVf4Z37d71dhfFHgEg0q"
+            - size: "8x10"
+              price: 30
+              stripe_link: ""
+            - size: "11x14"
+              price: 50
+              stripe_link: ""
         original:
           status: "available"
           stripe_link: ""
@@ -251,11 +381,20 @@ collections:
         year: 2023
         image: "images/artwork/FannyPack.png"
         alt: "Ink illustration of a lamp, potted plant, stacked books, and a wine bottle beside a chair with a fanny pack draped over it, near a window"
+        description: ""
         print:
-          price: 15
-          currency: "USD"
           available: true
-          stripe_link: "https://buy.stripe.com/28EaEZ9fjbtn3lp3WZgEg0r"
+          currency: "USD"
+          tiers:
+            - size: "5x7"
+              price: 15
+              stripe_link: "https://buy.stripe.com/28EaEZ9fjbtn3lp3WZgEg0r"
+            - size: "8x10"
+              price: 30
+              stripe_link: ""
+            - size: "11x14"
+              price: 50
+              stripe_link: ""
         original:
           status: "available"
           stripe_link: ""
@@ -266,11 +405,20 @@ collections:
         year: 2023
         image: "images/artwork/ModernKnight.png"
         alt: "Ink illustration of an open closet with hanging coats and bags, boots, and a pedestal table beside a brick wall"
+        description: ""
         print:
-          price: 15
-          currency: "USD"
           available: true
-          stripe_link: "https://buy.stripe.com/4gMfZjdvzdBv5txbprgEg0s"
+          currency: "USD"
+          tiers:
+            - size: "5x7"
+              price: 15
+              stripe_link: "https://buy.stripe.com/4gMfZjdvzdBv5txbprgEg0s"
+            - size: "8x10"
+              price: 30
+              stripe_link: ""
+            - size: "11x14"
+              price: 50
+              stripe_link: ""
         original:
           status: "available"
           stripe_link: ""
@@ -281,11 +429,20 @@ collections:
         year: 2023
         image: "images/artwork/RavenousCuzco.jpg"
         alt: "Colored ink illustration of a horned, wolf-like creature baring its teeth beneath a crescent moon, with eyes peering from the dark"
+        description: ""
         print:
-          price: 15
-          currency: "USD"
           available: true
-          stripe_link: "https://buy.stripe.com/cNifZj1MRbtn5tx1ORgEg0t"
+          currency: "USD"
+          tiers:
+            - size: "5x7"
+              price: 15
+              stripe_link: "https://buy.stripe.com/cNifZj1MRbtn5tx1ORgEg0t"
+            - size: "8x10"
+              price: 30
+              stripe_link: ""
+            - size: "11x14"
+              price: 50
+              stripe_link: ""
         original:
           status: "available"
           stripe_link: ""
@@ -296,11 +453,20 @@ collections:
         year: 2023
         image: "images/artwork/ReposedAriel.png"
         alt: "Ink illustration of a person reclining on a fur-draped couch surrounded by potted flowers, stacked books, and a coffee press"
+        description: ""
         print:
-          price: 15
-          currency: "USD"
           available: true
-          stripe_link: "https://buy.stripe.com/28E14p3UZ8hb6xB9hjgEg0u"
+          currency: "USD"
+          tiers:
+            - size: "5x7"
+              price: 15
+              stripe_link: "https://buy.stripe.com/28E14p3UZ8hb6xB9hjgEg0u"
+            - size: "8x10"
+              price: 30
+              stripe_link: ""
+            - size: "11x14"
+              price: 50
+              stripe_link: ""
         original:
           status: "available"
           stripe_link: ""
@@ -311,11 +477,20 @@ collections:
         year: 2023
         image: "images/artwork/Scaling.png"
         alt: "Ink illustration of a person standing beside a tall stack of crates and bottles topped with a bird, near a clock and a maze-patterned wall"
+        description: ""
         print:
-          price: 15
-          currency: "USD"
           available: true
-          stripe_link: "https://buy.stripe.com/5kQ8wRezD1SNcVZctvgEg0v"
+          currency: "USD"
+          tiers:
+            - size: "5x7"
+              price: 15
+              stripe_link: "https://buy.stripe.com/5kQ8wRezD1SNcVZctvgEg0v"
+            - size: "8x10"
+              price: 30
+              stripe_link: ""
+            - size: "11x14"
+              price: 50
+              stripe_link: ""
         original:
           status: "available"
           stripe_link: ""
@@ -326,11 +501,20 @@ collections:
         year: 2023
         image: "images/artwork/SkyGoddessOne.jpg"
         alt: "Ink illustration of an arched stone doorway framing a potted plant and a trailing wing, beneath a glowing sun"
+        description: ""
         print:
-          price: 15
-          currency: "USD"
           available: true
-          stripe_link: "https://buy.stripe.com/28EaEZ1MRfJDcVZ8dfgEg0w"
+          currency: "USD"
+          tiers:
+            - size: "5x7"
+              price: 15
+              stripe_link: "https://buy.stripe.com/28EaEZ1MRfJDcVZ8dfgEg0w"
+            - size: "8x10"
+              price: 30
+              stripe_link: ""
+            - size: "11x14"
+              price: 50
+              stripe_link: ""
         original:
           status: "available"
           stripe_link: ""
@@ -341,11 +525,20 @@ collections:
         year: 2023
         image: "images/artwork/Stories.png"
         alt: "Colored ink illustration of a person reading in a chair surrounded by stacked books, potted plants, and lanterns beside a window"
+        description: ""
         print:
-          price: 15
-          currency: "USD"
           available: true
-          stripe_link: "https://buy.stripe.com/28E9AV3UZ9lf3lp513gEg0x"
+          currency: "USD"
+          tiers:
+            - size: "5x7"
+              price: 15
+              stripe_link: "https://buy.stripe.com/28E9AV3UZ9lf3lp513gEg0x"
+            - size: "8x10"
+              price: 30
+              stripe_link: ""
+            - size: "11x14"
+              price: 50
+              stripe_link: ""
         original:
           status: "available"
           stripe_link: ""
@@ -356,11 +549,20 @@ collections:
         year: 2023
         image: "images/artwork/UrbanMood.jpg"
         alt: "Colored ink illustration of a person's face in the foreground beside a shadowy figure, a city skyline, and a parked car"
+        description: ""
         print:
-          price: 15
-          currency: "USD"
           available: true
-          stripe_link: "https://buy.stripe.com/7sY7sN6372WR6xBeBDgEg0y"
+          currency: "USD"
+          tiers:
+            - size: "5x7"
+              price: 15
+              stripe_link: "https://buy.stripe.com/7sY7sN6372WR6xBeBDgEg0y"
+            - size: "8x10"
+              price: 30
+              stripe_link: ""
+            - size: "11x14"
+              price: 50
+              stripe_link: ""
         original:
           status: "available"
           stripe_link: ""
@@ -371,11 +573,20 @@ collections:
         year: 2023
         image: "images/artwork/bedTime.png"
         alt: "Ink illustration of a child peeking over a striped blanket in bed, clutching a small dragon"
+        description: ""
         print:
-          price: 15
-          currency: "USD"
           available: true
-          stripe_link: "https://buy.stripe.com/9B64gB77bgNH8FJfFHgEg0z"
+          currency: "USD"
+          tiers:
+            - size: "5x7"
+              price: 15
+              stripe_link: "https://buy.stripe.com/9B64gB77bgNH8FJfFHgEg0z"
+            - size: "8x10"
+              price: 30
+              stripe_link: ""
+            - size: "11x14"
+              price: 50
+              stripe_link: ""
         original:
           status: "available"
           stripe_link: ""
