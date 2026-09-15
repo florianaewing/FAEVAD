@@ -516,7 +516,8 @@ nav.top a[aria-current="page"] {
   width: 100%;
 }
 
-/* ---------- Venmo form (buy-<id>.html) ---------- */
+/* ---------- Payment buttons (buy-<id>.html) and shared order-form styles
+   (venmo-<id>.html, bitcoin-<id>.html both reuse .venmo-form/.form-row) ---------- */
 
 .venmo-section {
   padding-top: 32px;
