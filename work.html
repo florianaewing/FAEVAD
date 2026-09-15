@@ -29,20 +29,18 @@
             {% for piece in collection.pieces %}
             <div class="lot">
                 <div class="index">No. {{ forloop.index | prepend: '0' | slice: -2, 2 }}</div>
-                <img src="{{ piece.image }}" alt="{{ piece.alt }}" loading="lazy">
-                <h2>{{ piece.title }}</h2>
+                <a href="piece-{{ piece.id }}.html">
+                    <img src="{{ piece.image }}" alt="{{ piece.alt }}" loading="lazy">
+                </a>
+                <h2><a href="piece-{{ piece.id }}.html">{{ piece.title }}</a></h2>
                 <div class="meta">{{ piece.medium }} &middot; {{ piece.year }}</div>
 
                 <div class="offers">
                     <div class="offer-row">
                         <span class="label">Print</span>
                         {% if piece.print.available %}
-                            <span class="price">${{ piece.print.price }}</span>
-                            {% if piece.print.stripe_link and piece.print.stripe_link != "" %}
-                            <a class="buy" href="{{ piece.print.stripe_link }}" target="_blank" rel="noopener noreferrer">Buy</a>
-                            {% else %}
-                            <span class="unavailable-tag">Coming soon</span>
-                            {% endif %}
+                            <span class="price">From ${{ piece.print.tiers[0].price }}</span>
+                            <a class="buy" href="buy-{{ piece.id }}.html">View</a>
                         {% else %}
                             <span class="price">&mdash;</span>
                             <span class="unavailable-tag">Unavailable</span>

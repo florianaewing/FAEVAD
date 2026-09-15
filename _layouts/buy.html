@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% assign piece = nil %}
+    {% for collection in site.data.artwork.collections %}
+        {% for p in collection.pieces %}
+            {% if p.id == page.piece_id %}{% assign piece = p %}{% endif %}
+        {% endfor %}
+    {% endfor %}
+    <title>Buy {{ piece.title }} | FAEVAD</title>
+    <meta name="description" content="Print options for {{ piece.title }} by Florian Anthony Ewing.">
+    <link href="css/styles.css" rel="stylesheet">
+</head>
+<body>
+<div class="wrap">
+    {% include nav.html %}
+
+    <a class="back-link" href="piece-{{ piece.id }}.html">&larr; Back to {{ piece.title }}</a>
+
+    <div class="section-head">
+        <div class="eyebrow">Print Options</div>
+        <h1 class="display">{{ piece.title }}</h1>
+        <p>
+            Every print is mailed to you centered on a cardboard backing, inside a matching
+            cellophane envelope. Choose a black or white backing at checkout &mdash; it doesn't
+            change the price.
+        </p>
+    </div>
+
+    <div class="tier-grid">
+        {% for tier in piece.print.tiers %}
+        <div class="tier-card">
+            <h2>{{ tier.size }}</h2>
+            <div class="tier-price">${{ tier.price }}</div>
+            <p class="tier-desc">
+                A print of &ldquo;{{ piece.title }}&rdquo;, mailed to you centered on a
+                {{ tier.size }} black or white cardboard backing (your choice at checkout),
+                inside a matching {{ tier.size }} cellophane envelope.
+            </p>
+            {% if tier.stripe_link and tier.stripe_link != "" %}
+            <a class="buy-cta" href="{{ tier.stripe_link }}" target="_blank" rel="noopener noreferrer">Buy the {{ tier.size }}</a>
+            {% else %}
+            <span class="unavailable-tag">Coming soon</span>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+
+    {% include footer.html %}
+</div>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% assign piece = nil %}
+    {% for collection in site.data.artwork.collections %}
+        {% for p in collection.pieces %}
+            {% if p.id == page.piece_id %}{% assign piece = p %}{% endif %}
+        {% endfor %}
+    {% endfor %}
+    <title>{{ piece.title }} | FAEVAD</title>
+    <meta name="description" content="{{ piece.alt }}">
+    <link href="css/styles.css" rel="stylesheet">
+    <script>
+        document.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+        document.addEventListener('dragstart', function (e) { e.preventDefault(); });
+    </script>
+</head>
+<body>
+<div class="wrap">
+    {% include nav.html %}
+
+    <section class="piece-detail">
+        <div class="piece-media">
+            <div class="plate">
+                <img src="{{ piece.image }}" alt="{{ piece.alt }}">
+            </div>
+        </div>
+
+        <div class="piece-info">
+            <h1>{{ piece.title }}</h1>
+            <div class="meta">{{ piece.medium }} &middot; {{ piece.year }}</div>
+
+            {% if piece.description and piece.description != "" %}
+            <p class="description">{{ piece.description }}</p>
+            {% endif %}
+
+            <div class="purchase-links">
+                {% if piece.print.available %}
+                <a class="buy-cta" href="buy-{{ piece.id }}.html">Purchase print &mdash; from ${{ piece.print.tiers[0].price }}</a>
+                {% endif %}
+
+                {% if piece.original.status == "available" %}
+                    {% if piece.original.stripe_link and piece.original.stripe_link != "" %}
+                    <a class="buy-cta secondary" href="{{ piece.original.stripe_link }}" target="_blank" rel="noopener noreferrer">Buy the original</a>
+                    {% else %}
+                    <a class="buy-cta secondary" href="mailto:florianaewing@gmail.com?subject=Original%20Inquiry%3A%20{{ piece.title | url_encode }}">Inquire about the original</a>
+                    {% endif %}
+                {% elsif piece.original.status == "sold" %}
+                    <span class="sold-tag">Original sold</span>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    {% include footer.html %}
+</div>
+</body>
+</html>
