@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% assign piece = nil %}
+    {% for collection in site.data.artwork.collections %}
+        {% for p in collection.pieces %}
+            {% if p.id == page.piece_id %}{% assign piece = p %}{% endif %}
+        {% endfor %}
+    {% endfor %}
+    <title>Pay with Bitcoin &mdash; {{ piece.title }} | FAEVAD</title>
+    <meta name="description" content="Order form for paying for {{ piece.title }} by Florian Anthony Ewing via Bitcoin.">
+    <link href="css/styles.css" rel="stylesheet">
+</head>
+<body>
+<div class="wrap">
+    {% include nav.html %}
+
+    <a class="back-link" href="buy-{{ piece.id }}.html">&larr; Back to print options</a>
+
+    <div class="section-head">
+        <div class="eyebrow">Bitcoin Order Form</div>
+        <h1 class="display">{{ piece.title }}</h1>
+        <p>
+            Fill out your size, backing color, and shipping address below. We'll create a
+            one-time invoice with the exact BTC amount for your order (the rate is locked for
+            about 15 minutes), email ourselves your order, and then show you the payment link.
+        </p>
+    </div>
+
+    <form id="bitcoin-form" class="venmo-form" data-piece-id="{{ piece.id }}" data-piece-title="{{ piece.title | escape }}">
+        <div class="form-row">
+            <label for="b-name">Full name</label>
+            <input type="text" id="b-name" name="full_name" required>
+        </div>
+
+        <div class="form-row">
+            <label for="b-email">Email</label>
+            <input type="email" id="b-email" name="email" required>
+        </div>
+
+        <div class="form-row">
+            <label for="b-address1">Shipping address</label>
+            <input type="text" id="b-address1" name="address_line1" placeholder="Street address" required>
+        </div>
+
+        <div class="form-row">
+            <label for="b-address2" class="visually-hidden">Address line 2</label>
+            <input type="text" id="b-address2" name="address_line2" placeholder="Apt, suite, etc. (optional)">
+        </div>
+
+        <div class="form-row form-row-split">
+            <div>
+                <label for="b-city">City</label>
+                <input type="text" id="b-city" name="city" required>
+            </div>
+            <div>
+                <label for="b-state">State</label>
+                <input type="text" id="b-state" name="state" required>
+            </div>
+            <div>
+                <label for="b-zip">ZIP</label>
+                <input type="text" id="b-zip" name="zip" required>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <label for="b-size">Print size</label>
+            <select id="b-size" name="size" required>
+                {% for tier in piece.print.tiers %}
+                <option value="{{ tier.size }}" data-price="{{ tier.price }}">{{ tier.size }} &mdash; ${{ tier.price }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-row">
+            <span class="form-label">Backing color</span>
+            <div class="radio-group">
+                <label><input type="radio" name="backing_color" value="black" required> Black</label>
+                <label><input type="radio" name="backing_color" value="white"> White</label>
+            </div>
+        </div>
+
+        <button type="submit" class="buy-cta venmo-submit">Get Bitcoin invoice &mdash; <span class="bitcoin-price">${{ piece.print.tiers[0].price }}</span></button>
+        <p class="venmo-status bitcoin-status" hidden></p>
+    </form>
+
+    <div id="bitcoin-result" class="venmo-result" hidden>
+        <p>Order code: <strong id="bitcoin-order-code"></strong></p>
+        <p>We've emailed ourselves your order. This invoice is locked for about 15 minutes &mdash; pay soon, using the exact amount below.</p>
+        <p class="bitcoin-check-line">Check: <span id="bitcoin-check"></span></p>
+        <a id="bitcoin-pay-link" class="buy-cta" href="#" target="_blank" rel="noopener noreferrer">Pay on OpenNode</a>
+    </div>
+
+    {% include footer.html %}
+</div>
+<script src="js/bitcoin.js" data-formspree-endpoint="{{ site.formspree_endpoint }}" data-worker-endpoint="{{ site.bitcoin_worker_endpoint }}" defer></script>
+</body>
+</html>

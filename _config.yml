@@ -13,5 +13,14 @@ description: >-
 venmo_username: "TheFlorian"
 formspree_endpoint: "https://formspree.io/f/maeyrkkj"
 
+# Bitcoin checkout (bitcoin-<id>.html): same gated-form pattern as Venmo, but
+# the invoice itself (fixed BTC amount, locked ~15 min) has to be created via
+# an authenticated API call, so it's proxied through a small Cloudflare
+# Worker (cloudflare/bitcoin-invoice-worker/) that holds the OpenNode secret
+# key server-side. bitcoin_worker_endpoint is a placeholder until that
+# Worker is deployed — see cloudflare/bitcoin-invoice-worker/wrangler.toml.
+bitcoin_worker_endpoint: "https://REPLACE_ME.workers.dev"
+
 exclude:
   - README.md
+  - cloudflare/

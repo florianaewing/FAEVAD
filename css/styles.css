@@ -557,6 +557,45 @@ nav.top a[aria-current="page"] {
   flex: 0 0 auto;
 }
 
+.bitcoin-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  background: #F7931A;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 0.02em;
+  padding: 0 22px 0 12px;
+  margin-top: 20px;
+  margin-left: 12px;
+  border-radius: 3px;
+  transition: background 0.15s ease;
+}
+
+.bitcoin-button:hover,
+.bitcoin-button:focus-visible {
+  background: #d97f0f;
+}
+
+.bitcoin-mark {
+  width: 26px;
+  height: 26px;
+  flex: 0 0 auto;
+}
+
+.bitcoin-check-line {
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+}
+
+.bitcoin-check-line span {
+  color: var(--ink);
+  font-weight: 600;
+}
+
 .venmo-form {
   max-width: 480px;
   display: flex;
