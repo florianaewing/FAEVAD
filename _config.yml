@@ -9,10 +9,9 @@ description: >-
 # There's no way to force a payment to include the code — a buyer could
 # still open Venmo directly — so this is a strong nudge, not a guarantee.
 # Reconcile incoming Venmo payments against the Formspree emails by that
-# code. Sign up at formspree.io, create a form, and replace the endpoint
-# below with the one it gives you (looks like https://formspree.io/f/xxxxyyyy).
+# code.
 venmo_username: "TheFlorian"
-formspree_endpoint: "https://formspree.io/f/REPLACE_ME"
+formspree_endpoint: "https://formspree.io/f/maeyrkkj"
 
 exclude:
   - README.md
