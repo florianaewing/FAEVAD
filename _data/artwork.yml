@@ -105,7 +105,7 @@ collections:
           price: 15
           currency: "USD"
           available: true
-          stripe_link: ""
+          stripe_link: "https://buy.stripe.com/6oU8wRfDHapjcVZeBDgEg0o"
         original:
           status: "available"
           stripe_link: ""
@@ -135,7 +135,7 @@ collections:
           price: 15
           currency: "USD"
           available: true
-          stripe_link: ""
+          stripe_link: "https://buy.stripe.com/bJe8wRdvz8hbbRVfFHgEg0p"
         original:
           status: "available"
           stripe_link: ""
