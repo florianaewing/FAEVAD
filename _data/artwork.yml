@@ -240,7 +240,7 @@ collections:
           price: 15
           currency: "USD"
           available: true
-          stripe_link: ""
+          stripe_link: "https://buy.stripe.com/6oUeVf4Z37d71dhfFHgEg0q"
         original:
           status: "available"
           stripe_link: ""
@@ -255,7 +255,7 @@ collections:
           price: 15
           currency: "USD"
           available: true
-          stripe_link: ""
+          stripe_link: "https://buy.stripe.com/28EaEZ9fjbtn3lp3WZgEg0r"
         original:
           status: "available"
           stripe_link: ""
@@ -270,7 +270,7 @@ collections:
           price: 15
           currency: "USD"
           available: true
-          stripe_link: ""
+          stripe_link: "https://buy.stripe.com/4gMfZjdvzdBv5txbprgEg0s"
         original:
           status: "available"
           stripe_link: ""
@@ -285,7 +285,7 @@ collections:
           price: 15
           currency: "USD"
           available: true
-          stripe_link: ""
+          stripe_link: "https://buy.stripe.com/cNifZj1MRbtn5tx1ORgEg0t"
         original:
           status: "available"
           stripe_link: ""
@@ -300,7 +300,7 @@ collections:
           price: 15
           currency: "USD"
           available: true
-          stripe_link: ""
+          stripe_link: "https://buy.stripe.com/28E14p3UZ8hb6xB9hjgEg0u"
         original:
           status: "available"
           stripe_link: ""
@@ -315,7 +315,7 @@ collections:
           price: 15
           currency: "USD"
           available: true
-          stripe_link: ""
+          stripe_link: "https://buy.stripe.com/5kQ8wRezD1SNcVZctvgEg0v"
         original:
           status: "available"
           stripe_link: ""
@@ -330,7 +330,7 @@ collections:
           price: 15
           currency: "USD"
           available: true
-          stripe_link: ""
+          stripe_link: "https://buy.stripe.com/28EaEZ1MRfJDcVZ8dfgEg0w"
         original:
           status: "available"
           stripe_link: ""
@@ -345,7 +345,7 @@ collections:
           price: 15
           currency: "USD"
           available: true
-          stripe_link: ""
+          stripe_link: "https://buy.stripe.com/28E9AV3UZ9lf3lp513gEg0x"
         original:
           status: "available"
           stripe_link: ""
@@ -360,7 +360,7 @@ collections:
           price: 15
           currency: "USD"
           available: true
-          stripe_link: ""
+          stripe_link: "https://buy.stripe.com/7sY7sN6372WR6xBeBDgEg0y"
         original:
           status: "available"
           stripe_link: ""
@@ -375,7 +375,7 @@ collections:
           price: 15
           currency: "USD"
           available: true
-          stripe_link: ""
+          stripe_link: "https://buy.stripe.com/9B64gB77bgNH8FJfFHgEg0z"
         original:
           status: "available"
           stripe_link: ""
