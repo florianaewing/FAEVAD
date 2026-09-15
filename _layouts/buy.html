@@ -66,6 +66,7 @@
             Continue with Venmo
         </a>
 
+        {% if site.bitcoin_enabled %}
         <a class="bitcoin-button" href="bitcoin-{{ piece.id }}.html">
             <svg class="bitcoin-mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                 <circle cx="12" cy="12" r="12" fill="#ffffff"></circle>
@@ -73,6 +74,7 @@
             </svg>
             Continue with Bitcoin
         </a>
+        {% endif %}
     </section>
 
     {% include footer.html %}

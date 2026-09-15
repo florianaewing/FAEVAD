@@ -19,6 +19,17 @@ formspree_endpoint: "https://formspree.io/f/maeyrkkj"
 # Worker (cloudflare/bitcoin-invoice-worker/) that holds the OpenNode secret
 # key server-side. bitcoin_worker_endpoint is a placeholder until that
 # Worker is deployed — see cloudflare/bitcoin-invoice-worker/wrangler.toml.
+#
+# On hold as of 2026-09-15: OpenNode requires the account to be verified as
+# a registered business before it'll pay out, which hasn't happened yet.
+# Everything is built and ready (Worker, pages, form) but bitcoin_enabled
+# stays false — and the "Continue with Bitcoin" button stays hidden from
+# buy-<id>.html — until that's resolved, so no visitor hits a dead-end form.
+# To go live: register the business (or switch to self-hosted BTCPay Server,
+# which needs no business verification — see chat history), deploy the
+# Worker, set bitcoin_worker_endpoint to its real URL below, then flip
+# bitcoin_enabled to true.
+bitcoin_enabled: false
 bitcoin_worker_endpoint: "https://REPLACE_ME.workers.dev"
 
 exclude:
