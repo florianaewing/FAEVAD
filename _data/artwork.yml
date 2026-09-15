@@ -45,7 +45,7 @@ collections:
           price: 15
           currency: "USD"
           available: true
-          stripe_link: "https://buy.stripe.com/test_aFadR2f630ktdmuehS3oA00"
+          stripe_link: "https://buy.stripe.com/00waEZ9fj54Z9JNctvgEg0d"
         original:
           status: "available"
           stripe_link: ""
@@ -60,7 +60,7 @@ collections:
           price: 15
           currency: "USD"
           available: true
-          stripe_link: "https://buy.stripe.com/test_aFa14gbTR0ktaai5Lm3oA01"
+          stripe_link: "https://buy.stripe.com/8x28wRbnrgNH9JN2SVgEg0e"
         original:
           status: "available"
           stripe_link: ""
@@ -75,7 +75,7 @@ collections:
           price: 15
           currency: "USD"
           available: true
-          stripe_link: "https://buy.stripe.com/test_7sYfZae1Z3wF0zIehS3oA02"
+          stripe_link: "https://buy.stripe.com/7sY14p0IN6939JN2SVgEg0f"
         original:
           status: "available"
           stripe_link: ""
@@ -90,7 +90,7 @@ collections:
           price: 15
           currency: "USD"
           available: true
-          stripe_link: "https://buy.stripe.com/test_28EdR22jhaZ7aaiehS3oA03"
+          stripe_link: "https://buy.stripe.com/6oUdRb3UZeFz2hleBDgEg0g"
         original:
           status: "available"
           stripe_link: ""
@@ -105,7 +105,7 @@ collections:
           price: 15
           currency: "USD"
           available: true
-          stripe_link: "https://buy.stripe.com/test_8x200ce1Z0kt2HQddO3oA04"
+          stripe_link: ""
         original:
           status: "available"
           stripe_link: ""
@@ -120,7 +120,7 @@ collections:
           price: 15
           currency: "USD"
           available: true
-          stripe_link: "https://buy.stripe.com/test_4gMcMY5vt1ox3LUgq03oA05"
+          stripe_link: "https://buy.stripe.com/fZu00lezD7d72hl513gEg0h"
         original:
           status: "available"
           stripe_link: ""
@@ -135,7 +135,7 @@ collections:
           price: 15
           currency: "USD"
           available: true
-          stripe_link: "https://buy.stripe.com/test_8x2aEQ7DB8QZbemb5G3oA06"
+          stripe_link: ""
         original:
           status: "available"
           stripe_link: ""
@@ -150,7 +150,7 @@ collections:
           price: 15
           currency: "USD"
           available: true
-          stripe_link: "https://buy.stripe.com/test_28E6oA2jhgjr4PY6Pq3oA07"
+          stripe_link: "https://buy.stripe.com/fZu6oJajn8hb2hlgJLgEg0i"
         original:
           status: "available"
           stripe_link: ""
@@ -165,7 +165,7 @@ collections:
           price: 15
           currency: "USD"
           available: true
-          stripe_link: "https://buy.stripe.com/test_6oU28kbTRebjfuC6Pq3oA08"
+          stripe_link: "https://buy.stripe.com/7sY4gB3UZeFzf47bprgEg0j"
         original:
           status: "available"
           stripe_link: ""
@@ -180,7 +180,7 @@ collections:
           price: 15
           currency: "USD"
           available: true
-          stripe_link: "https://buy.stripe.com/test_8x2aEQcXV7MV6Y60r23oA09"
+          stripe_link: "https://buy.stripe.com/cNi3cx3UZdBv09dgJLgEg0k"
         original:
           status: "available"
           stripe_link: ""
@@ -195,7 +195,7 @@ collections:
           price: 15
           currency: "USD"
           available: true
-          stripe_link: "https://buy.stripe.com/test_8x29AMaPN7MVbem7Tu3oA0a"
+          stripe_link: "https://buy.stripe.com/fZudRb9fjgNH6xB8dfgEg0l"
         original:
           status: "available"
           stripe_link: ""
@@ -210,7 +210,7 @@ collections:
           price: 15
           currency: "USD"
           available: true
-          stripe_link: "https://buy.stripe.com/test_bJe9AMe1Z0ktaai8Xy3oA0b"
+          stripe_link: "https://buy.stripe.com/4gM9AV6372WR1dh1ORgEg0m"
         original:
           status: "available"
           stripe_link: ""
@@ -225,7 +225,7 @@ collections:
           price: 15
           currency: "USD"
           available: true
-          stripe_link: "https://buy.stripe.com/test_00weV67DBaZ7bemb5G3oA0c"
+          stripe_link: "https://buy.stripe.com/4gMaEZ4Z30OJ5txbprgEg0n"
         original:
           status: "available"
           stripe_link: ""
