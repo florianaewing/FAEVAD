@@ -230,11 +230,10 @@ collections:
           status: "available"
           stripe_link: ""
 
-      # TODO: year unknown for all 11 pieces below — fill in before launch.
       - id: death-arrives
         title: "Death Arrives"
         medium: "Acrylic pigment on watercolor paper"
-        year: ""
+        year: 2023
         image: "images/artwork/DeathArrives.jpg"
         alt: "Colored ink illustration of a hooded skeletal figure holding a scythe, flanked by black wings and a red aura"
         print:
@@ -249,25 +248,9 @@ collections:
       - id: fanny-pack
         title: "Fanny Pack"
         medium: "Acrylic pigment on watercolor paper"
-        year: ""
+        year: 2023
         image: "images/artwork/FannyPack.png"
         alt: "Ink illustration of a lamp, potted plant, stacked books, and a wine bottle beside a chair with a fanny pack draped over it, near a window"
-        print:
-          price: 15
-          currency: "USD"
-          available: true
-          stripe_link: ""
-        original:
-          status: "available"
-          stripe_link: ""
-
-      # TODO: "Image.png" needs a real title — placeholder below, please rename.
-      - id: image-placeholder
-        title: "Image"
-        medium: "Acrylic pigment on watercolor paper"
-        year: ""
-        image: "images/artwork/Image.png"
-        alt: "Colored ink illustration of a cluttered brick-walled room with a wall clock, potted plants, and shelves lit in orange and green"
         print:
           price: 15
           currency: "USD"
@@ -280,7 +263,7 @@ collections:
       - id: modern-knight
         title: "Modern Knight"
         medium: "Acrylic pigment on watercolor paper"
-        year: ""
+        year: 2023
         image: "images/artwork/ModernKnight.png"
         alt: "Ink illustration of an open closet with hanging coats and bags, boots, and a pedestal table beside a brick wall"
         print:
@@ -295,7 +278,7 @@ collections:
       - id: ravenous-cuzco
         title: "Ravenous Cuzco"
         medium: "Acrylic pigment on watercolor paper"
-        year: ""
+        year: 2023
         image: "images/artwork/RavenousCuzco.jpg"
         alt: "Colored ink illustration of a horned, wolf-like creature baring its teeth beneath a crescent moon, with eyes peering from the dark"
         print:
@@ -310,7 +293,7 @@ collections:
       - id: reposed-ariel
         title: "Reposed Ariel"
         medium: "Acrylic pigment on watercolor paper"
-        year: ""
+        year: 2023
         image: "images/artwork/ReposedAriel.png"
         alt: "Ink illustration of a person reclining on a fur-draped couch surrounded by potted flowers, stacked books, and a coffee press"
         print:
@@ -325,7 +308,7 @@ collections:
       - id: scaling
         title: "Scaling"
         medium: "Acrylic pigment on watercolor paper"
-        year: ""
+        year: 2023
         image: "images/artwork/Scaling.png"
         alt: "Ink illustration of a person standing beside a tall stack of crates and bottles topped with a bird, near a clock and a maze-patterned wall"
         print:
@@ -340,7 +323,7 @@ collections:
       - id: sky-goddess-one
         title: "Sky Goddess One"
         medium: "Acrylic pigment on watercolor paper"
-        year: ""
+        year: 2023
         image: "images/artwork/SkyGoddessOne.jpg"
         alt: "Ink illustration of an arched stone doorway framing a potted plant and a trailing wing, beneath a glowing sun"
         print:
@@ -355,7 +338,7 @@ collections:
       - id: stories
         title: "Stories"
         medium: "Acrylic pigment on watercolor paper"
-        year: ""
+        year: 2023
         image: "images/artwork/Stories.png"
         alt: "Colored ink illustration of a person reading in a chair surrounded by stacked books, potted plants, and lanterns beside a window"
         print:
@@ -370,7 +353,7 @@ collections:
       - id: urban-mood
         title: "Urban Mood"
         medium: "Acrylic pigment on watercolor paper"
-        year: ""
+        year: 2023
         image: "images/artwork/UrbanMood.jpg"
         alt: "Colored ink illustration of a person's face in the foreground beside a shadowy figure, a city skyline, and a parked car"
         print:
@@ -385,7 +368,7 @@ collections:
       - id: bedtime
         title: "Bedtime"
         medium: "Acrylic pigment on watercolor paper"
-        year: ""
+        year: 2023
         image: "images/artwork/bedTime.png"
         alt: "Ink illustration of a child peeking over a striped blanket in bed, clutching a small dragon"
         print:
