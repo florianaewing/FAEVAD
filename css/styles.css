@@ -1,6 +1,7 @@
 /* Florian Anthony Ewing — FAEVAD
    Single-typeface, editorial catalogue design. Mobile-first: base rules
-   target narrow screens, media queries add space/columns as room allows. */
+   target narrow screens, media queries add space/columns as room allows.
+   Type: system font stack, so Apple devices render actual San Francisco. */
 
 :root {
   --paper: #f5f6f4;
@@ -21,7 +22,7 @@ body {
   margin: 0;
   background: var(--paper);
   color: var(--ink);
-  font-family: "Lucida Console", "Courier New", monospace;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
@@ -242,6 +243,15 @@ nav.top a[aria-current="page"] {
   margin: 16px 0 6px;
 }
 
+.lot a {
+  text-decoration: none;
+}
+
+.lot h2 a:hover,
+.lot h2 a:focus-visible {
+  color: var(--pigment);
+}
+
 .lot .meta {
   font-size: 0.66rem;
   letter-spacing: 0.06em;
@@ -367,6 +377,143 @@ nav.top a[aria-current="page"] {
 .contact-line {
   font-size: 1.1rem;
   margin-top: 8px;
+}
+
+/* ---------- Piece detail (piece-<id>.html) ---------- */
+
+.piece-detail {
+  padding-block: 40px 72px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.piece-media {
+  width: 100%;
+  max-width: 460px;
+}
+
+.piece-media .plate { width: 100%; }
+
+.piece-info {
+  margin-top: 28px;
+  max-width: 60ch;
+}
+
+.piece-info h1 {
+  margin: 0 0 8px;
+  font-size: clamp(1.6rem, 3.6vw, 2.4rem);
+}
+
+.piece-info .meta {
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.piece-info .description {
+  margin-top: 20px;
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: var(--ink);
+  text-align: left;
+}
+
+.purchase-links {
+  margin-top: 28px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.buy-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  border: 1px solid var(--ink);
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  padding: 0 20px;
+  white-space: nowrap;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.buy-cta.secondary {
+  border-color: var(--line);
+  color: var(--ink-soft);
+}
+
+.buy-cta:hover, .buy-cta:focus-visible {
+  background: var(--pigment);
+  border-color: var(--pigment);
+  color: #fff;
+}
+
+/* ---------- Buy page (buy-<id>.html) ---------- */
+
+.back-link {
+  display: inline-block;
+  margin-top: 32px;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  color: var(--ink-soft);
+  text-decoration: none;
+  border-bottom: 1px solid var(--line);
+}
+
+.back-link:hover { color: var(--pigment); border-color: var(--pigment); }
+
+.tier-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-bottom: 72px;
+}
+
+@media (min-width: 780px) {
+  .tier-grid { flex-direction: row; align-items: stretch; }
+}
+
+.tier-card {
+  flex: 1;
+  border: 1px solid var(--line);
+  background: var(--paper-raised);
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.tier-card h2 {
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+.tier-price {
+  margin-top: 6px;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--pigment-ink);
+}
+
+.tier-desc {
+  margin-top: 14px;
+  font-size: 0.85rem;
+  line-height: 1.7;
+  color: var(--ink-soft);
+  flex-grow: 1;
+}
+
+.tier-card .buy-cta {
+  margin-top: 20px;
+  width: 100%;
 }
 
 /* ---------- Footer ---------- */
