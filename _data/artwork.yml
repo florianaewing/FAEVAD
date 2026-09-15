@@ -55,10 +55,10 @@ collections:
               stripe_link: "https://buy.stripe.com/00waEZ9fj54Z9JNctvgEg0d"
             - size: "8x10"
               price: 30
-              stripe_link: ""
+              stripe_link: "https://buy.stripe.com/fZuaEZajncxrcVZ79bgEg0A"
             - size: "11x14"
               price: 50
-              stripe_link: ""
+              stripe_link: "https://buy.stripe.com/9B628t2QV2WR4ptctvgEg0B"
         original:
           status: "available"
           stripe_link: ""
@@ -79,10 +79,10 @@ collections:
               stripe_link: "https://buy.stripe.com/8x28wRbnrgNH9JN2SVgEg0e"
             - size: "8x10"
               price: 30
-              stripe_link: ""
+              stripe_link: "https://buy.stripe.com/8x214p9fj40V09d2SVgEg0C"
             - size: "11x14"
               price: 50
-              stripe_link: ""
+              stripe_link: "https://buy.stripe.com/fZubJ31MR6938FJ513gEg0D"
         original:
           status: "available"
           stripe_link: ""
@@ -103,10 +103,10 @@ collections:
               stripe_link: "https://buy.stripe.com/7sY14p0IN6939JN2SVgEg0f"
             - size: "8x10"
               price: 30
-              stripe_link: ""
+              stripe_link: "https://buy.stripe.com/dRmcN78bfeFze030KNgEg0E"
             - size: "11x14"
               price: 50
-              stripe_link: ""
+              stripe_link: "https://buy.stripe.com/00w4gB3UZ54Zf47alngEg0F"
         original:
           status: "available"
           stripe_link: ""
@@ -127,10 +127,10 @@ collections:
               stripe_link: "https://buy.stripe.com/6oUdRb3UZeFz2hleBDgEg0g"
             - size: "8x10"
               price: 30
-              stripe_link: ""
+              stripe_link: "https://buy.stripe.com/14A28tgHLcxr9JNbprgEg0G"
             - size: "11x14"
               price: 50
-              stripe_link: ""
+              stripe_link: "https://buy.stripe.com/14A9AV1MR54Z9JN2SVgEg0H"
         original:
           status: "available"
           stripe_link: ""
@@ -151,10 +151,10 @@ collections:
               stripe_link: "https://buy.stripe.com/6oU8wRfDHapjcVZeBDgEg0o"
             - size: "8x10"
               price: 30
-              stripe_link: ""
+              stripe_link: "https://buy.stripe.com/8x29AV3UZapjcVZbprgEg0I"
             - size: "11x14"
               price: 50
-              stripe_link: ""
+              stripe_link: "https://buy.stripe.com/eVqeVf637cxr3lp3WZgEg0J"
         original:
           status: "available"
           stripe_link: ""
@@ -175,10 +175,10 @@ collections:
               stripe_link: "https://buy.stripe.com/fZu00lezD7d72hl513gEg0h"
             - size: "8x10"
               price: 30
-              stripe_link: ""
+              stripe_link: "https://buy.stripe.com/28E14pezD7d76xB8dfgEg0K"
             - size: "11x14"
               price: 50
-              stripe_link: ""
+              stripe_link: "https://buy.stripe.com/28EfZjcrv1SN2hleBDgEg0L"
         original:
           status: "available"
           stripe_link: ""
@@ -199,10 +199,10 @@ collections:
               stripe_link: "https://buy.stripe.com/bJe8wRdvz8hbbRVfFHgEg0p"
             - size: "8x10"
               price: 30
-              stripe_link: ""
+              stripe_link: "https://buy.stripe.com/7sY6oJcrv9lf8FJctvgEg0M"
             - size: "11x14"
               price: 50
-              stripe_link: ""
+              stripe_link: "https://buy.stripe.com/bJe00lajn2WR7BF3WZgEg0N"
         original:
           status: "available"
           stripe_link: ""
@@ -223,10 +223,10 @@ collections:
               stripe_link: "https://buy.stripe.com/fZu6oJajn8hb2hlgJLgEg0i"
             - size: "8x10"
               price: 30
-              stripe_link: ""
+              stripe_link: "https://buy.stripe.com/5kQdRb0INfJD1dh8dfgEg0O"
             - size: "11x14"
               price: 50
-              stripe_link: ""
+              stripe_link: "https://buy.stripe.com/3cIbJ34Z354Zg8bdxzgEg0P"
         original:
           status: "available"
           stripe_link: ""
@@ -247,10 +247,10 @@ collections:
               stripe_link: "https://buy.stripe.com/7sY4gB3UZeFzf47bprgEg0j"
             - size: "8x10"
               price: 30
-              stripe_link: ""
+              stripe_link: "https://buy.stripe.com/14A00l4Z37d7f47dxzgEg0Q"
             - size: "11x14"
               price: 50
-              stripe_link: ""
+              stripe_link: "https://buy.stripe.com/3cI7sNgHL9lf5tx2SVgEg0R"
         original:
           status: "available"
           stripe_link: ""
@@ -271,10 +271,10 @@ collections:
               stripe_link: "https://buy.stripe.com/cNi3cx3UZdBv09dgJLgEg0k"
             - size: "8x10"
               price: 30
-              stripe_link: ""
+              stripe_link: "https://buy.stripe.com/cNi3cxgHLgNHbRVeBDgEg0S"
             - size: "11x14"
               price: 50
-              stripe_link: ""
+              stripe_link: "https://buy.stripe.com/3cI3cxgHL69309ddxzgEg0T"
         original:
           status: "available"
           stripe_link: ""
@@ -295,10 +295,10 @@ collections:
               stripe_link: "https://buy.stripe.com/fZudRb9fjgNH6xB8dfgEg0l"
             - size: "8x10"
               price: 30
-              stripe_link: ""
+              stripe_link: "https://buy.stripe.com/dRm4gBbnr6934pt9hjgEg0U"
             - size: "11x14"
               price: 50
-              stripe_link: ""
+              stripe_link: "https://buy.stripe.com/7sYeVf1MR40V9JNgJLgEg0V"
         original:
           status: "available"
           stripe_link: ""
@@ -319,10 +319,10 @@ collections:
               stripe_link: "https://buy.stripe.com/4gM9AV6372WR1dh1ORgEg0m"
             - size: "8x10"
               price: 30
-              stripe_link: ""
+              stripe_link: "https://buy.stripe.com/14A6oJfDH1SN9JN3WZgEg0W"
             - size: "11x14"
               price: 50
-              stripe_link: ""
+              stripe_link: "https://buy.stripe.com/00w8wR2QV0OJ5tx3WZgEg0X"
         original:
           status: "available"
           stripe_link: ""
@@ -343,10 +343,10 @@ collections:
               stripe_link: "https://buy.stripe.com/4gMaEZ4Z30OJ5txbprgEg0n"
             - size: "8x10"
               price: 30
-              stripe_link: ""
+              stripe_link: "https://buy.stripe.com/aFa14p4Z3eFz9JNalngEg0Y"
             - size: "11x14"
               price: 50
-              stripe_link: ""
+              stripe_link: "https://buy.stripe.com/14A28tdvzdBv3lp1ORgEg0Z"
         original:
           status: "available"
           stripe_link: ""
@@ -367,10 +367,10 @@ collections:
               stripe_link: "https://buy.stripe.com/6oUeVf4Z37d71dhfFHgEg0q"
             - size: "8x10"
               price: 30
-              stripe_link: ""
+              stripe_link: "https://buy.stripe.com/00w7sN8bfgNH9JNctvgEg10"
             - size: "11x14"
               price: 50
-              stripe_link: ""
+              stripe_link: "https://buy.stripe.com/7sYfZjdvz7d7e03ctvgEg11"
         original:
           status: "available"
           stripe_link: ""
@@ -391,10 +391,10 @@ collections:
               stripe_link: "https://buy.stripe.com/28EaEZ9fjbtn3lp3WZgEg0r"
             - size: "8x10"
               price: 30
-              stripe_link: ""
+              stripe_link: "https://buy.stripe.com/aFa00l1MR2WR1dh9hjgEg12"
             - size: "11x14"
               price: 50
-              stripe_link: ""
+              stripe_link: "https://buy.stripe.com/6oU7sNbnrapj6xBctvgEg13"
         original:
           status: "available"
           stripe_link: ""
@@ -415,10 +415,10 @@ collections:
               stripe_link: "https://buy.stripe.com/4gMfZjdvzdBv5txbprgEg0s"
             - size: "8x10"
               price: 30
-              stripe_link: ""
+              stripe_link: "https://buy.stripe.com/5kQ5kFajncxr1dhdxzgEg14"
             - size: "11x14"
               price: 50
-              stripe_link: ""
+              stripe_link: "https://buy.stripe.com/28E7sN9fj2WR3lpalngEg15"
         original:
           status: "available"
           stripe_link: ""
@@ -439,10 +439,10 @@ collections:
               stripe_link: "https://buy.stripe.com/cNifZj1MRbtn5tx1ORgEg0t"
             - size: "8x10"
               price: 30
-              stripe_link: ""
+              stripe_link: "https://buy.stripe.com/8x28wR77b0OJaNRbprgEg16"
             - size: "11x14"
               price: 50
-              stripe_link: ""
+              stripe_link: "https://buy.stripe.com/eVq7sN2QVbtnf479hjgEg17"
         original:
           status: "available"
           stripe_link: ""
@@ -463,10 +463,10 @@ collections:
               stripe_link: "https://buy.stripe.com/28E14p3UZ8hb6xB9hjgEg0u"
             - size: "8x10"
               price: 30
-              stripe_link: ""
+              stripe_link: "https://buy.stripe.com/28E9AV1MRapjg8beBDgEg18"
             - size: "11x14"
               price: 50
-              stripe_link: ""
+              stripe_link: "https://buy.stripe.com/cNiaEZfDH54Z3lpalngEg19"
         original:
           status: "available"
           stripe_link: ""
@@ -487,10 +487,10 @@ collections:
               stripe_link: "https://buy.stripe.com/5kQ8wRezD1SNcVZctvgEg0v"
             - size: "8x10"
               price: 30
-              stripe_link: ""
+              stripe_link: "https://buy.stripe.com/cNi28tezD2WR5tx1ORgEg1a"
             - size: "11x14"
               price: 50
-              stripe_link: ""
+              stripe_link: "https://buy.stripe.com/28E6oJ4Z3cxr1dh1ORgEg1b"
         original:
           status: "available"
           stripe_link: ""
@@ -511,10 +511,10 @@ collections:
               stripe_link: "https://buy.stripe.com/28EaEZ1MRfJDcVZ8dfgEg0w"
             - size: "8x10"
               price: 30
-              stripe_link: ""
+              stripe_link: "https://buy.stripe.com/5kQ5kF77bfJDg8b657gEg1c"
             - size: "11x14"
               price: 50
-              stripe_link: ""
+              stripe_link: "https://buy.stripe.com/6oU8wR6378hb1dhalngEg1d"
         original:
           status: "available"
           stripe_link: ""
@@ -535,10 +535,10 @@ collections:
               stripe_link: "https://buy.stripe.com/28E9AV3UZ9lf3lp513gEg0x"
             - size: "8x10"
               price: 30
-              stripe_link: ""
+              stripe_link: "https://buy.stripe.com/14A8wRdvzdBv8FJeBDgEg1e"
             - size: "11x14"
               price: 50
-              stripe_link: ""
+              stripe_link: "https://buy.stripe.com/cNicN7bnrapj09d9hjgEg1f"
         original:
           status: "available"
           stripe_link: ""
@@ -559,10 +559,10 @@ collections:
               stripe_link: "https://buy.stripe.com/7sY7sN6372WR6xBeBDgEg0y"
             - size: "8x10"
               price: 30
-              stripe_link: ""
+              stripe_link: "https://buy.stripe.com/aFa5kF1MReFz2hlfFHgEg1g"
             - size: "11x14"
               price: 50
-              stripe_link: ""
+              stripe_link: "https://buy.stripe.com/eVqaEZ4Z354Z8FJ1ORgEg1h"
         original:
           status: "available"
           stripe_link: ""
@@ -583,10 +583,10 @@ collections:
               stripe_link: "https://buy.stripe.com/9B64gB77bgNH8FJfFHgEg0z"
             - size: "8x10"
               price: 30
-              stripe_link: ""
+              stripe_link: "https://buy.stripe.com/bJe4gBezDbtn09dctvgEg1i"
             - size: "11x14"
               price: 50
-              stripe_link: ""
+              stripe_link: "https://buy.stripe.com/5kQfZjajndBv4pt513gEg1j"
         original:
           status: "available"
           stripe_link: ""
