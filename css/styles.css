@@ -516,6 +516,126 @@ nav.top a[aria-current="page"] {
   width: 100%;
 }
 
+/* ---------- Venmo form (buy-<id>.html) ---------- */
+
+.venmo-section {
+  padding-top: 32px;
+  border-top: 1px solid var(--line);
+  padding-bottom: 72px;
+}
+
+.venmo-section h2 {
+  margin: 10px 0 14px;
+  font-size: clamp(1.3rem, 2.6vw, 1.7rem);
+}
+
+.venmo-form {
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: 24px;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-row label,
+.form-row .form-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.form-row input[type="text"],
+.form-row input[type="email"],
+.form-row select {
+  min-height: 44px;
+  border: 1px solid var(--line);
+  background: var(--paper-raised);
+  color: var(--ink);
+  font: inherit;
+  padding: 0 12px;
+}
+
+.form-row input:focus-visible,
+.form-row select:focus-visible {
+  outline: 2px solid var(--pigment);
+  outline-offset: 1px;
+}
+
+.form-row-split {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.form-row-split > div {
+  flex: 1 1 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.radio-group {
+  display: flex;
+  gap: 20px;
+  min-height: 44px;
+  align-items: center;
+  font-size: 0.9rem;
+}
+
+.radio-group label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  text-transform: none;
+  letter-spacing: normal;
+  color: var(--ink);
+  font-size: 0.9rem;
+}
+
+.venmo-submit {
+  align-self: flex-start;
+  margin-top: 6px;
+}
+
+.venmo-status {
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+}
+
+.venmo-result {
+  max-width: 480px;
+  margin-top: 24px;
+  border: 1px solid var(--line);
+  background: var(--paper-raised);
+  padding: 24px;
+}
+
+.venmo-result p { font-size: 0.9rem; line-height: 1.7; }
+
+#venmo-order-code {
+  letter-spacing: 0.06em;
+  color: var(--pigment-ink);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* ---------- Footer ---------- */
 
 footer {

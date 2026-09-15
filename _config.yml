@@ -3,5 +3,16 @@ description: >-
   Original ink paintings and drawings by Seattle-based visual artist and
   designer Florian Anthony Ewing — prints and framed originals.
 
+# Venmo checkout (buy-<id>.html): the shipping/size/color form submits to
+# formspree_endpoint (so you get the order details by email) and only then
+# reveals a Venmo pay link pre-filled with an order code, to venmo_username.
+# There's no way to force a payment to include the code — a buyer could
+# still open Venmo directly — so this is a strong nudge, not a guarantee.
+# Reconcile incoming Venmo payments against the Formspree emails by that
+# code. Sign up at formspree.io, create a form, and replace the endpoint
+# below with the one it gives you (looks like https://formspree.io/f/xxxxyyyy).
+venmo_username: "TheFlorian"
+formspree_endpoint: "https://formspree.io/f/REPLACE_ME"
+
 exclude:
   - README.md

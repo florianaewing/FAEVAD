@@ -48,7 +48,86 @@
         {% endfor %}
     </div>
 
+    <section class="venmo-section">
+        <div class="section-head">
+            <div class="eyebrow">Alternative Payment</div>
+            <h2>Pay with Venmo</h2>
+            <p>
+                Fill out your size, backing color, and shipping address below. Once it's submitted
+                we'll email ourselves your order and show you a Venmo payment link with an order
+                code already in the note &mdash; please leave that note as-is, it's how we match
+                your payment to your order.
+            </p>
+        </div>
+
+        <form id="venmo-form" class="venmo-form" action="{{ site.formspree_endpoint }}" method="POST" data-piece-id="{{ piece.id }}" data-piece-title="{{ piece.title | escape }}">
+            <input type="hidden" name="_subject" value="Venmo order: {{ piece.title }}">
+
+            <div class="form-row">
+                <label for="v-name">Full name</label>
+                <input type="text" id="v-name" name="full_name" required>
+            </div>
+
+            <div class="form-row">
+                <label for="v-email">Email</label>
+                <input type="email" id="v-email" name="email" required>
+            </div>
+
+            <div class="form-row">
+                <label for="v-address1">Shipping address</label>
+                <input type="text" id="v-address1" name="address_line1" placeholder="Street address" required>
+            </div>
+
+            <div class="form-row">
+                <label for="v-address2" class="visually-hidden">Address line 2</label>
+                <input type="text" id="v-address2" name="address_line2" placeholder="Apt, suite, etc. (optional)">
+            </div>
+
+            <div class="form-row form-row-split">
+                <div>
+                    <label for="v-city">City</label>
+                    <input type="text" id="v-city" name="city" required>
+                </div>
+                <div>
+                    <label for="v-state">State</label>
+                    <input type="text" id="v-state" name="state" required>
+                </div>
+                <div>
+                    <label for="v-zip">ZIP</label>
+                    <input type="text" id="v-zip" name="zip" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <label for="v-size">Print size</label>
+                <select id="v-size" name="size" required>
+                    {% for tier in piece.print.tiers %}
+                    <option value="{{ tier.size }}" data-price="{{ tier.price }}">{{ tier.size }} &mdash; ${{ tier.price }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-row">
+                <span class="form-label">Backing color</span>
+                <div class="radio-group">
+                    <label><input type="radio" name="backing_color" value="black" required> Black</label>
+                    <label><input type="radio" name="backing_color" value="white"> White</label>
+                </div>
+            </div>
+
+            <button type="submit" class="buy-cta venmo-submit">Continue to Venmo &mdash; <span class="venmo-price">${{ piece.print.tiers[0].price }}</span></button>
+            <p class="venmo-status" hidden></p>
+        </form>
+
+        <div id="venmo-result" class="venmo-result" hidden>
+            <p>Order code: <strong id="venmo-order-code"></strong></p>
+            <p>We've emailed ourselves your order. Pay the amount below on Venmo, keeping this note intact.</p>
+            <a id="venmo-pay-link" class="buy-cta" href="#" target="_blank" rel="noopener noreferrer">Pay on Venmo</a>
+        </div>
+    </section>
+
     {% include footer.html %}
 </div>
+<script src="js/venmo.js" data-endpoint="{{ site.formspree_endpoint }}" data-venmo-username="{{ site.venmo_username }}" defer></script>
 </body>
 </html>
