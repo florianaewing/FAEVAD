@@ -1,0 +1,249 @@
+# Daily social posting queue.
+#
+# catalog_number determines posting order — the Telegram bot walks pieces in
+# this order, one per day, starting from 1. Every piece here must already be
+# live on the site (in _data/artwork.yml with working Stripe print links)
+# before it can be queued — the daily post is always of something currently
+# purchasable, never a preview of unpublished work.
+#
+# posted / post_date / platforms are written by the bot itself after
+# posting — instagram/pinterest go via Buffer, subreddit via a direct Reddit
+# API call (Buffer doesn't support Reddit). Facebook Marketplace was dropped
+# from the automated flow entirely: no official API exists for an individual
+# seller to create listings, and unofficial/scraping automation risks the
+# account being flagged. Nothing here should be hand-edited except to add
+# new entries as new pieces go live on the site.
+#
+# New pieces get appended here (next catalog_number) by the backlog
+# cataloguing sync script once they've been added to _data/artwork.yml and
+# gotten their Stripe links — not before.
+
+- catalog_number: 1
+  id: forbidden-knowledge
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+    subreddit:
+
+- catalog_number: 2
+  id: cluttered-desk
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+    subreddit:
+
+- catalog_number: 3
+  id: second-floor-apartment
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+    subreddit:
+
+- catalog_number: 4
+  id: the-workshop
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+    subreddit:
+
+- catalog_number: 5
+  id: the-bedroom
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+    subreddit:
+
+- catalog_number: 6
+  id: sky-goddess-two
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+    subreddit:
+
+- catalog_number: 7
+  id: mysterious-strangers
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+    subreddit:
+
+- catalog_number: 8
+  id: supplies
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+    subreddit:
+
+- catalog_number: 9
+  id: the-knife
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+    subreddit:
+
+- catalog_number: 10
+  id: dragon-hoard
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+    subreddit:
+
+- catalog_number: 11
+  id: lost-in-the-music
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+    subreddit:
+
+- catalog_number: 12
+  id: decrepit-shrine
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+    subreddit:
+
+- catalog_number: 13
+  id: kind-of-blue
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+    subreddit:
+
+- catalog_number: 14
+  id: death-arrives
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+    subreddit:
+
+- catalog_number: 15
+  id: fanny-pack
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+    subreddit:
+
+- catalog_number: 16
+  id: modern-knight
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+    subreddit:
+
+- catalog_number: 17
+  id: ravenous-cuzco
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+    subreddit:
+
+- catalog_number: 18
+  id: reposed-ariel
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+    subreddit:
+
+- catalog_number: 19
+  id: scaling
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+    subreddit:
+
+- catalog_number: 20
+  id: sky-goddess-one
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+    subreddit:
+
+- catalog_number: 21
+  id: stories
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+    subreddit:
+
+- catalog_number: 22
+  id: urban-mood
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+    subreddit:
+
+- catalog_number: 23
+  id: bedtime
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+    subreddit:

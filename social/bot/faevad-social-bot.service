@@ -1,0 +1,25 @@
+# systemd user service template. To install:
+#   mkdir -p ~/.config/systemd/user
+#   cp social/bot/faevad-social-bot.service ~/.config/systemd/user/
+#   systemctl --user daemon-reload
+#   systemctl --user enable --now faevad-social-bot
+#   loginctl enable-linger $USER   # so it keeps running after you log out
+#
+# Requires a Python venv with requirements.txt installed at social/bot/.venv
+# first:
+#   cd social/bot && python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
+
+[Unit]
+Description=FAEVAD daily social posting bot
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/flori/Documents/Github/FAEVAD/social/bot
+ExecStart=/home/flori/Documents/Github/FAEVAD/social/bot/.venv/bin/python daily_bot.py
+Restart=on-failure
+RestartSec=30
+
+[Install]
+WantedBy=default.target
