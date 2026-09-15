@@ -1,0 +1,38 @@
+---
+---
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Florian Anthony Ewing | FAEVAD</title>
+    <meta name="description" content="Florian Anthony Ewing is a Seattle-based visual artist and designer. Browse ink drawings and other original artwork, available as prints and framed originals.">
+    <link href="css/styles.css" rel="stylesheet">
+    <script>
+        document.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+        document.addEventListener('dragstart', function (e) { e.preventDefault(); });
+    </script>
+</head>
+<body>
+<div class="wrap">
+    {% include nav.html %}
+
+    <section class="hero">
+        <div class="hero-copy">
+            <div class="eyebrow">Seattle &mdash; Visual Artist</div>
+            <h1 class="display">Florian Anthony<br>Ewing</h1>
+            <p class="role">Ink drawings on watercolor paper &mdash; acrylic pigment, brush and nib, one series at a time.</p>
+            <a class="cta" href="work.html">View the catalogue &rarr;</a>
+        </div>
+        <div class="hero-plate">
+            <div class="plate">
+                <img src="images/artwork/dragon_hoard.png" alt="Colored ink illustration of a pink and green antlered dragon curled on a checkered floor surrounded by books and bottles">
+            </div>
+            <div class="plate-cap">Dragon Hoard &mdash; acrylic pigment on watercolor paper, 2024</div>
+        </div>
+    </section>
+
+    {% include footer.html %}
+</div>
+</body>
+</html>

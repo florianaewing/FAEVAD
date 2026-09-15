@@ -1,0 +1,231 @@
+# Catalogue data, grouped by collection. work.html renders this automatically —
+# to add a new piece, add an entry under the right collection's `pieces` list;
+# to add a whole new collection (e.g. a future ceramics series), add another
+# entry under `collections` with its own `slug`, `title`, `intro`, and `pieces`.
+#
+# Per piece:
+#   id, title, medium, year, image, alt  — same as before.
+#
+#   print:     reproductions. Always buyable at a flat price while
+#     available: true, so there's no "sold" state for prints — they can be
+#     reprinted any number of times.
+#       price        number, no symbol/commas
+#       currency     ISO code (only "USD" is rendered with a $ sign today)
+#       available    true while this print edition is offered
+#       stripe_link  Stripe Payment Link URL. Leave blank until it's created
+#                    in the Stripe Dashboard — the Buy button only renders
+#                    once this is filled in.
+#
+#   original:  the one physical piece. One-time purchase, ships framed, and
+#     is gone once sold — so it DOES get a "sold" label. Price isn't listed;
+#     the page always shows "Available upon request" and links to an email
+#     inquiry, unless stripe_link is set (e.g. once a price is agreed), in
+#     which case that replaces the inquiry link with a direct Buy link.
+#       status       "available" | "sold" | "unavailable"
+#       stripe_link  optional — leave blank to show "Inquire" instead
+
+collections:
+  - slug: inks
+    title: "Inks"
+    intro:
+      description: >
+        A series of drawings rendered with acrylic pigment, motivated by an appreciation for the
+        mundane. In many attempts to capture some tangible slice of the real world through
+        abstract expression, sometimes everything goes just right from start to finish. Each piece
+        below is available as a reproduction print, and as the one-of-a-kind framed original.
+
+    pieces:
+      - id: forbidden-knowledge
+        title: "Forbidden Knowledge"
+        medium: "Acrylic pigment on watercolor paper"
+        year: 2020
+        image: "images/artwork/FrbdnKnxlg.jpg"
+        alt: "Ink illustration of a coiled feathered serpent resting beside a potted plant, wicker baskets, and a bonsai tree"
+        print:
+          price: 15
+          currency: "USD"
+          available: true
+          stripe_link: ""
+        original:
+          status: "available"
+          stripe_link: ""
+
+      - id: cluttered-desk
+        title: "Cluttered Desk"
+        medium: "Acrylic pigment on watercolor paper"
+        year: 2022
+        image: "images/artwork/ClutteredDesk.jpg"
+        alt: "Ink illustration of a stack of books, candles, and a leafy potted plant piled on an open journal"
+        print:
+          price: 15
+          currency: "USD"
+          available: true
+          stripe_link: ""
+        original:
+          status: "available"
+          stripe_link: ""
+
+      - id: second-floor-apartment
+        title: "2nd Floor Apartment"
+        medium: "Acrylic pigment on watercolor paper"
+        year: 2021
+        image: "images/artwork/2ndFloorApt.jpg"
+        alt: "Ink illustration of a figure in a baseball cap and sunglasses standing in a plant-filled apartment room beside a paper lantern lamp"
+        print:
+          price: 15
+          currency: "USD"
+          available: true
+          stripe_link: ""
+        original:
+          status: "available"
+          stripe_link: ""
+
+      - id: the-workshop
+        title: "The Workshop"
+        medium: "Acrylic pigment on watercolor paper"
+        year: 2024
+        image: "images/artwork/WorkShop.png"
+        alt: "Ink illustration of a cluttered artist's workshop with jars of brushes, stacked books, and windows along the walls"
+        print:
+          price: 15
+          currency: "USD"
+          available: true
+          stripe_link: ""
+        original:
+          status: "available"
+          stripe_link: ""
+
+      - id: the-bedroom
+        title: "The Bedroom"
+        medium: "Acrylic pigment on watercolor paper"
+        year: 2023
+        image: "images/artwork/TheBedroom.jpg"
+        alt: "Ink illustration of a bedroom interior with a rumpled bed, wall clock, armchair, and curtained window"
+        print:
+          price: 15
+          currency: "USD"
+          available: true
+          stripe_link: ""
+        original:
+          status: "available"
+          stripe_link: ""
+
+      - id: sky-goddess-two
+        title: "Sky Goddess Two"
+        medium: "Acrylic pigment on watercolor paper"
+        year: 2022
+        image: "images/artwork/SkyGoddessTwo.jpg"
+        alt: "Ink illustration of an arched, keyhole-shaped landscape framing a small cabin, trees, and a rising sun"
+        print:
+          price: 15
+          currency: "USD"
+          available: true
+          stripe_link: ""
+        original:
+          status: "available"
+          stripe_link: ""
+
+      - id: mysterious-strangers
+        title: "Mysterious Strangers"
+        medium: "Acrylic pigment on watercolor paper"
+        year: 2024
+        image: "images/artwork/mysteriousStrangers.png"
+        alt: "Ink illustration of hooded, ghost-like figures walking along a cobblestone path through a dark forest"
+        print:
+          price: 15
+          currency: "USD"
+          available: true
+          stripe_link: ""
+        original:
+          status: "available"
+          stripe_link: ""
+
+      - id: supplies
+        title: "Supplies"
+        medium: "Acrylic pigment on watercolor paper"
+        year: 2022
+        image: "images/artwork/Supplies.jpg"
+        alt: "Ink illustration of bottles, a glass jar, and shelves of stacked books on a wooden table beside a potted plant"
+        print:
+          price: 15
+          currency: "USD"
+          available: true
+          stripe_link: ""
+        original:
+          status: "available"
+          stripe_link: ""
+
+      - id: the-knife
+        title: "The Knife"
+        medium: "Acrylic pigment on watercolor paper"
+        year: 2023
+        image: "images/artwork/myKnife.png"
+        alt: "Colored ink illustration of a large sheathed hunting knife with a patterned handle and mottled blade"
+        print:
+          price: 15
+          currency: "USD"
+          available: true
+          stripe_link: ""
+        original:
+          status: "available"
+          stripe_link: ""
+
+      - id: dragon-hoard
+        title: "Dragon Hoard"
+        medium: "Acrylic pigment on watercolor paper"
+        year: 2024
+        image: "images/artwork/dragon_hoard.png"
+        alt: "Colored ink illustration of a pink and green antlered dragon curled on a checkered floor surrounded by books and bottles"
+        print:
+          price: 15
+          currency: "USD"
+          available: true
+          stripe_link: ""
+        original:
+          status: "available"
+          stripe_link: ""
+
+      - id: lost-in-the-music
+        title: "Lost in the Music"
+        medium: "Acrylic pigment on watercolor paper"
+        year: 2024
+        image: "images/artwork/LostInTheMusic.png"
+        alt: "Colored ink portrait of a person with yellow hair and a blue-toned face, eyes closed, head tilted downward"
+        print:
+          price: 15
+          currency: "USD"
+          available: true
+          stripe_link: ""
+        original:
+          status: "available"
+          stripe_link: ""
+
+      - id: decrepit-shrine
+        title: "Decrepit Shrine"
+        medium: "Acrylic pigment on watercolor paper"
+        year: 2024
+        image: "images/artwork/homolith1.png"
+        alt: "Colored ink illustration of a stone creature resting before a crumbling brick shrine with a small pagoda lantern"
+        print:
+          price: 15
+          currency: "USD"
+          available: true
+          stripe_link: ""
+        original:
+          status: "available"
+          stripe_link: ""
+
+      - id: kind-of-blue
+        title: "Kind of Blue"
+        medium: "Acrylic pigment on watercolor paper"
+        year: 2024
+        image: "images/artwork/KindOfBlue.jpg"
+        alt: "Colored ink illustration of a person writing at a desk in a moonlit room, lit by a lamp and blue-toned curtains"
+        print:
+          price: 15
+          currency: "USD"
+          available: true
+          stripe_link: ""
+        original:
+          status: "available"
+          stripe_link: ""
