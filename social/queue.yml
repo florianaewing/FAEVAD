@@ -1,228 +1,184 @@
-# Daily social posting queue.
-#
-# catalog_number determines posting order — the Telegram bot walks pieces in
-# this order, one per day, starting from 1. Every piece here must already be
-# live on the site (in _data/artwork.yml with working Stripe print links)
-# before it can be queued — the daily post is always of something currently
-# purchasable, never a preview of unpublished work.
-#
-# posted / post_date / platforms are written by the bot itself after
-# posting — instagram/pinterest go via Buffer. Reddit and Facebook
-# Marketplace are NOT part of this automated flow: neither has a usable
-# free/hobbyist posting API as of 2026 (Reddit closed personal-script token
-# approval; Marketplace never had one for individual sellers). Both are
-# parked as a later headless-browser-automation phase, done knowingly with
-# the ToS-violation/ban risk accepted — see the roadmap memory. Nothing
-# here should be hand-edited except to add new entries as new pieces go
-# live on the site.
-#
-# New pieces get appended here (next catalog_number) by the backlog
-# cataloguing sync script once they've been added to _data/artwork.yml and
-# gotten their Stripe links — not before.
-
 - catalog_number: 1
   id: forbidden-knowledge
-  posted: false
-  post_date:
-  caption:
+  posted: true
+  post_date: '2026-09-24'
+  caption: test!
   platforms:
-    instagram:
-    pinterest:
-
+    instagram: 'published: https://www.instagram.com/p/DdsbZ0jHN_k/'
+    pinterest: 'published: https://www.pinterest.com/pin/1131177631464406723'
 - catalog_number: 2
   id: cluttered-desk
   posted: false
-  post_date:
-  caption:
+  post_date: null
+  caption: null
   platforms:
-    instagram:
-    pinterest:
-
+    instagram: null
+    pinterest: null
 - catalog_number: 3
   id: second-floor-apartment
   posted: false
-  post_date:
-  caption:
+  post_date: null
+  caption: null
   platforms:
-    instagram:
-    pinterest:
-
+    instagram: null
+    pinterest: null
 - catalog_number: 4
   id: the-workshop
   posted: false
-  post_date:
-  caption:
+  post_date: null
+  caption: null
   platforms:
-    instagram:
-    pinterest:
-
+    instagram: null
+    pinterest: null
 - catalog_number: 5
   id: the-bedroom
   posted: false
-  post_date:
-  caption:
+  post_date: null
+  caption: null
   platforms:
-    instagram:
-    pinterest:
-
+    instagram: null
+    pinterest: null
 - catalog_number: 6
   id: sky-goddess-two
   posted: false
-  post_date:
-  caption:
+  post_date: null
+  caption: null
   platforms:
-    instagram:
-    pinterest:
-
+    instagram: null
+    pinterest: null
 - catalog_number: 7
   id: mysterious-strangers
   posted: false
-  post_date:
-  caption:
+  post_date: null
+  caption: null
   platforms:
-    instagram:
-    pinterest:
-
+    instagram: null
+    pinterest: null
 - catalog_number: 8
   id: supplies
   posted: false
-  post_date:
-  caption:
+  post_date: null
+  caption: null
   platforms:
-    instagram:
-    pinterest:
-
+    instagram: null
+    pinterest: null
 - catalog_number: 9
   id: the-knife
   posted: false
-  post_date:
-  caption:
+  post_date: null
+  caption: null
   platforms:
-    instagram:
-    pinterest:
-
+    instagram: null
+    pinterest: null
 - catalog_number: 10
   id: dragon-hoard
   posted: false
-  post_date:
-  caption:
+  post_date: null
+  caption: null
   platforms:
-    instagram:
-    pinterest:
-
+    instagram: null
+    pinterest: null
 - catalog_number: 11
   id: lost-in-the-music
   posted: false
-  post_date:
-  caption:
+  post_date: null
+  caption: null
   platforms:
-    instagram:
-    pinterest:
-
+    instagram: null
+    pinterest: null
 - catalog_number: 12
   id: decrepit-shrine
   posted: false
-  post_date:
-  caption:
+  post_date: null
+  caption: null
   platforms:
-    instagram:
-    pinterest:
-
+    instagram: null
+    pinterest: null
 - catalog_number: 13
   id: kind-of-blue
   posted: false
-  post_date:
-  caption:
+  post_date: null
+  caption: null
   platforms:
-    instagram:
-    pinterest:
-
+    instagram: null
+    pinterest: null
 - catalog_number: 14
   id: death-arrives
   posted: false
-  post_date:
-  caption:
+  post_date: null
+  caption: null
   platforms:
-    instagram:
-    pinterest:
-
+    instagram: null
+    pinterest: null
 - catalog_number: 15
   id: fanny-pack
   posted: false
-  post_date:
-  caption:
+  post_date: null
+  caption: null
   platforms:
-    instagram:
-    pinterest:
-
+    instagram: null
+    pinterest: null
 - catalog_number: 16
   id: modern-knight
   posted: false
-  post_date:
-  caption:
+  post_date: null
+  caption: null
   platforms:
-    instagram:
-    pinterest:
-
+    instagram: null
+    pinterest: null
 - catalog_number: 17
   id: ravenous-cuzco
   posted: false
-  post_date:
-  caption:
+  post_date: null
+  caption: null
   platforms:
-    instagram:
-    pinterest:
-
+    instagram: null
+    pinterest: null
 - catalog_number: 18
   id: reposed-ariel
   posted: false
-  post_date:
-  caption:
+  post_date: null
+  caption: null
   platforms:
-    instagram:
-    pinterest:
-
+    instagram: null
+    pinterest: null
 - catalog_number: 19
   id: scaling
   posted: false
-  post_date:
-  caption:
+  post_date: null
+  caption: null
   platforms:
-    instagram:
-    pinterest:
-
+    instagram: null
+    pinterest: null
 - catalog_number: 20
   id: sky-goddess-one
   posted: false
-  post_date:
-  caption:
+  post_date: null
+  caption: null
   platforms:
-    instagram:
-    pinterest:
-
+    instagram: null
+    pinterest: null
 - catalog_number: 21
   id: stories
   posted: false
-  post_date:
-  caption:
+  post_date: null
+  caption: null
   platforms:
-    instagram:
-    pinterest:
-
+    instagram: null
+    pinterest: null
 - catalog_number: 22
   id: urban-mood
   posted: false
-  post_date:
-  caption:
+  post_date: null
+  caption: null
   platforms:
-    instagram:
-    pinterest:
-
+    instagram: null
+    pinterest: null
 - catalog_number: 23
   id: bedtime
   posted: false
-  post_date:
-  caption:
+  post_date: null
+  caption: null
   platforms:
-    instagram:
-    pinterest:
+    instagram: null
+    pinterest: null
