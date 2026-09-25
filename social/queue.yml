@@ -22,12 +22,12 @@
 
 - catalog_number: 1
   id: forbidden-knowledge
-  posted: true
-  post_date: '2026-09-24'
-  caption: test!
+  posted: false
+  post_date:
+  caption:
   platforms:
-    instagram: 'published: https://www.instagram.com/p/DdsbZ0jHN_k/'
-    pinterest: 'published: https://www.pinterest.com/pin/1131177631464406723'
+    instagram:
+    pinterest:
 
 - catalog_number: 2
   id: cluttered-desk
