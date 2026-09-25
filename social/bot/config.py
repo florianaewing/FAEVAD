@@ -21,6 +21,7 @@ class Config:
     buffer_api_key: str
     buffer_instagram_channel_id: str
     buffer_pinterest_channel_id: str
+    buffer_pinterest_board_id: str
 
 
 def load_config() -> Config:
@@ -44,4 +45,5 @@ def load_config() -> Config:
         buffer_api_key=require("BUFFER_API_KEY"),
         buffer_instagram_channel_id=require("BUFFER_INSTAGRAM_CHANNEL_ID"),
         buffer_pinterest_channel_id=require("BUFFER_PINTEREST_CHANNEL_ID"),
+        buffer_pinterest_board_id=require("BUFFER_PINTEREST_BOARD_ID"),
     )

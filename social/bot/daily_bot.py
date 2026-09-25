@@ -135,15 +135,17 @@ async def handle_caption_reply(update: Update, context: ContextTypes.DEFAULT_TYP
 
     await update.message.reply_text("Posting now...")
 
-    results = {}
-    try:
-        results["instagram"], results["pinterest"] = platforms.post_to_buffer(
-            cfg, image_url=image_url, caption=caption
-        )
-    except Exception as exc:
-        log.exception("Buffer post failed")
-        results["instagram"] = f"error: {exc}"
-        results["pinterest"] = f"error: {exc}"
+    results = platforms.post_to_buffer(
+        cfg,
+        image_url=image_url,
+        caption=caption,
+        title=piece["title"],
+        alt_text=piece["alt"],
+        piece_url=f"{SITE_BASE_URL}/piece-{entry['id']}.html",
+    )
+    for platform, result in results.items():
+        if result.startswith("error"):
+            log.error("%s post failed: %s", platform, result)
 
     entry["posted"] = True
     entry["post_date"] = dt.date.today().isoformat()
