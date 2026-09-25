@@ -19,6 +19,7 @@ credential is for.
 
 import datetime as dt
 import logging
+import os
 import subprocess
 from pathlib import Path
 
@@ -34,6 +35,12 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 QUEUE_PATH = REPO_ROOT / "social" / "queue.yml"
 ARTWORK_PATH = REPO_ROOT / "_data" / "artwork.yml"
 SITE_BASE_URL = "https://florianaewing.github.io/FAEVAD"
+
+# The bot pushes over SSH with its own deploy key (write access to this repo
+# only, added under the repo's Settings -> Deploy keys), so it doesn't depend
+# on whatever credentials the artist uses for their own pushes.
+PUSH_URL = "git@github.com:florianaewing/FAEVAD.git"
+DEPLOY_KEY_PATH = Path.home() / ".ssh" / "faevad_bot_deploy"
 
 DAILY_SEND_HOUR = 9
 DAILY_SEND_MINUTE = 0
@@ -86,7 +93,15 @@ def git_commit_and_push(entry: dict, piece_title: str) -> None:
     )
     subprocess.run(["git", "add", "social/queue.yml"], cwd=REPO_ROOT, check=True)
     subprocess.run(["git", "commit", "-m", message], cwd=REPO_ROOT, check=True)
-    subprocess.run(["git", "push"], cwd=REPO_ROOT, check=True)
+    subprocess.run(
+        ["git", "push", PUSH_URL, "HEAD:main"],
+        cwd=REPO_ROOT,
+        check=True,
+        env={
+            **os.environ,
+            "GIT_SSH_COMMAND": f"ssh -i {DEPLOY_KEY_PATH} -o IdentitiesOnly=yes",
+        },
+    )
 
 
 async def send_daily_prompt(context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -152,7 +167,11 @@ async def handle_caption_reply(update: Update, context: ContextTypes.DEFAULT_TYP
     entry["caption"] = caption
     entry["platforms"] = results
     save_queue(queue)
-    git_commit_and_push(entry, piece["title"])
+    try:
+        git_commit_and_push(entry, piece["title"])
+    except subprocess.CalledProcessError:
+        log.exception("git commit/push of social/queue.yml failed")
+        results["git"] = "error: queue.yml saved locally but not pushed -- check the bot's log"
 
     _awaiting_caption_for["catalog_number"] = None
 
