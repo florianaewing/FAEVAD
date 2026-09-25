@@ -75,9 +75,29 @@ def load_queue() -> list[dict]:
         return yaml.safe_load(f)
 
 
+class _QueueDumper(yaml.SafeDumper):
+    """Writes empty fields as blank (`caption:`) rather than `null`, matching the file."""
+
+
+_QueueDumper.add_representer(
+    type(None), lambda dumper, _: dumper.represent_scalar("tag:yaml.org,2002:null", "")
+)
+
+
 def save_queue(queue: list[dict]) -> None:
-    with open(QUEUE_PATH, "w") as f:
-        yaml.dump(queue, f, sort_keys=False, allow_unicode=True, default_flow_style=False)
+    # yaml.dump drops comments, so carry the file's leading comment block
+    # over by hand, and keep a blank line between entries for readability.
+    header = []
+    for line in QUEUE_PATH.read_text().splitlines(keepends=True):
+        if line.startswith("#") or not line.strip():
+            header.append(line)
+        else:
+            break
+    body = yaml.dump(
+        queue, Dumper=_QueueDumper, sort_keys=False, allow_unicode=True, default_flow_style=False
+    )
+    body = body.replace("\n- catalog_number:", "\n\n- catalog_number:")
+    QUEUE_PATH.write_text("".join(header) + body)
 
 
 def load_pending_catalog_number() -> int | None:
