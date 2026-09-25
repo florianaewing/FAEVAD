@@ -22,6 +22,7 @@ import logging
 import os
 import subprocess
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 import yaml
 from dotenv import load_dotenv
@@ -44,9 +45,14 @@ DEPLOY_KEY_PATH = Path.home() / ".ssh" / "faevad_bot_deploy"
 
 DAILY_SEND_HOUR = 9
 DAILY_SEND_MINUTE = 0
+# Without an explicit tzinfo, the job queue treats the send time as UTC.
+DAILY_SEND_TZ = ZoneInfo("America/Los_Angeles")
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 log = logging.getLogger("faevad-social-bot")
+# httpx logs every request URL at INFO, and Telegram API URLs contain the
+# bot token -- keep those (and the constant long-polling noise) out of the log.
+logging.getLogger("httpx").setLevel(logging.WARNING)
 
 cfg = load_config()
 
@@ -186,7 +192,7 @@ def main() -> None:
     )
     application.job_queue.run_daily(
         send_daily_prompt,
-        time=dt.time(hour=DAILY_SEND_HOUR, minute=DAILY_SEND_MINUTE),
+        time=dt.time(hour=DAILY_SEND_HOUR, minute=DAILY_SEND_MINUTE, tzinfo=DAILY_SEND_TZ),
     )
     log.info("faevad-social-bot starting, daily prompt at %02d:%02d", DAILY_SEND_HOUR, DAILY_SEND_MINUTE)
     application.run_polling()
