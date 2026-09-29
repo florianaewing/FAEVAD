@@ -7,10 +7,14 @@ with posted: false), and messages the artist on Telegram asking for that
 day's caption. Whatever the artist replies with is used verbatim as the
 caption -- this bot never drafts or edits post text.
 
-Once a caption reply arrives, it posts to Instagram + Pinterest (via
-Buffer), records the result in social/queue.yml, and commits + pushes that
-change to the repo. Reddit and Facebook Marketplace are intentionally not
-part of this automated flow -- see platforms.py's module docstring.
+Once a caption reply arrives, it posts to Instagram, Pinterest and X (via
+Buffer) and to Bluesky, Mastodon, Threads and the Facebook Page (directly)
+-- each optional platform only once its credentials are configured. Every
+platform except Instagram and Pinterest gets a link to the piece's page
+added under the caption. It records the results in social/queue.yml,
+commits + pushes that change to the repo, and sends a separate Telegram bug
+report for each platform that failed. Reddit and Facebook Marketplace are
+intentionally not part of this automated flow -- see platforms.py.
 
 Setup: copy .env.example to ~/.config/faevad-social-bot/.env and fill in
 real credentials (never commit that file). See platforms.py for what each
@@ -23,6 +27,7 @@ import json
 import logging
 import os
 import subprocess
+import traceback
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
@@ -68,6 +73,70 @@ STATE_PATH = Path.home() / ".local" / "state" / "faevad-social-bot" / "state.jso
 # After handing posts to Buffer, poll until each is published or failed.
 STATUS_POLL_INTERVAL_SECONDS = 15
 STATUS_POLL_TIMEOUT_SECONDS = 5 * 60
+
+# Threads tokens expire after 60 days unless refreshed; the current one is
+# kept next to the state file, and refreshed whenever it's a week old.
+THREADS_TOKEN_PATH = STATE_PATH.parent / "threads_token.json"
+THREADS_TOKEN_REFRESH_AFTER = dt.timedelta(days=7)
+
+# queue.yml keeps a short version of each failure; the full text goes in
+# the bug report. Telegram rejects messages over 4096 characters.
+QUEUE_RESULT_MAX_CHARS = 300
+TELEGRAM_MAX_CHARS = 4000
+
+
+def redact(text: str) -> str:
+    """Strips every configured secret out of text bound for Telegram or the log.
+
+    Error messages can quote request URLs, and some APIs (Threads, Facebook)
+    take the access token as a URL parameter.
+    """
+    secrets = [
+        cfg.telegram_bot_token,
+        cfg.buffer_api_key,
+        cfg.bluesky_app_password,
+        cfg.mastodon_access_token,
+        cfg.threads_access_token,
+        cfg.facebook_page_access_token,
+    ]
+    try:
+        secrets.append(json.loads(THREADS_TOKEN_PATH.read_text())["token"])
+    except (FileNotFoundError, KeyError, ValueError):
+        pass
+    for secret in secrets:
+        if secret:
+            text = text.replace(secret, "[redacted]")
+    return text
+
+
+def current_threads_token() -> str:
+    """Returns a usable Threads token, refreshing it if it's a week old.
+
+    If the artist puts a new token in the .env (e.g. after the old one
+    lapsed), that one takes over from whatever was refreshed before.
+    """
+    try:
+        saved = json.loads(THREADS_TOKEN_PATH.read_text())
+    except FileNotFoundError:
+        saved = None
+    if saved is None or saved["seed"] != cfg.threads_access_token:
+        saved = {"seed": cfg.threads_access_token, "token": cfg.threads_access_token, "refreshed_at": None}
+
+    refreshed_at = saved["refreshed_at"] and dt.datetime.fromisoformat(saved["refreshed_at"])
+    if not refreshed_at or dt.datetime.now(dt.timezone.utc) - refreshed_at > THREADS_TOKEN_REFRESH_AFTER:
+        try:
+            saved["token"] = platforms.refresh_threads_token(saved["token"])
+            saved["refreshed_at"] = dt.datetime.now(dt.timezone.utc).isoformat()
+        except Exception as exc:
+            # Posting with the current token may still work; if it doesn't,
+            # the Threads bug report will say so.
+            log.error("Threads token refresh failed: %s", redact(str(exc)))
+        THREADS_TOKEN_PATH.parent.mkdir(parents=True, exist_ok=True)
+        tmp_path = THREADS_TOKEN_PATH.with_suffix(".tmp")
+        tmp_path.write_text(json.dumps(saved))
+        tmp_path.chmod(0o600)
+        tmp_path.replace(THREADS_TOKEN_PATH)
+    return saved["token"]
 
 
 def load_queue() -> list[dict]:
@@ -135,10 +204,7 @@ def next_unposted_entry(queue: list[dict]) -> dict | None:
 
 
 def git_commit_and_push(entry: dict, piece_title: str) -> None:
-    message = (
-        f"Post catalog #{entry['catalog_number']} ({piece_title}) "
-        f"to Instagram/Pinterest"
-    )
+    message = f"Post catalog #{entry['catalog_number']} ({piece_title}) to social media"
     subprocess.run(["git", "add", "social/queue.yml"], cwd=REPO_ROOT, check=True)
     subprocess.run(["git", "commit", "-m", message], cwd=REPO_ROOT, check=True)
     subprocess.run(
@@ -218,6 +284,66 @@ async def wait_for_buffer_results(created: dict[str, dict]) -> dict[str, str]:
     return {p: results[p] for p in created}
 
 
+async def post_to_buffer_and_wait(**post_args) -> dict[str, str]:
+    created = await asyncio.to_thread(platforms.post_to_buffer, cfg, **post_args)
+    return await wait_for_buffer_results(created)
+
+
+async def post_directly(platform: str, post, *args) -> tuple[str, str]:
+    """Runs one direct platform post; returns (platform, result string)."""
+    try:
+        link = await asyncio.to_thread(post, *args)
+    except Exception as exc:
+        log.error("%s post failed:\n%s", platform, redact("".join(traceback.format_exception(exc))))
+        return platform, f"error: {redact(str(exc))}"
+    return platform, f"published: {link}"
+
+
+def direct_posts(caption: str, image_path: Path, image_url: str, alt_text: str, piece_url: str) -> list:
+    """The direct-platform posts to run today, for whichever are configured."""
+    posts = []
+    if cfg.bluesky_enabled:
+        posts.append(post_directly(
+            "bluesky", platforms.post_to_bluesky,
+            cfg.bluesky_handle, cfg.bluesky_app_password, caption, image_path, alt_text, piece_url,
+        ))
+    if cfg.mastodon_enabled:
+        posts.append(post_directly(
+            "mastodon", platforms.post_to_mastodon,
+            cfg.mastodon_instance_url, cfg.mastodon_access_token, caption, image_path, alt_text,
+        ))
+    if cfg.threads_enabled:
+        # The token refresh is a network call too, so it runs in the same
+        # worker thread as the post rather than blocking the bot.
+        posts.append(post_directly(
+            "threads",
+            lambda: platforms.post_to_threads(
+                cfg.threads_user_id, current_threads_token(), caption, image_url, alt_text
+            ),
+        ))
+    if cfg.facebook_enabled:
+        posts.append(post_directly(
+            "facebook", platforms.post_to_facebook,
+            cfg.facebook_page_id, cfg.facebook_page_access_token, caption, image_url, alt_text,
+        ))
+    return posts
+
+
+def format_bug_report(platform: str, entry: dict, piece: dict, image_url: str, caption: str, error: str) -> str:
+    now = dt.datetime.now(DAILY_SEND_TZ).strftime("%Y-%m-%d %H:%M %Z")
+    route = "Buffer" if platform in platforms.BUFFER_PLATFORMS else "direct API"
+    report = "\n".join([
+        f"🐞 Bug report: {platform} ({route})",
+        f"Piece: #{entry['catalog_number']} {piece['title']} ({entry['id']})",
+        f"Time: {now}",
+        f"Image: {image_url}",
+        f"Caption: {len(caption)} characters",
+        "",
+        error,
+    ])
+    return report[:TELEGRAM_MAX_CHARS]
+
+
 def format_report(piece_title: str, results: dict[str, str]) -> str:
     icons = {"published": "✅", "error": "❌", "pending": "⏳"}
     lines = [
@@ -247,19 +373,24 @@ async def handle_caption_reply(update: Update, context: ContextTypes.DEFAULT_TYP
     artwork = load_artwork()
     piece = find_piece(artwork, entry["id"])
     image_url = f"{SITE_BASE_URL}/{piece['image']}"
+    image_path = REPO_ROOT / piece["image"]
+    piece_url = f"{SITE_BASE_URL}/piece-{entry['id']}.html"
+    linked_caption = f"{caption}\n\n{piece_url}"
 
-    await update.message.reply_text("Posting now... I'll report back once Buffer has published it.")
+    await update.message.reply_text("Posting now... I'll report back once every platform has answered.")
 
-    created = await asyncio.to_thread(
-        platforms.post_to_buffer,
-        cfg,
-        image_url=image_url,
-        caption=caption,
-        title=piece["title"],
-        alt_text=piece["alt"],
-        piece_url=f"{SITE_BASE_URL}/piece-{entry['id']}.html",
+    buffer_results, *direct_results = await asyncio.gather(
+        post_to_buffer_and_wait(
+            image_url=image_url,
+            caption=caption,
+            linked_caption=linked_caption,
+            title=piece["title"],
+            alt_text=piece["alt"],
+            piece_url=piece_url,
+        ),
+        *direct_posts(linked_caption, image_path, image_url, piece["alt"], piece_url),
     )
-    results = await wait_for_buffer_results(created)
+    results = {p: redact(r) for p, r in {**buffer_results, **dict(direct_results)}.items()}
     for platform, result in results.items():
         if not result.startswith("published"):
             log.error("%s post for catalog #%s: %s", platform, pending_number, result)
@@ -267,9 +398,9 @@ async def handle_caption_reply(update: Update, context: ContextTypes.DEFAULT_TYP
     entry["posted"] = True
     entry["post_date"] = dt.date.today().isoformat()
     entry["caption"] = caption
-    entry["platforms"] = results
+    entry["platforms"] = {p: r[:QUEUE_RESULT_MAX_CHARS] for p, r in results.items()}
     save_queue(queue)
-    report = format_report(piece["title"], results)
+    report = format_report(piece["title"], {p: r[:QUEUE_RESULT_MAX_CHARS] for p, r in results.items()})
     try:
         git_commit_and_push(entry, piece["title"])
     except subprocess.CalledProcessError:
@@ -277,6 +408,25 @@ async def handle_caption_reply(update: Update, context: ContextTypes.DEFAULT_TYP
         report += "\n❌ git: queue.yml saved locally but not pushed -- check the bot's log"
 
     await update.message.reply_text(report)
+    for platform, result in results.items():
+        if result.startswith("error"):
+            await update.message.reply_text(
+                format_bug_report(platform, entry, piece, image_url, caption, result.split(": ", 1)[1])
+            )
+
+
+async def report_crash(update: object, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """Sends a bug report for anything that crashes the bot mid-task."""
+    trace = redact("".join(traceback.format_exception(context.error)))
+    log.error("unhandled error:\n%s", trace)
+    text = f"🐞 Bug report: the bot crashed\n\n{trace}"
+    # Keep the end of the traceback -- that's where the actual error is.
+    if len(text) > TELEGRAM_MAX_CHARS:
+        text = "🐞 Bug report: the bot crashed\n\n..." + text[-(TELEGRAM_MAX_CHARS - 40):]
+    try:
+        await context.bot.send_message(chat_id=cfg.telegram_chat_id, text=text)
+    except Exception:
+        log.exception("couldn't send the crash report to Telegram")
 
 
 def main() -> None:
@@ -284,6 +434,7 @@ def main() -> None:
     application.add_handler(
         MessageHandler(filters.TEXT & ~filters.COMMAND, handle_caption_reply)
     )
+    application.add_error_handler(report_crash)
     application.job_queue.run_daily(
         send_daily_prompt,
         time=dt.time(hour=DAILY_SEND_HOUR, minute=DAILY_SEND_MINUTE, tzinfo=DAILY_SEND_TZ),

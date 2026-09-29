@@ -7,7 +7,9 @@
 # purchasable, never a preview of unpublished work.
 #
 # posted / post_date / platforms are written by the bot itself after
-# posting — instagram/pinterest go via Buffer. Reddit and Facebook
+# posting — instagram/pinterest/x go via Buffer; bluesky/mastodon/threads/
+# facebook are posted to directly. A platform only shows up under
+# `platforms` once it's configured in the bot's .env. Reddit and Facebook
 # Marketplace are NOT part of this automated flow: neither has a usable
 # free/hobbyist posting API as of 2026 (Reddit closed personal-script token
 # approval; Marketplace never had one for individual sellers). Both are
