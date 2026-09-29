@@ -1,7 +1,9 @@
 # Daily social posting queue.
 #
 # catalog_number determines posting order — the Telegram bot walks pieces in
-# this order, one per day, starting from 1. Every piece here must already be
+# this order, one per day, starting from 1. Watercolors only go out on
+# Wednesdays and inks on every other day; when one runs out, its days fall
+# back to the other (see WEDNESDAY_COLLECTION in bot/daily_bot.py). Every piece here must already be
 # live on the site (in _data/artwork.yml with working Stripe print links)
 # before it can be queued — the daily post is always of something currently
 # purchasable, never a preview of unpublished work.
@@ -222,6 +224,339 @@
 
 - catalog_number: 23
   id: bedtime
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+
+- catalog_number: 24
+  id: abstract
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+
+- catalog_number: 25
+  id: angler-fish
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+
+- catalog_number: 26
+  id: aquatic-impression
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+
+- catalog_number: 27
+  id: autumn-forest
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+
+- catalog_number: 28
+  id: bird-of-paradise
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+
+- catalog_number: 29
+  id: bonsai-factory
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+
+- catalog_number: 30
+  id: candy-shoppe
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+
+- catalog_number: 31
+  id: castle-archway
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+
+- catalog_number: 32
+  id: cathedral-vault
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+
+- catalog_number: 33
+  id: crossover-1
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+
+- catalog_number: 34
+  id: crossover-2
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+
+- catalog_number: 35
+  id: crossover-3
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+
+- catalog_number: 36
+  id: crossover-4
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+
+- catalog_number: 37
+  id: crossover-5
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+
+- catalog_number: 38
+  id: desert-tower
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+
+- catalog_number: 39
+  id: heart-shaped-leaves
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+
+- catalog_number: 40
+  id: homestead
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+
+- catalog_number: 41
+  id: orbital-rendezvous
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+
+- catalog_number: 42
+  id: pink-space
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+
+- catalog_number: 43
+  id: sometime-during-the-water-wars
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+
+- catalog_number: 44
+  id: summer-shade
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+
+- catalog_number: 45
+  id: sunset-paddle
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+
+- catalog_number: 46
+  id: swear-your-fealty
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+
+- catalog_number: 47
+  id: temple-complex
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+
+- catalog_number: 48
+  id: temple-valley-pathway
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+
+- catalog_number: 49
+  id: the-roiling-ocean
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+
+- catalog_number: 50
+  id: the-wanderer
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+
+- catalog_number: 51
+  id: the-world-as-an-ant
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+
+- catalog_number: 52
+  id: tower-bound-pilgrimage
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+
+- catalog_number: 53
+  id: tower-gods-acolyte
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+
+- catalog_number: 54
+  id: towers
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+
+- catalog_number: 55
+  id: trailside-cabin
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+
+- catalog_number: 56
+  id: tri-colour
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+
+- catalog_number: 57
+  id: under-the-plant-lights
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+
+- catalog_number: 58
+  id: verdant-impression
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+
+- catalog_number: 59
+  id: vernal-congregation
+  posted: false
+  post_date:
+  caption:
+  platforms:
+    instagram:
+    pinterest:
+
+- catalog_number: 60
+  id: wild-impression
   posted: false
   post_date:
   caption:

@@ -196,11 +196,29 @@ def find_piece(artwork: dict, piece_id: str) -> dict | None:
     return None
 
 
-def next_unposted_entry(queue: list[dict]) -> dict | None:
-    unposted = [e for e in queue if not e.get("posted")]
-    if not unposted:
-        return None
-    return min(unposted, key=lambda e: e["catalog_number"])
+# Watercolors get Wednesdays; every other day posts from the other
+# collections (inks). When a day's own pool runs dry it falls back to the
+# other one, so the queue only reports empty once everything is posted.
+WEDNESDAY_COLLECTION = "watercolors"
+
+
+def collection_of(artwork: dict, piece_id: str) -> str | None:
+    for collection in artwork["collections"]:
+        if any(piece["id"] == piece_id for piece in collection["pieces"]):
+            return collection["slug"]
+    return None
+
+
+def next_unposted_entry(queue: list[dict], artwork: dict, day: dt.date) -> dict | None:
+    unposted = sorted(
+        (e for e in queue if not e.get("posted")), key=lambda e: e["catalog_number"]
+    )
+    is_wednesday = day.weekday() == 2
+    todays = [
+        e for e in unposted
+        if (collection_of(artwork, e["id"]) == WEDNESDAY_COLLECTION) == is_wednesday
+    ]
+    return (todays or unposted or [None])[0]
 
 
 def git_commit_and_push(entry: dict, piece_title: str) -> None:
@@ -220,7 +238,8 @@ def git_commit_and_push(entry: dict, piece_title: str) -> None:
 
 async def send_daily_prompt(context: ContextTypes.DEFAULT_TYPE) -> None:
     queue = load_queue()
-    entry = next_unposted_entry(queue)
+    artwork = load_artwork()
+    entry = next_unposted_entry(queue, artwork, dt.datetime.now(DAILY_SEND_TZ).date())
     if entry is None:
         await context.bot.send_message(
             chat_id=cfg.telegram_chat_id,
@@ -229,7 +248,6 @@ async def send_daily_prompt(context: ContextTypes.DEFAULT_TYPE) -> None:
         )
         return
 
-    artwork = load_artwork()
     piece = find_piece(artwork, entry["id"])
     if piece is None:
         log.error("queue entry %s has no matching artwork.yml piece", entry["id"])
@@ -242,6 +260,12 @@ async def send_daily_prompt(context: ContextTypes.DEFAULT_TYPE) -> None:
             f"Day's piece (#{entry['catalog_number']}): {piece['title']}\n"
             f"{piece_url}\n\n"
             f"Reply with today's caption to post it."
+            + (
+                ""
+                if piece.get("alt")
+                else "\n\n⚠️ This piece has no alt text yet -- add it to "
+                "_data/artwork.yml before replying, or the post goes out without it."
+            )
         ),
     )
     save_pending_catalog_number(entry["catalog_number"])
