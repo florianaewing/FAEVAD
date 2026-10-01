@@ -40,7 +40,7 @@
                 inside a matching {{ tier.size }} cellophane envelope.
             </p>
             {% if tier.stripe_link and tier.stripe_link != "" %}
-            <a class="buy-cta" href="{{ tier.stripe_link }}" target="_blank" rel="noopener noreferrer">Buy the {{ tier.size }}</a>
+            <a class="buy-cta" href="{{ tier.stripe_link }}" target="_blank" rel="noopener noreferrer" data-goatcounter-click="stripe-{{ piece.id }}-{{ tier.size }}" data-goatcounter-title="{{ piece.title }} ({{ tier.size }})">Buy the {{ tier.size }}</a>
             {% else %}
             <span class="unavailable-tag">Coming soon</span>
             {% endif %}
@@ -79,5 +79,6 @@
 
     {% include footer.html %}
 </div>
+{% include analytics.html %}
 </body>
 </html>

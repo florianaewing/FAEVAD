@@ -7,13 +7,17 @@ with posted: false), and messages the artist on Telegram asking for that
 day's caption. Whatever the artist replies with is used verbatim as the
 caption -- this bot never drafts or edits post text.
 
-Once a caption reply arrives, it posts to Instagram, Pinterest and X (via
-Buffer) and to Bluesky, Mastodon, Threads and the Facebook Page (directly)
--- each optional platform only once its credentials are configured. Every
-platform except Instagram and Pinterest gets a link to the piece's page
-added under the caption. It records the results in social/queue.yml,
-commits + pushes that change to the repo, and sends a separate Telegram bug
-report for each platform that failed. Reddit and Facebook Marketplace are
+Once a caption reply arrives, each platform posts at its own best time of
+day, per social/strategy.yml: Instagram, Pinterest and X via Buffer, and
+Bluesky, Mastodon, Threads and the Facebook Page directly -- each optional
+platform only once its credentials are configured. strategy.py adds the
+piece link and hashtags under the caption per platform. A failed platform
+sends a Telegram bug report right away; once all have posted, the results
+go into social/queue.yml, get committed + pushed, and a summary is sent.
+
+After posting, the bot forwards new comments from the direct platforms for
+a few hours, collects each post's stats two days later, and sends a weekly
+stats summary on Sundays (tracking.py). Reddit and Facebook Marketplace are
 intentionally not part of this automated flow -- see platforms.py.
 
 Setup: copy .env.example to ~/.config/faevad-social-bot/.env and fill in
@@ -37,6 +41,8 @@ from telegram import Update
 from telegram.ext import Application, ContextTypes, MessageHandler, filters
 
 import platforms
+import strategy
+import tracking
 from config import load_config
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -50,7 +56,9 @@ SITE_BASE_URL = "https://florianaewing.github.io/FAEVAD"
 PUSH_URL = "git@github.com:florianaewing/FAEVAD.git"
 DEPLOY_KEY_PATH = Path.home() / ".ssh" / "faevad_bot_deploy"
 
-DAILY_SEND_HOUR = 9
+# Early enough that a reply usually comes in before the first posting slot
+# (9am, see social/strategy.yml).
+DAILY_SEND_HOUR = 8
 DAILY_SEND_MINUTE = 0
 # Without an explicit tzinfo, the job queue treats the send time as UTC.
 DAILY_SEND_TZ = ZoneInfo("America/Los_Angeles")
@@ -169,18 +177,28 @@ def save_queue(queue: list[dict]) -> None:
     QUEUE_PATH.write_text("".join(header) + body)
 
 
-def load_pending_catalog_number() -> int | None:
+def load_state() -> dict:
     try:
-        return json.loads(STATE_PATH.read_text()).get("awaiting_catalog_number")
+        return json.loads(STATE_PATH.read_text())
     except FileNotFoundError:
-        return None
+        return {}
+
+
+def save_state(state: dict) -> None:
+    STATE_PATH.parent.mkdir(parents=True, exist_ok=True)
+    tmp_path = STATE_PATH.with_suffix(".tmp")
+    tmp_path.write_text(json.dumps(state, indent=1))
+    tmp_path.replace(STATE_PATH)
+
+
+def load_pending_catalog_number() -> int | None:
+    return load_state().get("awaiting_catalog_number")
 
 
 def save_pending_catalog_number(catalog_number: int | None) -> None:
-    STATE_PATH.parent.mkdir(parents=True, exist_ok=True)
-    tmp_path = STATE_PATH.with_suffix(".tmp")
-    tmp_path.write_text(json.dumps({"awaiting_catalog_number": catalog_number}))
-    tmp_path.replace(STATE_PATH)
+    state = load_state()
+    state["awaiting_catalog_number"] = catalog_number
+    save_state(state)
 
 
 def load_artwork() -> dict:
@@ -272,95 +290,102 @@ async def send_daily_prompt(context: ContextTypes.DEFAULT_TYPE) -> None:
     log.info("sent daily prompt for catalog #%s (%s)", entry["catalog_number"], entry["id"])
 
 
-async def wait_for_buffer_results(created: dict[str, dict]) -> dict[str, str]:
-    """Polls Buffer until each accepted post is published or failed.
+DIRECT_PLATFORMS = ("bluesky", "mastodon", "threads", "facebook")
 
-    Returns one result string per platform: "published: <link>",
-    "error: <reason>", or "pending: ..." if Buffer still hadn't finished
-    by the timeout.
+# Serializes read-modify-write of the day's schedule in state.json, since
+# several platforms can share a posting slot and finish at the same time.
+schedule_lock = asyncio.Lock()
+
+
+def enabled_platforms() -> list[str]:
+    enabled = ["instagram", "pinterest"]
+    for platform in ("x", *DIRECT_PLATFORMS):
+        if getattr(cfg, f"{platform}_enabled"):
+            enabled.append(platform)
+    return enabled
+
+
+async def wait_for_buffer_post(post_id: str) -> str:
+    """Polls Buffer until a post is published or failed.
+
+    Returns "published: <link>", "error: <reason>", or "pending: ..." if
+    Buffer still hadn't finished by the timeout.
     """
-    results = {p: f"error: {r['error']}" for p, r in created.items() if "error" in r}
-    waiting = {p: r["post_id"] for p, r in created.items() if "post_id" in r}
     deadline = asyncio.get_running_loop().time() + STATUS_POLL_TIMEOUT_SECONDS
-    while waiting:
+    while asyncio.get_running_loop().time() < deadline:
         await asyncio.sleep(STATUS_POLL_INTERVAL_SECONDS)
-        for platform, post_id in list(waiting.items()):
-            try:
-                status = await asyncio.to_thread(
-                    platforms.get_buffer_post_status, cfg.buffer_api_key, post_id
-                )
-            except Exception:
-                log.exception("checking %s post %s failed; will retry", platform, post_id)
-                continue
-            if status["status"] == "sent":
-                results[platform] = f"published: {status['link'] or '(no link from Buffer)'}"
-                del waiting[platform]
-            elif status["status"] == "error":
-                results[platform] = f"error: {status['error'] or 'Buffer reported an error'}"
-                del waiting[platform]
-        if asyncio.get_running_loop().time() >= deadline:
-            for platform, post_id in waiting.items():
-                results[platform] = (
-                    f"pending: Buffer hadn't published it after "
-                    f"{STATUS_POLL_TIMEOUT_SECONDS // 60} min -- check Buffer (post {post_id})"
-                )
-            break
-    return {p: results[p] for p in created}
+        try:
+            status = await asyncio.to_thread(platforms.get_buffer_post_status, cfg.buffer_api_key, post_id)
+        except Exception:
+            log.exception("checking Buffer post %s failed; will retry", post_id)
+            continue
+        if status["status"] == "sent":
+            return f"published: {status['link'] or '(no link from Buffer)'}"
+        if status["status"] == "error":
+            return f"error: {status['error'] or 'Buffer reported an error'}"
+    return (
+        f"pending: Buffer hadn't published it after "
+        f"{STATUS_POLL_TIMEOUT_SECONDS // 60} min -- check Buffer (post {post_id})"
+    )
 
 
-async def post_to_buffer_and_wait(**post_args) -> dict[str, str]:
-    created = await asyncio.to_thread(platforms.post_to_buffer, cfg, **post_args)
-    return await wait_for_buffer_results(created)
+def publish_directly(platform: str, post: strategy.PlatformPost, image_path: Path, image_url: str, alt_text: str) -> platforms.Published:
+    if platform == "bluesky":
+        return platforms.post_to_bluesky(
+            cfg.bluesky_handle, cfg.bluesky_app_password, post.text, image_path, alt_text,
+            post.link, post.hashtags,
+        )
+    if platform == "mastodon":
+        return platforms.post_to_mastodon(
+            cfg.mastodon_instance_url, cfg.mastodon_access_token, post.text, image_path, alt_text
+        )
+    if platform == "threads":
+        return platforms.post_to_threads(
+            cfg.threads_user_id, current_threads_token(), post.text, image_url, alt_text, post.topic_tag
+        )
+    return platforms.post_to_facebook(
+        cfg.facebook_page_id, cfg.facebook_page_access_token, post.text, image_url, alt_text
+    )
 
 
-async def post_directly(platform: str, post, *args) -> tuple[str, str]:
-    """Runs one direct platform post; returns (platform, result string)."""
+async def publish(platform: str, entry: dict, piece: dict, caption: str, day: dt.date) -> str:
+    """Posts one platform's version of the day's piece; returns its result string."""
+    artwork = load_artwork()
+    image_url = f"{SITE_BASE_URL}/{piece['image']}"
+    piece_url = f"{SITE_BASE_URL}/piece-{entry['id']}.html"
+    post = strategy.build_post(
+        strategy.load_strategy(), platform, caption, piece_url, piece["title"],
+        collection_of(artwork, entry["id"]), day,
+    )
     try:
-        link = await asyncio.to_thread(post, *args)
+        if platform in platforms.BUFFER_PLATFORMS:
+            post_id = await asyncio.to_thread(
+                platforms.post_to_buffer_channel, cfg, platform, post.text, image_url,
+                piece["alt"], post.title, post.destination_url,
+            )
+            result = await wait_for_buffer_post(post_id)
+            ref = post_id
+        else:
+            published = await asyncio.to_thread(
+                publish_directly, platform, post, REPO_ROOT / piece["image"], image_url, piece["alt"]
+            )
+            result, ref = f"published: {published.link}", published.ref
     except Exception as exc:
         log.error("%s post failed:\n%s", platform, redact("".join(traceback.format_exception(exc))))
-        return platform, f"error: {redact(str(exc))}"
-    return platform, f"published: {link}"
+        return f"error: {redact(str(exc))}"
+    if result.startswith("published"):
+        tracking.record_post(entry, piece["title"], platform, result.split(": ", 1)[1], ref)
+    return redact(result)
 
 
-def direct_posts(caption: str, image_path: Path, image_url: str, alt_text: str, piece_url: str) -> list:
-    """The direct-platform posts to run today, for whichever are configured."""
-    posts = []
-    if cfg.bluesky_enabled:
-        posts.append(post_directly(
-            "bluesky", platforms.post_to_bluesky,
-            cfg.bluesky_handle, cfg.bluesky_app_password, caption, image_path, alt_text, piece_url,
-        ))
-    if cfg.mastodon_enabled:
-        posts.append(post_directly(
-            "mastodon", platforms.post_to_mastodon,
-            cfg.mastodon_instance_url, cfg.mastodon_access_token, caption, image_path, alt_text,
-        ))
-    if cfg.threads_enabled:
-        # The token refresh is a network call too, so it runs in the same
-        # worker thread as the post rather than blocking the bot.
-        posts.append(post_directly(
-            "threads",
-            lambda: platforms.post_to_threads(
-                cfg.threads_user_id, current_threads_token(), caption, image_url, alt_text
-            ),
-        ))
-    if cfg.facebook_enabled:
-        posts.append(post_directly(
-            "facebook", platforms.post_to_facebook,
-            cfg.facebook_page_id, cfg.facebook_page_access_token, caption, image_url, alt_text,
-        ))
-    return posts
-
-
-def format_bug_report(platform: str, entry: dict, piece: dict, image_url: str, caption: str, error: str) -> str:
+def format_bug_report(platform: str, entry: dict, piece: dict, caption: str, error: str) -> str:
     now = dt.datetime.now(DAILY_SEND_TZ).strftime("%Y-%m-%d %H:%M %Z")
     route = "Buffer" if platform in platforms.BUFFER_PLATFORMS else "direct API"
     report = "\n".join([
         f"🐞 Bug report: {platform} ({route})",
         f"Piece: #{entry['catalog_number']} {piece['title']} ({entry['id']})",
         f"Time: {now}",
-        f"Image: {image_url}",
+        f"Image: {SITE_BASE_URL}/{piece['image']}",
         f"Caption: {len(caption)} characters",
         "",
         error,
@@ -381,62 +406,224 @@ def format_report(piece_title: str, results: dict[str, str]) -> str:
     return "\n".join([headline, *lines])
 
 
+def slot_datetime(platform: str, day: dt.date, now: dt.datetime) -> dt.datetime:
+    """Today's posting slot for a platform, or now if it has already passed."""
+    slot = dt.datetime.combine(day, strategy.post_time(strategy.load_strategy(), platform), DAILY_SEND_TZ)
+    return max(slot, now)
+
+
+def arm_slot(job_queue, platform: str, due: dt.datetime) -> None:
+    job_queue.run_once(run_slot, when=due, data=platform, name=f"post-{platform}")
+
+
+async def run_slot(context: ContextTypes.DEFAULT_TYPE) -> None:
+    platform = context.job.data
+    schedule = load_state().get("schedule")
+    if not schedule or schedule["platforms"][platform]["result"] is not None:
+        return  # already done, e.g. re-armed twice around a restart
+    queue = load_queue()
+    entry = next(e for e in queue if e["catalog_number"] == schedule["catalog_number"])
+    piece = find_piece(load_artwork(), entry["id"])
+    day = dt.date.fromisoformat(schedule["date"])
+
+    result = await publish(platform, entry, piece, schedule["caption"], day)
+    if result.startswith("error"):
+        log.error("%s post for catalog #%s: %s", platform, entry["catalog_number"], result)
+        await context.bot.send_message(
+            chat_id=cfg.telegram_chat_id,
+            text=format_bug_report(platform, entry, piece, schedule["caption"], result.split(": ", 1)[1]),
+        )
+
+    async with schedule_lock:
+        state = load_state()
+        state["schedule"]["platforms"][platform]["result"] = result
+        save_state(state)
+        results = {p: s["result"] for p, s in state["schedule"]["platforms"].items()}
+        if any(r is None for r in results.values()):
+            return
+        state.pop("schedule")
+        save_state(state)
+    await finish_day(context, schedule, results)
+
+
+async def finish_day(context: ContextTypes.DEFAULT_TYPE, schedule: dict, results: dict[str, str]) -> None:
+    """Every platform has answered: record the day in queue.yml and report."""
+    queue = load_queue()
+    entry = next(e for e in queue if e["catalog_number"] == schedule["catalog_number"])
+    piece = find_piece(load_artwork(), entry["id"])
+    entry["posted"] = True
+    entry["post_date"] = schedule["date"]
+    entry["caption"] = schedule["caption"]
+    entry["platforms"] = {p: r[:QUEUE_RESULT_MAX_CHARS] for p, r in results.items()}
+    save_queue(queue)
+    report = format_report(piece["title"], entry["platforms"])
+    try:
+        git_commit_and_push(entry, piece["title"])
+    except subprocess.CalledProcessError:
+        log.exception("git commit/push of social/queue.yml failed")
+        report += "\n❌ git: queue.yml saved locally but not pushed -- check the bot's log"
+    await context.bot.send_message(chat_id=cfg.telegram_chat_id, text=report)
+
+
 async def handle_caption_reply(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     if update.effective_chat.id != cfg.telegram_chat_id:
         return
     pending_number = load_pending_catalog_number()
     if pending_number is None:
         return
-    # Clear before posting, so a second message sent while this one is still
-    # posting can't post the same piece twice.
+    # Clear before scheduling, so a second message can't schedule the same
+    # piece twice.
     save_pending_catalog_number(None)
 
-    caption = update.message.text
-    queue = load_queue()
-    entry = next(e for e in queue if e["catalog_number"] == pending_number)
-    artwork = load_artwork()
-    piece = find_piece(artwork, entry["id"])
-    image_url = f"{SITE_BASE_URL}/{piece['image']}"
-    image_path = REPO_ROOT / piece["image"]
-    piece_url = f"{SITE_BASE_URL}/piece-{entry['id']}.html"
-    linked_caption = f"{caption}\n\n{piece_url}"
+    now = dt.datetime.now(DAILY_SEND_TZ)
+    due = {platform: slot_datetime(platform, now.date(), now) for platform in enabled_platforms()}
+    async with schedule_lock:
+        state = load_state()
+        state["schedule"] = {
+            "catalog_number": pending_number,
+            "caption": update.message.text,
+            "date": now.date().isoformat(),
+            "platforms": {p: {"due": when.isoformat(), "result": None} for p, when in due.items()},
+        }
+        save_state(state)
+    for platform, when in due.items():
+        arm_slot(context.job_queue, platform, when)
 
-    await update.message.reply_text("Posting now... I'll report back once every platform has answered.")
-
-    buffer_results, *direct_results = await asyncio.gather(
-        post_to_buffer_and_wait(
-            image_url=image_url,
-            caption=caption,
-            linked_caption=linked_caption,
-            title=piece["title"],
-            alt_text=piece["alt"],
-            piece_url=piece_url,
-        ),
-        *direct_posts(linked_caption, image_path, image_url, piece["alt"], piece_url),
+    lines = [
+        f"{when.strftime('%-I:%M %p') if when > now else 'now'} -- {platform}"
+        for platform, when in sorted(due.items(), key=lambda item: item[1])
+    ]
+    await update.message.reply_text(
+        "Got it. Posting schedule (Pacific):\n" + "\n".join(lines)
+        + "\n\nI'll send a bug report right away if anything fails, and a summary once they're all out."
     )
-    results = {p: redact(r) for p, r in {**buffer_results, **dict(direct_results)}.items()}
-    for platform, result in results.items():
-        if not result.startswith("published"):
-            log.error("%s post for catalog #%s: %s", platform, pending_number, result)
 
-    entry["posted"] = True
-    entry["post_date"] = dt.date.today().isoformat()
-    entry["caption"] = caption
-    entry["platforms"] = {p: r[:QUEUE_RESULT_MAX_CHARS] for p, r in results.items()}
-    save_queue(queue)
-    report = format_report(piece["title"], {p: r[:QUEUE_RESULT_MAX_CHARS] for p, r in results.items()})
-    try:
-        git_commit_and_push(entry, piece["title"])
-    except subprocess.CalledProcessError:
-        log.exception("git commit/push of social/queue.yml failed")
-        report += "\n❌ git: queue.yml saved locally but not pushed -- check the bot's log"
 
-    await update.message.reply_text(report)
-    for platform, result in results.items():
-        if result.startswith("error"):
-            await update.message.reply_text(
-                format_bug_report(platform, entry, piece, image_url, caption, result.split(": ", 1)[1])
+async def resume_schedule(application: Application) -> None:
+    """Re-arms any posting slots left over from before a restart."""
+    schedule = load_state().get("schedule")
+    if not schedule:
+        return
+    now = dt.datetime.now(DAILY_SEND_TZ)
+    for platform, slot in schedule["platforms"].items():
+        if slot["result"] is None:
+            arm_slot(application.job_queue, platform, max(dt.datetime.fromisoformat(slot["due"]), now))
+            log.info("re-armed %s post for catalog #%s", platform, schedule["catalog_number"])
+
+
+# --- Comment alerts and stats ----------------------------------------------
+
+COMMENT_CHECK_INTERVAL_SECONDS = 5 * 60
+
+
+def fetch_comments(post: dict) -> list[platforms.Comment]:
+    ref = post["ref"]
+    if post["platform"] == "bluesky":
+        own = f"@{cfg.bluesky_handle}"
+        return [c for c in platforms.bluesky_comments(ref) if c.author != own]
+    if post["platform"] == "mastodon":
+        return platforms.mastodon_comments(cfg.mastodon_instance_url, cfg.mastodon_access_token, ref)
+    if post["platform"] == "threads":
+        return platforms.threads_comments(current_threads_token(), ref)
+    return platforms.facebook_comments(cfg.facebook_page_access_token, ref)
+
+
+async def check_comments(context: ContextTypes.DEFAULT_TYPE) -> None:
+    """Forwards new comments on recent posts, so they can be answered quickly.
+
+    Only the direct platforms: Buffer has no API for comments, so Instagram,
+    Pinterest and X comments come through those apps' own notifications.
+    """
+    posts = tracking.load_posts()
+    changed = False
+    for post in tracking.being_watched(posts):
+        if post["platform"] not in DIRECT_PLATFORMS:
+            continue
+        try:
+            comments = await asyncio.to_thread(fetch_comments, post)
+        except Exception as exc:
+            log.error("checking %s comments failed: %s", post["platform"], redact(str(exc)))
+            continue
+        for comment in comments:
+            if comment.ref in post["seen_comments"]:
+                continue
+            post["seen_comments"].append(comment.ref)
+            changed = True
+            await context.bot.send_message(
+                chat_id=cfg.telegram_chat_id,
+                text=(
+                    f"💬 {post['platform']} -- {comment.author} on {post['title']}:\n"
+                    f"{comment.text}\n\n{comment.link}"
+                )[:TELEGRAM_MAX_CHARS],
             )
+    if changed:
+        tracking.save_posts(posts)
+
+
+def fetch_metrics(post: dict) -> dict[str, float]:
+    ref = post["ref"]
+    if post["platform"] in platforms.BUFFER_PLATFORMS:
+        return platforms.get_buffer_post_metrics(cfg.buffer_api_key, ref)
+    if post["platform"] == "bluesky":
+        return platforms.bluesky_metrics(ref)
+    if post["platform"] == "mastodon":
+        return platforms.mastodon_metrics(cfg.mastodon_instance_url, cfg.mastodon_access_token, ref)
+    if post["platform"] == "threads":
+        return platforms.threads_metrics(current_threads_token(), ref)
+    return platforms.facebook_metrics(cfg.facebook_page_access_token, ref)
+
+
+async def collect_metrics(context: ContextTypes.DEFAULT_TYPE) -> None:
+    """Records each post's stats once it's two days old."""
+    posts = tracking.load_posts()
+    changed = False
+    for post in tracking.due_for_metrics(posts):
+        try:
+            post["metrics"] = await asyncio.to_thread(fetch_metrics, post)
+        except Exception as exc:
+            log.error("collecting %s stats failed: %s", post["platform"], redact(str(exc)))
+            continue
+        changed = True
+    if changed:
+        tracking.save_posts(posts)
+
+
+# Numbers that count people seeing a post rather than acting on it; left out
+# of the engagement score used to rank posts.
+REACH_METRIC_WORDS = ("impression", "reach", "view")
+
+
+def engagement_score(metrics: dict[str, float]) -> float:
+    return sum(
+        value for name, value in metrics.items()
+        if not any(word in name.lower() for word in REACH_METRIC_WORDS)
+    )
+
+
+def format_weekly_report(posts: list[dict]) -> str:
+    if not posts:
+        return "📊 Weekly stats: no posts with collected stats this week."
+    lines = ["📊 Weekly stats (posts from the past week, measured 2 days after posting)"]
+    for platform in sorted({p["platform"] for p in posts}):
+        mine = [p for p in posts if p["platform"] == platform]
+        totals: dict[str, float] = {}
+        for post in mine:
+            for name, value in post["metrics"].items():
+                totals[name] = totals.get(name, 0) + value
+        best = max(mine, key=lambda p: engagement_score(p["metrics"]))
+        numbers = ", ".join(f"{name} {value:g}" for name, value in sorted(totals.items()))
+        lines += [
+            "",
+            f"{platform} ({len(mine)} posts): {numbers or 'no numbers yet'}",
+            f"  best: {best['title']} -- {best['link']}",
+        ]
+    return "\n".join(lines)[:TELEGRAM_MAX_CHARS]
+
+
+async def send_weekly_report(context: ContextTypes.DEFAULT_TYPE) -> None:
+    since = dt.datetime.now(dt.timezone.utc) - dt.timedelta(days=9)
+    posts = tracking.collected_since(tracking.load_posts(), since)
+    await context.bot.send_message(chat_id=cfg.telegram_chat_id, text=format_weekly_report(posts))
 
 
 async def report_crash(update: object, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -454,15 +641,22 @@ async def report_crash(update: object, context: ContextTypes.DEFAULT_TYPE) -> No
 
 
 def main() -> None:
-    application = Application.builder().token(cfg.telegram_bot_token).build()
+    application = (
+        Application.builder().token(cfg.telegram_bot_token).post_init(resume_schedule).build()
+    )
     application.add_handler(
         MessageHandler(filters.TEXT & ~filters.COMMAND, handle_caption_reply)
     )
     application.add_error_handler(report_crash)
-    application.job_queue.run_daily(
+    jobs = application.job_queue
+    jobs.run_daily(
         send_daily_prompt,
         time=dt.time(hour=DAILY_SEND_HOUR, minute=DAILY_SEND_MINUTE, tzinfo=DAILY_SEND_TZ),
     )
+    jobs.run_repeating(check_comments, interval=COMMENT_CHECK_INTERVAL_SECONDS, first=60)
+    jobs.run_daily(collect_metrics, time=dt.time(hour=7, minute=30, tzinfo=DAILY_SEND_TZ))
+    # PTB numbers weekdays 0-6 from Sunday.
+    jobs.run_daily(send_weekly_report, time=dt.time(hour=18, tzinfo=DAILY_SEND_TZ), days=(0,))
     log.info("faevad-social-bot starting, daily prompt at %02d:%02d", DAILY_SEND_HOUR, DAILY_SEND_MINUTE)
     application.run_polling()
 

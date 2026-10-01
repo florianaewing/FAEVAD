@@ -32,6 +32,11 @@ formspree_endpoint: "https://formspree.io/f/maeyrkkj"
 bitcoin_enabled: false
 bitcoin_worker_endpoint: "https://REPLACE_ME.workers.dev"
 
+# Visitor counts (GoatCounter, see _includes/analytics.html): sign up at
+# goatcounter.com, then put the site code you chose here (the "faevad" in
+# faevad.goatcounter.com). Blank keeps analytics off.
+goatcounter_code: ""
+
 exclude:
   - README.md
   - cloudflare/

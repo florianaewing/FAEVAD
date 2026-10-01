@@ -1,0 +1,10 @@
+{% comment %}
+  Privacy-friendly visitor counts via GoatCounter (no cookies, no personal
+  data). Off until goatcounter_code is set in _config.yml. The social bot
+  tags its links with utm_source=<platform>, which GoatCounter shows as each
+  visit's source, and the buy buttons carry data-goatcounter-click so
+  checkout clicks are counted too.
+{% endcomment %}
+{% if site.goatcounter_code and site.goatcounter_code != "" %}
+<script data-goatcounter="https://{{ site.goatcounter_code }}.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+{% endif %}

@@ -21,9 +21,12 @@ the ToS-violation/ban risk accepted -- see the roadmap memory. Do not add a
 direct-API integration for either here; there isn't one available.
 """
 
+import html
 import mimetypes
+import re
 import time
 import uuid
+from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -103,58 +106,55 @@ def _base_input(channel_id: str, caption: str, image_url: str, alt_text: str, dr
     }
 
 
-def post_to_buffer(
+def buffer_channel_id(cfg, platform: str) -> str:
+    return {
+        "instagram": cfg.buffer_instagram_channel_id,
+        "pinterest": cfg.buffer_pinterest_channel_id,
+        "x": cfg.buffer_x_channel_id,
+    }[platform]
+
+
+def post_to_buffer_channel(
     cfg,
+    platform: str,
+    text: str,
     image_url: str,
-    caption: str,
-    linked_caption: str,
-    title: str,
     alt_text: str,
-    piece_url: str,
+    title: str | None = None,
+    destination_url: str | None = None,
     draft: bool = False,
-) -> dict[str, dict]:
-    """Posts to Instagram, Pinterest and (if configured) X via Buffer.
+) -> str:
+    """Hands one post (Instagram, Pinterest or X) to Buffer; returns its Buffer post id.
 
-    Each platform is attempted independently, so one failing doesn't stop
-    the others. Returns {platform: result}, where a result is
-    {"post_id": ...} if Buffer accepted the post, or {"error": ...}.
     Buffer publishes asynchronously -- follow up with get_buffer_post_status.
-    draft=True saves drafts in Buffer instead of publishing -- for testing.
-
-    Instagram gets the plain caption (links in Instagram captions aren't
-    clickable) and Pinterest carries the link as the pin's destination, so
-    only X gets linked_caption.
+    draft=True saves a draft in Buffer instead of publishing -- for testing.
     """
-    instagram_input = _base_input(
-        cfg.buffer_instagram_channel_id, caption, image_url, alt_text, draft
-    )
-    instagram_input["metadata"] = {"instagram": {"type": "post", "shouldShareToFeed": True}}
-
-    pinterest_input = _base_input(
-        cfg.buffer_pinterest_channel_id, caption, image_url, alt_text, draft
-    )
-    pinterest_input["metadata"] = {
-        "pinterest": {
-            "boardServiceId": cfg.buffer_pinterest_board_id,
-            "title": title,
-            # Pins link straight to the piece's page, where it can be bought.
-            "url": piece_url,
+    post_input = _base_input(buffer_channel_id(cfg, platform), text, image_url, alt_text, draft)
+    if platform == "instagram":
+        post_input["metadata"] = {"instagram": {"type": "post", "shouldShareToFeed": True}}
+    elif platform == "pinterest":
+        post_input["metadata"] = {
+            "pinterest": {
+                "boardServiceId": cfg.buffer_pinterest_board_id,
+                "title": title,
+                # Pins link straight to the piece's page, where it can be bought.
+                "url": destination_url,
+            }
         }
-    }
+    return _buffer_create_post(cfg.buffer_api_key, post_input)
 
-    inputs = [("instagram", instagram_input), ("pinterest", pinterest_input)]
-    if cfg.x_enabled:
-        inputs.append(
-            ("x", _base_input(cfg.buffer_x_channel_id, linked_caption, image_url, alt_text, draft))
-        )
 
-    results = {}
-    for platform, post_input in inputs:
-        try:
-            results[platform] = {"post_id": _buffer_create_post(cfg.buffer_api_key, post_input)}
-        except Exception as exc:
-            results[platform] = {"error": str(exc)}
-    return results
+BUFFER_POST_METRICS_QUERY = """
+query PostMetrics($input: PostInput!) {
+  post(input: $input) { metrics { name value } }
+}
+"""
+
+
+def get_buffer_post_metrics(api_key: str, post_id: str) -> dict[str, float]:
+    """Engagement numbers Buffer has collected for a published post."""
+    post = _buffer_graphql(api_key, BUFFER_POST_METRICS_QUERY, {"input": {"id": post_id}})["post"]
+    return {metric["name"]: metric["value"] for metric in post["metrics"]}
 
 
 class PlatformError(Exception):
@@ -187,6 +187,23 @@ def _request(step: str, method: str, url: str, ok=(200,), **kwargs) -> requests.
     return _checked(response, step, ok)
 
 
+@dataclass
+class Published:
+    """A post that went up on a platform: its public link, and the platform's
+    own id for it (used later to fetch its stats and new comments)."""
+
+    link: str
+    ref: str
+
+
+@dataclass
+class Comment:
+    ref: str
+    author: str
+    text: str
+    link: str
+
+
 def _image_file(image_path: Path) -> tuple[bytes, str]:
     mime = mimetypes.guess_type(image_path.name)[0] or "application/octet-stream"
     return image_path.read_bytes(), mime
@@ -194,28 +211,48 @@ def _image_file(image_path: Path) -> tuple[bytes, str]:
 
 # --- Bluesky ---------------------------------------------------------------
 # An app password (Bluesky -> Settings -> Privacy and security -> App
-# passwords) signs in without the account's real password. Links in Bluesky
-# posts are only clickable when marked up as a "facet" with UTF-8 byte offsets.
+# passwords) signs in without the account's real password. Links and
+# hashtags in Bluesky posts only work when marked up as "facets" with UTF-8
+# byte offsets. Reading posts and replies needs no sign-in at all.
 
 BLUESKY_PDS_URL = "https://bsky.social"
+BLUESKY_PUBLIC_API_URL = "https://public.api.bsky.app"
 
 
-def _bluesky_link_facets(text: str, link_url: str) -> list[dict]:
-    index = text.rfind(link_url)
-    if index < 0:
-        return []
+def _byte_span(text: str, index: int, fragment: str) -> dict:
     start = len(text[:index].encode("utf-8"))
-    return [
-        {
-            "index": {"byteStart": start, "byteEnd": start + len(link_url.encode("utf-8"))},
+    return {"byteStart": start, "byteEnd": start + len(fragment.encode("utf-8"))}
+
+
+def _bluesky_facets(text: str, link_url: str | None, hashtags: list[str]) -> list[dict]:
+    facets = []
+    if link_url and (index := text.rfind(link_url)) >= 0:
+        facets.append({
+            "index": _byte_span(text, index, link_url),
             "features": [{"$type": "app.bsky.richtext.facet#link", "uri": link_url}],
-        }
-    ]
+        })
+    for tag in hashtags:
+        if (index := text.rfind(f"#{tag}")) >= 0:
+            facets.append({
+                "index": _byte_span(text, index, f"#{tag}"),
+                "features": [{"$type": "app.bsky.richtext.facet#tag", "tag": tag}],
+            })
+    return facets
+
+
+def _bluesky_post_link(uri: str, handle: str) -> str:
+    return f"https://bsky.app/profile/{handle}/post/{uri.rsplit('/', 1)[1]}"
 
 
 def post_to_bluesky(
-    handle: str, app_password: str, text: str, image_path: Path, alt_text: str, link_url: str
-) -> str:
+    handle: str,
+    app_password: str,
+    text: str,
+    image_path: Path,
+    alt_text: str,
+    link_url: str | None,
+    hashtags: list[str],
+) -> Published:
     session = _request(
         "Bluesky sign-in",
         "POST",
@@ -237,7 +274,7 @@ def post_to_bluesky(
         "$type": "app.bsky.feed.post",
         "text": text,
         "createdAt": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
-        "facets": _bluesky_link_facets(text, link_url),
+        "facets": _bluesky_facets(text, link_url, hashtags),
         "embed": {
             "$type": "app.bsky.embed.images",
             "images": [{"alt": alt_text, "image": blob}],
@@ -250,20 +287,49 @@ def post_to_bluesky(
         headers=auth,
         json={"repo": session["did"], "collection": "app.bsky.feed.post", "record": record},
     ).json()
-    record_key = created["uri"].rsplit("/", 1)[1]
-    return f"https://bsky.app/profile/{session['handle']}/post/{record_key}"
+    return Published(_bluesky_post_link(created["uri"], session["handle"]), created["uri"])
+
+
+def bluesky_metrics(uri: str) -> dict[str, float]:
+    post = _request(
+        "Bluesky stats",
+        "GET",
+        f"{BLUESKY_PUBLIC_API_URL}/xrpc/app.bsky.feed.getPosts",
+        params={"uris": uri},
+    ).json()["posts"][0]
+    return {name: post.get(f"{name}Count", 0) for name in ("like", "repost", "reply", "quote")}
+
+
+def bluesky_comments(uri: str) -> list[Comment]:
+    thread = _request(
+        "Bluesky replies",
+        "GET",
+        f"{BLUESKY_PUBLIC_API_URL}/xrpc/app.bsky.feed.getPostThread",
+        params={"uri": uri, "depth": 1},
+    ).json()["thread"]
+    comments = []
+    for reply in thread.get("replies", []):
+        post = reply.get("post")
+        if not post:  # blocked or deleted replies come back without a post
+            continue
+        handle = post["author"]["handle"]
+        comments.append(Comment(
+            post["uri"], f"@{handle}", post["record"].get("text", ""),
+            _bluesky_post_link(post["uri"], handle),
+        ))
+    return comments
 
 
 # --- Mastodon --------------------------------------------------------------
 # Access token from the account's server: Preferences -> Development -> New
-# application, with the write:media and write:statuses scopes.
+# application, with the read:statuses, write:media and write:statuses scopes.
 
 MASTODON_MEDIA_WAIT_SECONDS = 60
 
 
 def post_to_mastodon(
     instance_url: str, access_token: str, text: str, image_path: Path, alt_text: str
-) -> str:
+) -> Published:
     auth = {"Authorization": f"Bearer {access_token}"}
     image_bytes, mime = _image_file(image_path)
     media = _request(
@@ -302,7 +368,40 @@ def post_to_mastodon(
         headers={**auth, "Idempotency-Key": str(uuid.uuid4())},
         data={"status": text, "media_ids[]": [media["id"]]},
     ).json()
-    return status["url"]
+    return Published(status["url"], status["id"])
+
+
+def mastodon_metrics(instance_url: str, access_token: str, status_id: str) -> dict[str, float]:
+    status = _request(
+        "Mastodon stats",
+        "GET",
+        f"{instance_url}/api/v1/statuses/{status_id}",
+        headers={"Authorization": f"Bearer {access_token}"},
+    ).json()
+    return {
+        "favourites": status["favourites_count"],
+        "boosts": status["reblogs_count"],
+        "replies": status["replies_count"],
+    }
+
+
+def _plain_text(markup: str) -> str:
+    """Mastodon statuses are HTML; turn one into readable text."""
+    markup = re.sub(r"<br\s*/?>|</p>", "\n", markup)
+    return html.unescape(re.sub(r"<[^>]+>", "", markup)).strip()
+
+
+def mastodon_comments(instance_url: str, access_token: str, status_id: str) -> list[Comment]:
+    context = _request(
+        "Mastodon replies",
+        "GET",
+        f"{instance_url}/api/v1/statuses/{status_id}/context",
+        headers={"Authorization": f"Bearer {access_token}"},
+    ).json()
+    return [
+        Comment(reply["id"], f"@{reply['account']['acct']}", _plain_text(reply["content"]), reply["url"])
+        for reply in context.get("descendants", [])
+    ]
 
 
 # --- Threads ---------------------------------------------------------------
@@ -326,21 +425,29 @@ def refresh_threads_token(access_token: str) -> str:
 
 
 def post_to_threads(
-    user_id: str, access_token: str, text: str, image_url: str, alt_text: str
-) -> str:
+    user_id: str,
+    access_token: str,
+    text: str,
+    image_url: str,
+    alt_text: str,
+    topic_tag: str | None,
+) -> Published:
     # Threads fetches the image from image_url itself, then publishing is a
     # separate call once that "container" has finished processing.
+    container_fields = {
+        "media_type": "IMAGE",
+        "image_url": image_url,
+        "text": text,
+        "alt_text": alt_text,
+        "access_token": access_token,
+    }
+    if topic_tag:
+        container_fields["topic_tag"] = topic_tag
     container_id = _request(
         "Threads media container",
         "POST",
         f"{THREADS_API_URL}/{user_id}/threads",
-        data={
-            "media_type": "IMAGE",
-            "image_url": image_url,
-            "text": text,
-            "alt_text": alt_text,
-            "access_token": access_token,
-        },
+        data=container_fields,
     ).json()["id"]
 
     deadline = time.monotonic() + THREADS_CONTAINER_WAIT_SECONDS
@@ -372,12 +479,36 @@ def post_to_threads(
         f"{THREADS_API_URL}/{user_id}/threads_publish",
         data={"creation_id": container_id, "access_token": access_token},
     ).json()["id"]
-    return _request(
+    permalink = _request(
         "Threads permalink lookup",
         "GET",
         f"{THREADS_API_URL}/{post_id}",
         params={"fields": "permalink", "access_token": access_token},
     ).json()["permalink"]
+    return Published(permalink, post_id)
+
+
+def threads_metrics(access_token: str, post_id: str) -> dict[str, float]:
+    data = _request(
+        "Threads stats",
+        "GET",
+        f"{THREADS_API_URL}/{post_id}/insights",
+        params={"metric": "views,likes,replies,reposts,quotes", "access_token": access_token},
+    ).json()["data"]
+    return {item["name"]: item["values"][0]["value"] for item in data}
+
+
+def threads_comments(access_token: str, post_id: str) -> list[Comment]:
+    replies = _request(
+        "Threads replies",
+        "GET",
+        f"{THREADS_API_URL}/{post_id}/replies",
+        params={"fields": "id,text,username,permalink", "access_token": access_token},
+    ).json().get("data", [])
+    return [
+        Comment(reply["id"], f"@{reply.get('username', '?')}", reply.get("text", ""), reply.get("permalink", ""))
+        for reply in replies
+    ]
 
 
 # --- Facebook Page ---------------------------------------------------------
@@ -389,7 +520,7 @@ FACEBOOK_GRAPH_URL = "https://graph.facebook.com/v23.0"
 
 def post_to_facebook(
     page_id: str, page_access_token: str, text: str, image_url: str, alt_text: str
-) -> str:
+) -> Published:
     photo = _request(
         "Facebook photo post",
         "POST",
@@ -401,4 +532,39 @@ def post_to_facebook(
             "access_token": page_access_token,
         },
     ).json()
-    return f"https://www.facebook.com/{photo.get('post_id') or photo['id']}"
+    post_id = photo.get("post_id") or photo["id"]
+    return Published(f"https://www.facebook.com/{post_id}", post_id)
+
+
+def facebook_metrics(page_access_token: str, post_id: str) -> dict[str, float]:
+    post = _request(
+        "Facebook stats",
+        "GET",
+        f"{FACEBOOK_GRAPH_URL}/{post_id}",
+        params={
+            "fields": "reactions.summary(total_count).limit(0),"
+            "comments.summary(total_count).limit(0),shares",
+            "access_token": page_access_token,
+        },
+    ).json()
+    return {
+        "reactions": post.get("reactions", {}).get("summary", {}).get("total_count", 0),
+        "comments": post.get("comments", {}).get("summary", {}).get("total_count", 0),
+        "shares": post.get("shares", {}).get("count", 0),
+    }
+
+
+def facebook_comments(page_access_token: str, post_id: str) -> list[Comment]:
+    comments = _request(
+        "Facebook comments",
+        "GET",
+        f"{FACEBOOK_GRAPH_URL}/{post_id}/comments",
+        params={"fields": "id,message,from,permalink_url", "access_token": page_access_token},
+    ).json().get("data", [])
+    return [
+        Comment(
+            comment["id"], (comment.get("from") or {}).get("name", "someone"),
+            comment.get("message", ""), comment.get("permalink_url", ""),
+        )
+        for comment in comments
+    ]

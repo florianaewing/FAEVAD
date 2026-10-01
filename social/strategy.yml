@@ -1,0 +1,53 @@
+# Posting strategy for the daily social bot: when each platform posts, and
+# which tags get added under the artist's caption. Edit freely -- the bot
+# reads this file fresh every day. The caption itself is never changed;
+# tags only ever go after it, and get dropped (last first) rather than
+# cutting the caption when a platform's length limit is tight.
+#
+# Researched 2026-09-28 from Buffer's 2026 analysis of 52M posts, plus
+# platform-specific studies; the sources are in the commit that added this
+# file. Treat these as starting points -- once the bot's weekly stats come
+# in, move each time toward whatever actually works for FAEVAD.
+
+# All times are Pacific. If the caption arrives after a platform's slot,
+# that platform posts immediately instead.
+post_times:
+  x: "09:00"          # Buffer: best 9am, window 8-11am weekdays
+  threads: "09:00"    # Buffer: best 9am, window 7am-noon weekdays
+  facebook: "09:00"   # Buffer: best 9am, window 8am-noon weekdays
+  mastodon: "10:00"   # chronological timelines; no good study -- mid-morning US
+  instagram: "11:00"  # Buffer: window 9am-6pm; other 2026 studies: 11am-1pm peak
+  bluesky: "12:00"    # 2026 studies: 9am-3pm weekday "golden window"
+  pinterest: "20:00"  # Pinterest peaks in the evening, 8-11pm
+
+# How many tags each platform gets, and tags it always gets first.
+platforms:
+  instagram:
+    max_tags: 5       # Instagram caps posts at 5 hashtags since Dec 2025
+  pinterest:
+    max_tags: 4       # hashtags are minor keyword signals now; 3-5 at the end
+  x:
+    max_tags: 2
+  facebook:
+    max_tags: 3
+  bluesky:
+    max_tags: 3
+    always: [art]     # #art is what gets posts into Bluesky's artist feeds
+  mastodon:
+    max_tags: 4
+    always: [MastoArt]  # the fediverse's main art tag
+  # Threads takes a single topic tag (set per collection below), not hashtags.
+
+collections:
+  watercolors:
+    # Best first: when a platform takes fewer tags, the ones at the end go.
+    tags: [watercolor, watercolorpainting, watercolorart, originalart, artforsale, watercolour]
+    # Added in front, but only when the post actually goes out on a Wednesday.
+    wednesday_tags: [WatercolorWednesday]
+    threads_topic: Watercolor
+    pinterest_title_suffix: Watercolor Painting
+
+  inks:
+    tags: [inkdrawing, inkillustration, inkart, originalart, artforsale, traditionalart]
+    threads_topic: Ink Art
+    pinterest_title_suffix: Ink Illustration
