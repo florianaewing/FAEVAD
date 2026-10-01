@@ -12,7 +12,7 @@ day, per social/strategy.yml: Instagram, Pinterest and X via Buffer, and
 Bluesky, Mastodon, Threads and the Facebook Page directly -- each optional
 platform only once its credentials are configured. strategy.py adds the
 piece link and hashtags under the caption per platform. A failed platform
-sends a Telegram bug report right away; once all have posted, the results
+sends a bug report right away, on Telegram and as a GitHub issue; once all have posted, the results
 go into social/queue.yml, get committed + pushed, and a summary is sent.
 
 After posting, the bot forwards new comments from the direct platforms for
@@ -35,11 +35,13 @@ import traceback
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
+import requests
 import yaml
 from dotenv import load_dotenv
 from telegram import Update
 from telegram.ext import Application, ContextTypes, MessageHandler, filters
 
+import instagram_images
 import platforms
 import strategy
 import tracking
@@ -106,6 +108,7 @@ def redact(text: str) -> str:
         cfg.mastodon_access_token,
         cfg.threads_access_token,
         cfg.facebook_page_access_token,
+        cfg.github_token,
     ]
     try:
         secrets.append(json.loads(THREADS_TOKEN_PATH.read_text())["token"])
@@ -254,6 +257,14 @@ def git_commit_and_push(entry: dict, piece_title: str) -> None:
     )
 
 
+def image_ready_for_instagram(piece: dict) -> bool:
+    try:
+        image_for("instagram", piece)
+    except FileNotFoundError:
+        return False
+    return True
+
+
 async def send_daily_prompt(context: ContextTypes.DEFAULT_TYPE) -> None:
     queue = load_queue()
     artwork = load_artwork()
@@ -283,6 +294,12 @@ async def send_daily_prompt(context: ContextTypes.DEFAULT_TYPE) -> None:
                 if piece.get("alt")
                 else "\n\n⚠️ This piece has no alt text yet -- add it to "
                 "_data/artwork.yml before replying, or the post goes out without it."
+            )
+            + (
+                ""
+                if image_ready_for_instagram(piece)
+                else "\n\n⚠️ This piece needs a matted Instagram copy -- run "
+                "social/bot/instagram_images.py and push, or Instagram will fail."
             )
         ),
     )
@@ -329,6 +346,20 @@ async def wait_for_buffer_post(post_id: str) -> str:
     )
 
 
+def image_for(platform: str, piece: dict) -> str:
+    """The repo-relative image to post: Instagram gets the matted copy when
+    the piece's shape is outside what Instagram accepts (see instagram_images.py)."""
+    if platform == "instagram" and instagram_images.needs_mat(REPO_ROOT / piece["image"]):
+        matted = instagram_images.instagram_image(piece["image"])
+        if not (REPO_ROOT / matted).exists():
+            raise FileNotFoundError(
+                f"{piece['image']} is outside Instagram's 4:5 to 1.91:1 range and has no "
+                f"matted copy at {matted} -- run social/bot/instagram_images.py and push"
+            )
+        return matted
+    return piece["image"]
+
+
 def publish_directly(platform: str, post: strategy.PlatformPost, image_path: Path, image_url: str, alt_text: str) -> platforms.Published:
     if platform == "bluesky":
         return platforms.post_to_bluesky(
@@ -351,13 +382,13 @@ def publish_directly(platform: str, post: strategy.PlatformPost, image_path: Pat
 async def publish(platform: str, entry: dict, piece: dict, caption: str, day: dt.date) -> str:
     """Posts one platform's version of the day's piece; returns its result string."""
     artwork = load_artwork()
-    image_url = f"{SITE_BASE_URL}/{piece['image']}"
     piece_url = f"{SITE_BASE_URL}/piece-{entry['id']}.html"
     post = strategy.build_post(
         strategy.load_strategy(), platform, caption, piece_url, piece["title"],
         collection_of(artwork, entry["id"]), day,
     )
     try:
+        image_url = f"{SITE_BASE_URL}/{image_for(platform, piece)}"
         if platform in platforms.BUFFER_PLATFORMS:
             post_id = await asyncio.to_thread(
                 platforms.post_to_buffer_channel, cfg, platform, post.text, image_url,
@@ -378,6 +409,60 @@ async def publish(platform: str, entry: dict, piece: dict, caption: str, day: dt
     return redact(result)
 
 
+GITHUB_REPO = "florianaewing/FAEVAD"
+# Every bug report issue gets this label, so they're easy to find and filter.
+BUG_REPORT_LABEL = "bot-bug-report"
+
+
+def file_github_issue(title: str, body: str) -> str:
+    """Opens an issue on the repo and returns its link.
+
+    If an open issue with the same title already exists (e.g. the same
+    crash happening again), the report is added to it as a comment instead.
+    The repo is public, so the body must already be redacted.
+    """
+    api = f"https://api.github.com/repos/{GITHUB_REPO}"
+    headers = {
+        "Authorization": f"Bearer {cfg.github_token}",
+        "Accept": "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28",
+    }
+    open_issues = requests.get(
+        f"{api}/issues", headers=headers, params={"state": "open", "per_page": 100}, timeout=30
+    )
+    open_issues.raise_for_status()
+    for issue in open_issues.json():
+        if issue["title"] == title and "pull_request" not in issue:
+            requests.post(
+                f"{api}/issues/{issue['number']}/comments", headers=headers, json={"body": body}, timeout=30
+            ).raise_for_status()
+            return issue["html_url"]
+    response = requests.post(
+        f"{api}/issues",
+        headers=headers,
+        json={"title": title, "body": body, "labels": [BUG_REPORT_LABEL]},
+        timeout=30,
+    )
+    response.raise_for_status()
+    return response.json()["html_url"]
+
+
+async def send_bug_report(context: ContextTypes.DEFAULT_TYPE, title: str, text: str) -> None:
+    """Files the report as a GitHub issue (when a token is configured) and
+    sends it on Telegram with the issue's link."""
+    if cfg.github_token:
+        try:
+            issue_url = await asyncio.to_thread(file_github_issue, title, f"```\n{text}\n```")
+            text = f"GitHub issue: {issue_url}\n\n{text}"
+        except Exception as exc:
+            log.error("filing the GitHub issue failed: %s", redact(str(exc)))
+            text = f"(couldn't file the GitHub issue: {redact(str(exc))[:300]})\n\n{text}"
+    # Keep the end of the text -- for tracebacks, that's where the actual error is.
+    if len(text) > TELEGRAM_MAX_CHARS:
+        text = text[:200] + "\n...\n" + text[-(TELEGRAM_MAX_CHARS - 210):]
+    await context.bot.send_message(chat_id=cfg.telegram_chat_id, text=text)
+
+
 def format_bug_report(platform: str, entry: dict, piece: dict, caption: str, error: str) -> str:
     now = dt.datetime.now(DAILY_SEND_TZ).strftime("%Y-%m-%d %H:%M %Z")
     route = "Buffer" if platform in platforms.BUFFER_PLATFORMS else "direct API"
@@ -390,7 +475,7 @@ def format_bug_report(platform: str, entry: dict, piece: dict, caption: str, err
         "",
         error,
     ])
-    return report[:TELEGRAM_MAX_CHARS]
+    return report
 
 
 def format_report(piece_title: str, results: dict[str, str]) -> str:
@@ -429,9 +514,10 @@ async def run_slot(context: ContextTypes.DEFAULT_TYPE) -> None:
     result = await publish(platform, entry, piece, schedule["caption"], day)
     if result.startswith("error"):
         log.error("%s post for catalog #%s: %s", platform, entry["catalog_number"], result)
-        await context.bot.send_message(
-            chat_id=cfg.telegram_chat_id,
-            text=format_bug_report(platform, entry, piece, schedule["caption"], result.split(": ", 1)[1]),
+        await send_bug_report(
+            context,
+            f"{platform} post failed: #{entry['catalog_number']} {piece['title']} ({day.isoformat()})",
+            format_bug_report(platform, entry, piece, schedule["caption"], result.split(": ", 1)[1]),
         )
 
     async with schedule_lock:
@@ -630,14 +716,13 @@ async def report_crash(update: object, context: ContextTypes.DEFAULT_TYPE) -> No
     """Sends a bug report for anything that crashes the bot mid-task."""
     trace = redact("".join(traceback.format_exception(context.error)))
     log.error("unhandled error:\n%s", trace)
-    text = f"🐞 Bug report: the bot crashed\n\n{trace}"
-    # Keep the end of the traceback -- that's where the actual error is.
-    if len(text) > TELEGRAM_MAX_CHARS:
-        text = "🐞 Bug report: the bot crashed\n\n..." + text[-(TELEGRAM_MAX_CHARS - 40):]
+    error_line = redact(f"{type(context.error).__name__}: {context.error}")[:120]
     try:
-        await context.bot.send_message(chat_id=cfg.telegram_chat_id, text=text)
+        await send_bug_report(
+            context, f"Bot crashed: {error_line}", f"🐞 Bug report: the bot crashed\n\n{trace}"
+        )
     except Exception:
-        log.exception("couldn't send the crash report to Telegram")
+        log.exception("couldn't send the crash report")
 
 
 def main() -> None:

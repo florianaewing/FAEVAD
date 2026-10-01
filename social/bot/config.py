@@ -34,6 +34,8 @@ class Config:
     threads_access_token: str | None = None
     facebook_page_id: str | None = None
     facebook_page_access_token: str | None = None
+    # Bug reports are also filed as GitHub issues once this is set.
+    github_token: str | None = None
 
     @property
     def x_enabled(self) -> bool:
@@ -90,4 +92,5 @@ def load_config() -> Config:
         threads_access_token=optional("THREADS_ACCESS_TOKEN"),
         facebook_page_id=optional("FACEBOOK_PAGE_ID"),
         facebook_page_access_token=optional("FACEBOOK_PAGE_ACCESS_TOKEN"),
+        github_token=optional("GITHUB_TOKEN"),
     )
