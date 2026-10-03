@@ -71,17 +71,12 @@
 
 - catalog_number: 6
   id: sky-goddess-two
-  posted: true
-  post_date: '2026-10-03'
-  caption: test
+  posted: false
+  post_date:
+  caption:
   platforms:
-    instagram: 'published: https://www.instagram.com/p/DeC2xFkn27s/'
-    pinterest: 'published: https://www.pinterest.com/pin/1131177631465148231'
-    x: 'published: https://x.com/2105781742431092736/status/2106472744632127821'
-    bluesky: 'published: https://bsky.app/profile/faevad.bsky.social/post/3mwyo2jndi622'
-    mastodon: 'published: https://mastodon.art/@faevad/117378725612881679'
-    threads: 'published: https://www.threads.com/@faevad01/post/DeC2xJTjwDk'
-    facebook: 'published: https://www.facebook.com/1374753972384803_122093708085508246'
+    instagram:
+    pinterest:
 
 - catalog_number: 7
   id: mysterious-strangers
