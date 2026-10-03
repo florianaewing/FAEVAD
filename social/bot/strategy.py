@@ -48,6 +48,17 @@ def load_strategy() -> dict:
         return yaml.safe_load(f)
 
 
+WEEKDAYS = ("monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday")
+
+
+def posts_on(strategy: dict, day: dt.date) -> bool:
+    days = [d.lower() for d in strategy.get("post_days", WEEKDAYS)]
+    unknown = set(days) - set(WEEKDAYS)
+    if unknown:
+        raise ValueError(f"unknown post_days in strategy.yml: {', '.join(sorted(unknown))}")
+    return WEEKDAYS[day.weekday()] in days
+
+
 def post_time(strategy: dict, platform: str) -> dt.time:
     hour, minute = strategy["post_times"][platform].split(":")
     return dt.time(int(hour), int(minute))

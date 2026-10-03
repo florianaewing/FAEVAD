@@ -9,6 +9,11 @@
 # file. Treat these as starting points -- once the bot's weekly stats come
 # in, move each time toward whatever actually works for FAEVAD.
 
+# Days the bot asks for a caption and posts. On other days it stays quiet
+# (comment alerts, stats and the Sunday summary still run). Mondays and
+# Tuesdays are off -- people are preoccupied at the start of the week.
+post_days: [wednesday, thursday, friday, saturday, sunday]
+
 # All times are Pacific. If the caption arrives after a platform's slot,
 # that platform posts immediately instead.
 post_times:

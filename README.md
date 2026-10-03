@@ -33,10 +33,11 @@ A Jekyll site on GitHub Pages, with no server of its own.
 ## The social bot ([`social/`](social/))
 
 A Python service ([`social/bot/daily_bot.py`](social/bot/daily_bot.py)) that runs on the
-artist's own computer as a systemd user service. Each day:
+artist's own computer as a systemd user service. It posts Wednesday through Sunday (the days
+are set in [`social/strategy.yml`](social/strategy.yml)). On each posting day:
 
 1. At 8:00 Pacific it sends the next unposted piece in [`social/queue.yml`](social/queue.yml)
-   to the artist on Telegram. Watercolors go out on Wednesdays, inks on the other days.
+   to the artist on Telegram. Watercolors go out on Wednesdays, inks on the other posting days.
 2. The artist replies with a caption. It's used word for word; the bot never writes or edits
    text.
 3. Each platform posts at its own best time of day (see [`social/strategy.yml`](social/strategy.yml)),

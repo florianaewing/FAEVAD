@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """FAEVAD daily social posting bot.
 
-Runs as a long-lived local process. Each day at DAILY_SEND_HOUR:MINUTE it
+Runs as a long-lived local process. On each posting day (post_days in
+social/strategy.yml) at DAILY_SEND_HOUR:MINUTE it
 finds the next un-posted piece in social/queue.yml (lowest catalog_number
 with posted: false), and messages the artist on Telegram asking for that
 day's caption. Whatever the artist replies with is used verbatim as the
@@ -217,7 +218,7 @@ def find_piece(artwork: dict, piece_id: str) -> dict | None:
     return None
 
 
-# Watercolors get Wednesdays; every other day posts from the other
+# Watercolors get Wednesdays; the other posting days post from the other
 # collections (inks). When a day's own pool runs dry it falls back to the
 # other one, so the queue only reports empty once everything is posted.
 WEDNESDAY_COLLECTION = "watercolors"
@@ -266,9 +267,13 @@ def image_ready_for_instagram(piece: dict) -> bool:
 
 
 async def send_daily_prompt(context: ContextTypes.DEFAULT_TYPE) -> None:
+    today = dt.datetime.now(DAILY_SEND_TZ).date()
+    if not strategy.posts_on(strategy.load_strategy(), today):
+        log.info("not a posting day (%s), skipping the prompt", today.strftime("%A"))
+        return
     queue = load_queue()
     artwork = load_artwork()
-    entry = next_unposted_entry(queue, artwork, dt.datetime.now(DAILY_SEND_TZ).date())
+    entry = next_unposted_entry(queue, artwork, today)
     if entry is None:
         await context.bot.send_message(
             chat_id=cfg.telegram_chat_id,
