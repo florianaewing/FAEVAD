@@ -25,10 +25,12 @@
             <a class="cta" href="inks.html">View the catalogue &rarr;</a>
         </div>
         <div class="hero-plate">
+            {% assign inks = site.data.artwork.collections | where: "slug", "inks" | first %}
+            {% assign featured = inks.pieces | where: "id", "forbidden-knowledge" | first %}
             <div class="plate">
-                <img src="images/artwork/dragon_hoard.png" alt="Colored ink illustration of a pink and green antlered dragon curled on a checkered floor surrounded by books and bottles">
+                <a href="piece-{{ featured.id }}.html"><img src="{{ featured.image }}" alt="{{ featured.alt }}"></a>
             </div>
-            <div class="plate-cap">Dragon Hoard &mdash; acrylic pigment on watercolor paper, 2024</div>
+            <div class="plate-cap">{{ featured.title }} &mdash; {{ featured.medium | downcase }}, {{ featured.year }}</div>
         </div>
     </section>
 
