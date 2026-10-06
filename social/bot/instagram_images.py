@@ -5,7 +5,7 @@ Instagram only takes feed images from 4:5 (portrait) to 1.91:1 (landscape),
 and rejects anything taller or wider. Rather than crop the art, an
 out-of-range piece is centered on a white mat, widened or heightened just
 enough to reach the nearest allowed shape. The copy keeps the web image's
-longest side (400px), so it's no better for printing than the site's own
+longest side (500px), so it's no better for printing than the site's own
 image. Every other platform gets the normal image.
 
 Copies live at images/instagram/<name>.jpg so Buffer can fetch them from

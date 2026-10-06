@@ -23,7 +23,7 @@ A Jekyll site on GitHub Pages, with no server of its own.
     for matching payments by hand.
   - **Bitcoin:** checkout is built (`cloudflare/`, `bitcoin-<id>.html`) but switched off in
     `_config.yml`.
-- **Images:** [`images/artwork/`](images/artwork/) holds only 400px web copies with their EXIF
+- **Images:** [`images/artwork/`](images/artwork/) holds only 500px web copies with their EXIF
   data removed, so they can't be printed at good quality. The originals stay off the repo.
   [`images/instagram/`](images/instagram/) has white-matted copies of pieces whose shape
   Instagram won't accept.
@@ -57,7 +57,7 @@ Setup steps are in the header of
 
 ## Adding a piece
 
-1. Save the full-size original outside the repo. Add a 400px copy with its EXIF data removed to
+1. Save the full-size original outside the repo. Add a 500px copy with its EXIF data removed to
    `images/artwork/`.
 2. Create its three Stripe print links.
 3. Add the piece to `_data/artwork.yml` and create its `piece-`, `buy-` and `venmo-` pages.
