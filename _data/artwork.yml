@@ -607,7 +607,7 @@ collections:
         medium: "Watercolor on paper"
         year: 2026
         image: "images/artwork/Abstract.jpg"
-        alt: ""
+        alt: "Abstract watercolor painting featuring blues, light browns trending towards the bottom, yellows towards the top, and a series of geometric shapes evoking a wooden structure"
         description: ""
         print:
           available: true
@@ -631,7 +631,7 @@ collections:
         medium: "Watercolor on paper"
         year: 2026
         image: "images/artwork/AnglerFish.jpg"
-        alt: ""
+        alt: "Abstract watercolor painting with a burst of color in the middle, with dabs of blue and yellow paint in the background"
         description: ""
         print:
           available: true
@@ -655,7 +655,7 @@ collections:
         medium: "Watercolor on paper"
         year: 2026
         image: "images/artwork/AquaticImpression.jpg"
-        alt: ""
+        alt: "Abstract watercolor painting composed of a range of blues and shades of violet scattered chaotically on a light blue background"
         description: ""
         print:
           available: true
@@ -679,7 +679,7 @@ collections:
         medium: "Watercolor on paper"
         year: 2025
         image: "images/artwork/AutumnForest.jpg"
-        alt: ""
+        alt: "Watercolor painting of a yellow sky speckled with dark spots and below, reddish orange trees fading downwards toward the green earth."
         description: ""
         print:
           available: true
