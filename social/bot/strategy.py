@@ -78,6 +78,8 @@ def pick_tags(strategy: dict, platform: str, collection: str, day: dt.date) -> l
     settings = strategy["platforms"].get(platform, {})
     tags_for = strategy["collections"].get(collection, {})
     candidates = list(settings.get("always", []))
+    if day.month == 10:
+        candidates += tags_for.get("october_tags", [])
     if day.weekday() == 2:
         candidates += tags_for.get("wednesday_tags", [])
     candidates += tags_for.get("tags", [])

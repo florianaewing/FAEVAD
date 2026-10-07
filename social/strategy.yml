@@ -54,5 +54,8 @@ collections:
 
   inks:
     tags: [inkdrawing, inkillustration, inkart, originalart, artforsale, traditionalart]
+    # Added in front, but only when the post actually goes out in October.
+    # Update the year each fall.
+    october_tags: [inktober2026]
     threads_topic: Ink Art
     pinterest_title_suffix: Ink Illustration
