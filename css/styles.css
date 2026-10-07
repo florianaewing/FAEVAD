@@ -374,6 +374,57 @@ nav.top a[aria-current="page"] {
 
 .prose a:hover { color: var(--pigment); border-color: var(--pigment); }
 
+/* About: framed portrait beside the bio on wide screens, stacked above it on narrow ones. */
+
+.about-body {
+  padding-top: 32px;
+}
+
+.about-body .prose { padding-top: 0; }
+
+.portrait-frame {
+  margin: 0 auto 32px;
+  max-width: 300px;
+  padding: 14px;
+  background: #fff;
+  border: 6px solid #111;
+  outline: 1px solid #111;
+  outline-offset: 4px;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.18);
+}
+
+.portrait-frame img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid #111;
+}
+
+@media (min-width: 720px) {
+  .about-body {
+    display: grid;
+    grid-template-columns: 300px minmax(0, 68ch);
+    gap: 56px;
+    align-items: start;
+  }
+  .portrait-frame { margin: 6px 0 0; }
+}
+
+.ai-note {
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+}
+
+.ai-note h2 {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
 .contact-line {
   font-size: 1.1rem;
   margin-top: 8px;
