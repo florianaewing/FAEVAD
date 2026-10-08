@@ -233,12 +233,17 @@
 
 - catalog_number: 24
   id: abstract
-  posted: false
-  post_date:
-  caption:
+  posted: true
+  post_date: '2026-10-07'
+  caption: Not sure what I was going for with this one, pretty colors though. Enjoy
   platforms:
-    instagram:
-    pinterest:
+    instagram: 'published: https://www.instagram.com/p/DeM-6cymhG6/'
+    pinterest: 'published: https://www.pinterest.com/pin/1131177631465504587'
+    x: 'published: https://x.com/2105781742431092736/status/2107898037934633330'
+    bluesky: 'published: https://bsky.app/profile/faevad.bsky.social/post/3mxcmwijqff26'
+    mastodon: 'published: https://mastodon.art/@faevad/117400995809994993'
+    threads: 'published: https://www.threads.com/@faevad01/post/DeM-6jLD-dZ'
+    facebook: 'published: https://www.facebook.com/1374753972384803_122095933515508246'
 
 - catalog_number: 25
   id: angler-fish
