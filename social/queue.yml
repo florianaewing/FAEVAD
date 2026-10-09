@@ -26,12 +26,18 @@
 
 - catalog_number: 1
   id: forbidden-knowledge
-  posted: false
-  post_date:
-  caption:
+  posted: true
+  post_date: '2026-10-08'
+  caption: This is one of my favorites. Usually when I skip sketching things go a
+    whole lot worse
   platforms:
-    instagram:
-    pinterest:
+    instagram: 'published: https://www.instagram.com/p/DePsm2alBso/'
+    pinterest: 'published: https://www.pinterest.com/pin/1131177631465589944'
+    x: 'published: https://x.com/2105781742431092736/status/2108279994413699405'
+    bluesky: 'published: https://bsky.app/profile/faevad.bsky.social/post/3mxf7dspin22x'
+    mastodon: 'published: https://mastodon.art/@faevad/117406963847883593'
+    threads: 'published: https://www.threads.com/@faevad01/post/DePsm53j05J'
+    facebook: 'published: https://www.facebook.com/1374753972384803_122096767881508246'
 
 - catalog_number: 2
   id: cluttered-desk
