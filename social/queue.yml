@@ -41,12 +41,18 @@
 
 - catalog_number: 2
   id: cluttered-desk
-  posted: false
-  post_date:
-  caption:
+  posted: true
+  post_date: '2026-10-09'
+  caption: This is what happens when you’ve only got one table. It works aesthetically
+    but I wouldn’t recommend it in the long term.
   platforms:
-    instagram:
-    pinterest:
+    instagram: 'published: https://www.instagram.com/p/DeSWhAjj8rx/'
+    pinterest: 'published: https://www.pinterest.com/pin/1131177631465672943'
+    x: 'published: https://x.com/2105781742431092736/status/2108653624289112259'
+    bluesky: 'published: https://bsky.app/profile/faevad.bsky.social/post/3mxhscma4p52r'
+    mastodon: 'published: https://mastodon.art/@faevad/117412801876258611'
+    threads: 'published: https://www.threads.com/@faevad01/post/DeSWhGaj6lZ'
+    facebook: 'published: https://www.facebook.com/1374753972384803_122097441513508246'
 
 - catalog_number: 3
   id: second-floor-apartment
