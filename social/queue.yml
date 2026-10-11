@@ -56,12 +56,18 @@
 
 - catalog_number: 3
   id: second-floor-apartment
-  posted: false
-  post_date:
-  caption:
+  posted: true
+  post_date: '2026-10-10'
+  caption: For this one, I was trying to remember what it felt like staying in Old
+    Louisville.
   platforms:
-    instagram:
-    pinterest:
+    instagram: 'published: https://www.instagram.com/p/DeUrVlVlMgc/'
+    pinterest: 'published: https://www.pinterest.com/pin/1131177631465766002'
+    x: 'published: https://x.com/2105781742431092736/status/2108958951026950554'
+    bluesky: 'published: https://bsky.app/profile/faevad.bsky.social/post/3mxk6daut4d2k'
+    mastodon: 'published: https://mastodon.art/@faevad/117417679417778121'
+    threads: 'published: https://www.threads.com/@faevad01/post/DeUhXKdiQFE'
+    facebook: 'published: https://www.facebook.com/1374753972384803_122097989037508246'
 
 - catalog_number: 4
   id: the-workshop
