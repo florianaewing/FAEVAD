@@ -71,12 +71,18 @@
 
 - catalog_number: 4
   id: the-workshop
-  posted: false
-  post_date:
-  caption:
+  posted: true
+  post_date: '2026-10-11'
+  caption: My workshop in Inverness looks a little like this. I’m always moving things
+    around, and it’s always a mess.
   platforms:
-    instagram:
-    pinterest:
+    instagram: 'published: https://www.instagram.com/p/DeXQIjbFKC0/'
+    pinterest: 'published: https://www.pinterest.com/pin/1131177631465852049'
+    x: 'published: https://x.com/2105781742431092736/status/2109313081884999989'
+    bluesky: 'published: https://bsky.app/profile/faevad.bsky.social/post/3mxmos6roqw2a'
+    mastodon: 'published: https://mastodon.art/@faevad/117423341765695599'
+    threads: 'published: https://www.threads.com/@faevad01/post/DeXCZpPm3dz'
+    facebook: 'published: https://www.facebook.com/1374753972384803_122098703583508246'
 
 - catalog_number: 5
   id: the-bedroom
