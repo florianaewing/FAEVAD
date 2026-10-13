@@ -14,6 +14,15 @@
 # Tuesdays are off -- people are preoccupied at the start of the week.
 post_days: [wednesday, thursday, friday, saturday, sunday]
 
+# Goblin Tales Fridays: on this day the bot posts the next of Sam Thwaits'
+# comics instead of one of the artist's pieces, with this caption filled in
+# from the goblintales repo's data.json ({number} is the comic's place in
+# that file). Nothing to reply to -- the bot just sends a heads-up and posts.
+# Once every comic is out, the day goes back to the artist's own pieces.
+goblintales:
+  day: friday
+  caption: "Please enjoy Goblin Tales, drawn and written by Sam Thwaits, this one is called Goblin Tales #{number}: {title}, can't wait until next Friday? Read ahead at goblin-tales.com"
+
 # All times are Pacific. If the caption arrives after a platform's slot,
 # that platform posts immediately instead.
 post_times:
@@ -59,3 +68,8 @@ collections:
     october_tags: [inktober2026]
     threads_topic: Ink Art
     pinterest_title_suffix: Ink Illustration
+
+  goblintales:
+    tags: [webcomic, comics, comicstrip, indiecomics, goblins]
+    threads_topic: Comics
+    pinterest_title_suffix: Goblin Tales Webcomic

@@ -224,13 +224,15 @@ def _byte_span(text: str, index: int, fragment: str) -> dict:
     return {"byteStart": start, "byteEnd": start + len(fragment.encode("utf-8"))}
 
 
-def _bluesky_facets(text: str, link_url: str | None, hashtags: list[str]) -> list[dict]:
+def _bluesky_facets(text: str, links: dict[str, str], hashtags: list[str]) -> list[dict]:
+    """links maps text in the post to the URL it should link to."""
     facets = []
-    if link_url and (index := text.rfind(link_url)) >= 0:
-        facets.append({
-            "index": _byte_span(text, index, link_url),
-            "features": [{"$type": "app.bsky.richtext.facet#link", "uri": link_url}],
-        })
+    for link_text, uri in links.items():
+        if (index := text.rfind(link_text)) >= 0:
+            facets.append({
+                "index": _byte_span(text, index, link_text),
+                "features": [{"$type": "app.bsky.richtext.facet#link", "uri": uri}],
+            })
     for tag in hashtags:
         if (index := text.rfind(f"#{tag}")) >= 0:
             facets.append({
@@ -250,7 +252,7 @@ def post_to_bluesky(
     text: str,
     image_path: Path,
     alt_text: str,
-    link_url: str | None,
+    links: dict[str, str],
     hashtags: list[str],
 ) -> Published:
     session = _request(
@@ -274,7 +276,7 @@ def post_to_bluesky(
         "$type": "app.bsky.feed.post",
         "text": text,
         "createdAt": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
-        "facets": _bluesky_facets(text, link_url, hashtags),
+        "facets": _bluesky_facets(text, links, hashtags),
         "embed": {
             "$type": "app.bsky.embed.images",
             "images": [{"alt": alt_text, "image": blob}],

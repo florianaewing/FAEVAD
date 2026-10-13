@@ -41,6 +41,9 @@ class PlatformPost:
     topic_tag: str | None = None  # Threads only
     title: str | None = None      # Pinterest only
     destination_url: str | None = None  # Pinterest only: where the pin links to
+    # Text already in the caption that should be a link where the platform
+    # needs links marked up (Bluesky): {text in the post: URL}.
+    text_links: dict[str, str] = field(default_factory=dict)
 
 
 def load_strategy() -> dict:
@@ -49,6 +52,11 @@ def load_strategy() -> dict:
 
 
 WEEKDAYS = ("monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday")
+
+
+def is_goblintales_day(strategy: dict, day: dt.date) -> bool:
+    goblintales_day = strategy.get("goblintales", {}).get("day")
+    return bool(goblintales_day) and WEEKDAYS[day.weekday()] == goblintales_day.lower()
 
 
 def posts_on(strategy: dict, day: dt.date) -> bool:
@@ -95,12 +103,16 @@ def build_post(
     strategy: dict,
     platform: str,
     caption: str,
-    piece_url: str,
+    piece_url: str | None,
     piece_title: str,
     collection: str,
     day: dt.date,
+    destination_url: str | None = None,
+    text_links: dict[str, str] | None = None,
 ) -> PlatformPost:
-    link = tracked_link(piece_url, platform) if platform in LINKED_PLATFORMS else None
+    """Without a piece_url (Goblin Tales), no link is added under the caption,
+    and Pinterest pins link to destination_url instead."""
+    link = tracked_link(piece_url, platform) if piece_url and platform in LINKED_PLATFORMS else None
     base = f"{caption}\n\n{link}" if link else caption
 
     hashtags = pick_tags(strategy, platform, collection, day)
@@ -112,12 +124,12 @@ def build_post(
         hashtags.pop()
     text = f"{base}\n\n" + " ".join(f"#{tag}" for tag in hashtags) if hashtags else base
 
-    post = PlatformPost(text=text, link=link, hashtags=hashtags)
+    post = PlatformPost(text=text, link=link, hashtags=hashtags, text_links=dict(text_links or {}))
     collection_settings = strategy["collections"].get(collection, {})
     if platform == "threads":
         post.topic_tag = collection_settings.get("threads_topic")
     if platform == "pinterest":
         suffix = collection_settings.get("pinterest_title_suffix")
         post.title = f"{piece_title} | {suffix}"[:100] if suffix else piece_title
-        post.destination_url = tracked_link(piece_url, "pinterest")
+        post.destination_url = tracked_link(piece_url, "pinterest") if piece_url else destination_url
     return post

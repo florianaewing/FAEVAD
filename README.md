@@ -37,7 +37,8 @@ artist's own computer as a systemd user service. It posts Wednesday through Sund
 are set in [`social/strategy.yml`](social/strategy.yml)). On each posting day:
 
 1. At 8:00 Pacific it sends the next unposted piece in [`social/queue.yml`](social/queue.yml)
-   to the artist on Telegram. Watercolors go out on Wednesdays, inks on the other posting days.
+   to the artist on Telegram. Watercolors go out on Wednesdays, inks on Thursday, Saturday and
+   Sunday.
 2. The artist replies with a caption. It's used word for word; the bot never writes or edits
    text.
 3. Each platform posts at its own best time of day (see [`social/strategy.yml`](social/strategy.yml)),
@@ -49,6 +50,14 @@ are set in [`social/strategy.yml`](social/strategy.yml)). On each posting day:
    committed and pushed.
 5. Afterwards, it forwards new comments for a few hours, records each post's stats after 48
    hours, and sends a weekly summary on Sundays.
+
+**Goblin Tales Fridays.** Fridays post the next comic from
+[Goblin Tales](https://goblin-tales.com), a webcomic by Sam Thwaits, instead of one of the
+artist's pieces. The comics and their order come from the `data.json` file in the
+goblintales repo, and the caption is filled in automatically from the template in
+`strategy.yml`, so there's nothing to reply to. The bot sends a heads-up, posts on the same
+schedule, and records each comic in [`social/goblintales.yml`](social/goblintales.yml). It
+never posts a comic larger than 500px; full-size originals are kept off the web.
 
 API keys and other secrets live outside the repo in `~/.config/faevad-social-bot/.env`.
 [`social/bot/.env.example`](social/bot/.env.example) explains where each one comes from.

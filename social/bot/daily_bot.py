@@ -16,6 +16,10 @@ piece link and hashtags under the caption per platform. A failed platform
 sends a bug report right away, on Telegram and as a GitHub issue; once all have posted, the results
 go into social/queue.yml, get committed + pushed, and a summary is sent.
 
+On the Goblin Tales day (Fridays, see goblintales.py) there's no caption to
+ask for: the bot posts the next of Sam Thwaits' comics with an automatic
+caption and just sends a heads-up.
+
 After posting, the bot forwards new comments from the direct platforms for
 a few hours, collects each post's stats two days later, and sends a weekly
 stats summary on Sundays (tracking.py). Reddit and Facebook Marketplace are
@@ -42,6 +46,7 @@ from dotenv import load_dotenv
 from telegram import Update
 from telegram.ext import Application, ContextTypes, MessageHandler, filters
 
+import goblintales
 import instagram_images
 import platforms
 import strategy
@@ -243,9 +248,8 @@ def next_unposted_entry(queue: list[dict], artwork: dict, day: dt.date) -> dict 
     return (todays or unposted or [None])[0]
 
 
-def git_commit_and_push(entry: dict, piece_title: str) -> None:
-    message = f"Post catalog #{entry['catalog_number']} ({piece_title}) to social media"
-    subprocess.run(["git", "add", "social/queue.yml"], cwd=REPO_ROOT, check=True)
+def git_commit_and_push(path: str, message: str) -> None:
+    subprocess.run(["git", "add", path], cwd=REPO_ROOT, check=True)
     subprocess.run(["git", "commit", "-m", message], cwd=REPO_ROOT, check=True)
     subprocess.run(
         ["git", "push", PUSH_URL, "HEAD:main"],
@@ -268,8 +272,11 @@ def image_ready_for_instagram(piece: dict) -> bool:
 
 async def send_daily_prompt(context: ContextTypes.DEFAULT_TYPE) -> None:
     today = dt.datetime.now(DAILY_SEND_TZ).date()
-    if not strategy.posts_on(strategy.load_strategy(), today):
+    plan = strategy.load_strategy()
+    if not strategy.posts_on(plan, today):
         log.info("not a posting day (%s), skipping the prompt", today.strftime("%A"))
+        return
+    if strategy.is_goblintales_day(plan, today) and await start_goblintales_day(context, today):
         return
     queue = load_queue()
     artwork = load_artwork()
@@ -369,7 +376,7 @@ def publish_directly(platform: str, post: strategy.PlatformPost, image_path: Pat
     if platform == "bluesky":
         return platforms.post_to_bluesky(
             cfg.bluesky_handle, cfg.bluesky_app_password, post.text, image_path, alt_text,
-            post.link, post.hashtags,
+            ({post.link: post.link} if post.link else {}) | post.text_links, post.hashtags,
         )
     if platform == "mastodon":
         return platforms.post_to_mastodon(
@@ -384,6 +391,29 @@ def publish_directly(platform: str, post: strategy.PlatformPost, image_path: Pat
     )
 
 
+async def send_post(
+    platform: str, post: strategy.PlatformPost, image_path: Path, image_url: str, alt_text: str
+) -> tuple[str, str | None]:
+    """Posts to one platform; returns its result string and the post's ref."""
+    try:
+        if platform in platforms.BUFFER_PLATFORMS:
+            post_id = await asyncio.to_thread(
+                platforms.post_to_buffer_channel, cfg, platform, post.text, image_url,
+                alt_text, post.title, post.destination_url,
+            )
+            result = await wait_for_buffer_post(post_id)
+            ref = post_id
+        else:
+            published = await asyncio.to_thread(
+                publish_directly, platform, post, image_path, image_url, alt_text
+            )
+            result, ref = f"published: {published.link}", published.ref
+    except Exception as exc:
+        log.error("%s post failed:\n%s", platform, redact("".join(traceback.format_exception(exc))))
+        return f"error: {redact(str(exc))}", None
+    return redact(result), ref
+
+
 async def publish(platform: str, entry: dict, piece: dict, caption: str, day: dt.date) -> str:
     """Posts one platform's version of the day's piece; returns its result string."""
     artwork = load_artwork()
@@ -394,24 +424,32 @@ async def publish(platform: str, entry: dict, piece: dict, caption: str, day: dt
     )
     try:
         image_url = f"{SITE_BASE_URL}/{image_for(platform, piece)}"
-        if platform in platforms.BUFFER_PLATFORMS:
-            post_id = await asyncio.to_thread(
-                platforms.post_to_buffer_channel, cfg, platform, post.text, image_url,
-                piece["alt"], post.title, post.destination_url,
-            )
-            result = await wait_for_buffer_post(post_id)
-            ref = post_id
-        else:
-            published = await asyncio.to_thread(
-                publish_directly, platform, post, REPO_ROOT / piece["image"], image_url, piece["alt"]
-            )
-            result, ref = f"published: {published.link}", published.ref
-    except Exception as exc:
-        log.error("%s post failed:\n%s", platform, redact("".join(traceback.format_exception(exc))))
-        return f"error: {redact(str(exc))}"
+    except FileNotFoundError as exc:
+        return f"error: {exc}"
+    result, ref = await send_post(platform, post, REPO_ROOT / piece["image"], image_url, piece["alt"])
     if result.startswith("published"):
         tracking.record_post(entry, piece["title"], platform, result.split(": ", 1)[1], ref)
-    return redact(result)
+    return result
+
+
+GOBLINTALES_COLLECTION = "goblintales"
+
+
+async def publish_comic(platform: str, comic: goblintales.Comic, caption: str, day: dt.date) -> str:
+    """Posts one platform's version of a Goblin Tales comic; returns its result string."""
+    post = strategy.build_post(
+        strategy.load_strategy(), platform, caption, None, comic.title, GOBLINTALES_COLLECTION, day,
+        destination_url=goblintales.SITE_URL,
+        text_links={"goblin-tales.com": goblintales.SITE_URL},
+    )
+    if platform == "instagram" and instagram_images.needs_mat(comic.image_path):
+        return f"error: {comic.filename} is outside Instagram's 4:5 to 1.91:1 range"
+    # The comic's title is also its alt text on goblin-tales.com.
+    result, ref = await send_post(platform, post, comic.image_path, comic.image_url, comic.title)
+    if result.startswith("published"):
+        record = {"catalog_number": f"goblintales-{comic.number}", "id": comic.filename}
+        tracking.record_post(record, comic.label, platform, result.split(": ", 1)[1], ref)
+    return result
 
 
 GITHUB_REPO = "florianaewing/FAEVAD"
@@ -511,19 +549,30 @@ async def run_slot(context: ContextTypes.DEFAULT_TYPE) -> None:
     schedule = load_state().get("schedule")
     if not schedule or schedule["platforms"][platform]["result"] is not None:
         return  # already done, e.g. re-armed twice around a restart
-    queue = load_queue()
-    entry = next(e for e in queue if e["catalog_number"] == schedule["catalog_number"])
-    piece = find_piece(load_artwork(), entry["id"])
     day = dt.date.fromisoformat(schedule["date"])
 
-    result = await publish(platform, entry, piece, schedule["caption"], day)
-    if result.startswith("error"):
-        log.error("%s post for catalog #%s: %s", platform, entry["catalog_number"], result)
-        await send_bug_report(
-            context,
-            f"{platform} post failed: #{entry['catalog_number']} {piece['title']} ({day.isoformat()})",
-            format_bug_report(platform, entry, piece, schedule["caption"], result.split(": ", 1)[1]),
-        )
+    if "goblintales" in schedule:
+        comic = goblintales.comic_by_number(schedule["goblintales"])
+        result = await publish_comic(platform, comic, schedule["caption"], day)
+        if result.startswith("error"):
+            log.error("%s post for %s: %s", platform, comic.label, result)
+            await send_bug_report(
+                context,
+                f"{platform} post failed: {comic.label} ({day.isoformat()})",
+                format_comic_bug_report(platform, comic, schedule["caption"], result.split(": ", 1)[1]),
+            )
+    else:
+        queue = load_queue()
+        entry = next(e for e in queue if e["catalog_number"] == schedule["catalog_number"])
+        piece = find_piece(load_artwork(), entry["id"])
+        result = await publish(platform, entry, piece, schedule["caption"], day)
+        if result.startswith("error"):
+            log.error("%s post for catalog #%s: %s", platform, entry["catalog_number"], result)
+            await send_bug_report(
+                context,
+                f"{platform} post failed: #{entry['catalog_number']} {piece['title']} ({day.isoformat()})",
+                format_bug_report(platform, entry, piece, schedule["caption"], result.split(": ", 1)[1]),
+            )
 
     async with schedule_lock:
         state = load_state()
@@ -539,6 +588,9 @@ async def run_slot(context: ContextTypes.DEFAULT_TYPE) -> None:
 
 async def finish_day(context: ContextTypes.DEFAULT_TYPE, schedule: dict, results: dict[str, str]) -> None:
     """Every platform has answered: record the day in queue.yml and report."""
+    if "goblintales" in schedule:
+        await finish_goblintales_day(context, schedule, results)
+        return
     queue = load_queue()
     entry = next(e for e in queue if e["catalog_number"] == schedule["catalog_number"])
     piece = find_piece(load_artwork(), entry["id"])
@@ -549,10 +601,119 @@ async def finish_day(context: ContextTypes.DEFAULT_TYPE, schedule: dict, results
     save_queue(queue)
     report = format_report(piece["title"], entry["platforms"])
     try:
-        git_commit_and_push(entry, piece["title"])
+        git_commit_and_push(
+            "social/queue.yml",
+            f"Post catalog #{entry['catalog_number']} ({piece['title']}) to social media",
+        )
     except subprocess.CalledProcessError:
         log.exception("git commit/push of social/queue.yml failed")
         report += "\n❌ git: queue.yml saved locally but not pushed -- check the bot's log"
+    await context.bot.send_message(chat_id=cfg.telegram_chat_id, text=report)
+
+
+def format_comic_bug_report(platform: str, comic: goblintales.Comic, caption: str, error: str) -> str:
+    now = dt.datetime.now(DAILY_SEND_TZ).strftime("%Y-%m-%d %H:%M %Z")
+    route = "Buffer" if platform in platforms.BUFFER_PLATFORMS else "direct API"
+    return "\n".join([
+        f"🐞 Bug report: {platform} ({route})",
+        f"Comic: {comic.label} ({comic.filename})",
+        f"Time: {now}",
+        f"Image: {comic.image_url}",
+        f"Caption: {len(caption)} characters",
+        "",
+        error,
+    ])
+
+
+def schedule_posts(job_queue, now: dt.datetime, schedule: dict) -> dict[str, dt.datetime]:
+    """Saves the day's schedule (its fields plus each platform's slot) and arms
+    every slot; returns when each platform posts."""
+    due = {platform: slot_datetime(platform, now.date(), now) for platform in enabled_platforms()}
+    schedule["date"] = now.date().isoformat()
+    schedule["platforms"] = {p: {"due": when.isoformat(), "result": None} for p, when in due.items()}
+    state = load_state()
+    state["schedule"] = schedule
+    save_state(state)
+    for platform, when in due.items():
+        arm_slot(job_queue, platform, when)
+    return due
+
+
+def format_schedule(due: dict[str, dt.datetime], now: dt.datetime) -> str:
+    return "\n".join(
+        f"{when.strftime('%-I:%M %p') if when > now else 'now'} -- {platform}"
+        for platform, when in sorted(due.items(), key=lambda item: item[1])
+    )
+
+
+async def start_goblintales_day(context: ContextTypes.DEFAULT_TYPE, today: dt.date) -> bool:
+    """Schedules the next Goblin Tales comic with its automatic caption.
+
+    Returns False when every comic has been posted, so the day goes to the
+    artist's own pieces instead.
+    """
+    try:
+        await asyncio.to_thread(goblintales.pull)
+    except subprocess.CalledProcessError as exc:
+        # Post from the local copy anyway; it's only missing Sam's newest uploads.
+        log.error("pulling the goblintales repo failed: %s", exc)
+    comic = goblintales.next_comic()
+    if comic is None:
+        log.info("every Goblin Tales comic has been posted; posting the artist's own piece today")
+        return False
+
+    problem = goblintales.image_problem(comic)
+    if problem:
+        await send_bug_report(
+            context, f"Goblin Tales not posted: {comic.label} ({today.isoformat()})",
+            f"🐞 Goblin Tales wasn't posted today\n\n{problem}",
+        )
+        return True
+    try:
+        await asyncio.to_thread(goblintales.save_original, comic)
+    except Exception as exc:
+        # Not a reason to skip the post -- the original can be copied later.
+        log.error("saving the original of %s failed: %s", comic.filename, exc)
+        await context.bot.send_message(
+            chat_id=cfg.telegram_chat_id,
+            text=f"⚠️ Couldn't copy the original of {comic.filename} to ~/Pictures/GoblinTales: {exc}",
+        )
+
+    caption = goblintales.caption(strategy.load_strategy()["goblintales"]["caption"], comic)
+    # A late reply to an earlier day's prompt would replace today's schedule;
+    # that piece gets asked for again on the next regular day instead.
+    save_pending_catalog_number(None)
+    now = dt.datetime.now(DAILY_SEND_TZ)
+    async with schedule_lock:
+        due = schedule_posts(context.job_queue, now, {"goblintales": comic.number, "caption": caption})
+    await context.bot.send_message(
+        chat_id=cfg.telegram_chat_id,
+        text=(
+            f"Goblin Tales Friday: {comic.label}\n{comic.image_url}\n\n"
+            f"Posting with the automatic caption (Pacific):\n{format_schedule(due, now)}"
+        ),
+    )
+    log.info("scheduled %s", comic.label)
+    return True
+
+
+async def finish_goblintales_day(context: ContextTypes.DEFAULT_TYPE, schedule: dict, results: dict[str, str]) -> None:
+    comic = goblintales.comic_by_number(schedule["goblintales"])
+    posted = goblintales.load_posted()
+    posted.append({
+        "number": comic.number,
+        "filename": comic.filename,
+        "title": comic.title,
+        "post_date": schedule["date"],
+        "platforms": {p: r[:QUEUE_RESULT_MAX_CHARS] for p, r in results.items()},
+    })
+    goblintales.save_posted(posted)
+    report = format_report(comic.label, posted[-1]["platforms"])
+    try:
+        git_commit_and_push("social/goblintales.yml", f"Post {comic.label} to social media")
+    except subprocess.CalledProcessError:
+        log.exception("git commit/push of social/goblintales.yml failed")
+        report += "\n❌ git: goblintales.yml saved locally but not pushed -- check the bot's log"
     await context.bot.send_message(chat_id=cfg.telegram_chat_id, text=report)
 
 
@@ -567,25 +728,12 @@ async def handle_caption_reply(update: Update, context: ContextTypes.DEFAULT_TYP
     save_pending_catalog_number(None)
 
     now = dt.datetime.now(DAILY_SEND_TZ)
-    due = {platform: slot_datetime(platform, now.date(), now) for platform in enabled_platforms()}
     async with schedule_lock:
-        state = load_state()
-        state["schedule"] = {
-            "catalog_number": pending_number,
-            "caption": update.message.text,
-            "date": now.date().isoformat(),
-            "platforms": {p: {"due": when.isoformat(), "result": None} for p, when in due.items()},
-        }
-        save_state(state)
-    for platform, when in due.items():
-        arm_slot(context.job_queue, platform, when)
-
-    lines = [
-        f"{when.strftime('%-I:%M %p') if when > now else 'now'} -- {platform}"
-        for platform, when in sorted(due.items(), key=lambda item: item[1])
-    ]
+        due = schedule_posts(
+            context.job_queue, now, {"catalog_number": pending_number, "caption": update.message.text}
+        )
     await update.message.reply_text(
-        "Got it. Posting schedule (Pacific):\n" + "\n".join(lines)
+        "Got it. Posting schedule (Pacific):\n" + format_schedule(due, now)
         + "\n\nI'll send a bug report right away if anything fails, and a summary once they're all out."
     )
 

@@ -1,0 +1,8 @@
+# Goblin Tales Fridays: which of Sam Thwaits' comics have been posted.
+#
+# The comics themselves (and their order) come from data.json in the
+# goblintales repo -- a comic's number is its place in that file. The bot
+# posts the first comic not listed here every Friday, and appends an entry
+# after posting (see bot/goblintales.py). Don't hand-edit except to undo a
+# post: removing an entry makes that comic come up again.
+

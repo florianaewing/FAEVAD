@@ -2,7 +2,8 @@
 #
 # catalog_number determines posting order — the Telegram bot walks pieces in
 # this order, one per day, starting from 1. Watercolors only go out on
-# Wednesdays and inks on every other day; when one runs out, its days fall
+# Wednesdays and inks on the other posting days except Fridays, which belong
+# to Goblin Tales (see goblintales.yml); when one runs out, its days fall
 # back to the other (see WEDNESDAY_COLLECTION in bot/daily_bot.py). Every piece here must already be
 # live on the site (in _data/artwork.yml with working Stripe print links)
 # before it can be queued — the daily post is always of something currently
