@@ -657,7 +657,7 @@ async def start_goblintales_day(context: ContextTypes.DEFAULT_TYPE, today: dt.da
     except subprocess.CalledProcessError as exc:
         # Post from the local copy anyway; it's only missing Sam's newest uploads.
         log.error("pulling the goblintales repo failed: %s", exc)
-    comic = goblintales.next_comic()
+    comic = goblintales.next_comic(today, strategy.load_strategy()["goblintales"].get("holidays", {}))
     if comic is None:
         log.info("every Goblin Tales comic has been posted; posting the artist's own piece today")
         return False

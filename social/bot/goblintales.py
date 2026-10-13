@@ -16,6 +16,7 @@ What has been posted is recorded in social/goblintales.yml, which the bot
 commits and pushes like queue.yml.
 """
 
+import datetime as dt
 import json
 import subprocess
 from dataclasses import dataclass
@@ -31,6 +32,9 @@ ORIGINALS_DIR = Path.home() / "Pictures" / "GoblinTales"
 SITE_URL = "https://goblin-tales.com"
 COMICS_DIR = "images/artwork"
 MAX_LONGEST_SIDE = 500
+# A holiday comic whose holiday was missed (e.g. the bot was off) still
+# posts if it's this soon after; otherwise it waits for next year's.
+HOLIDAY_WINDOW = dt.timedelta(days=14)
 
 
 @dataclass
@@ -82,9 +86,28 @@ def save_posted(posted: list[dict]) -> None:
     POSTED_PATH.write_text("".join(header) + body)
 
 
-def next_comic() -> Comic | None:
+def _holiday_is_now(month_day: str, day: dt.date) -> bool:
+    """Whether day falls within HOLIDAY_WINDOW on or after the holiday's latest
+    occurrence -- so a 12-31 holiday counts on January 1st too."""
+    month, dom = (int(part) for part in month_day.split("-"))
+    latest = dt.date(day.year, month, dom)
+    if latest > day:
+        latest = dt.date(day.year - 1, month, dom)
+    return day - latest < HOLIDAY_WINDOW
+
+
+def next_comic(day: dt.date, holidays: dict[str, str]) -> Comic | None:
+    """The comic for a Goblin Tales day: a holiday comic whose holiday it is,
+    otherwise the first unposted comic that isn't waiting for its holiday.
+
+    holidays maps a comic's filename to its holiday's date (MM-DD).
+    """
     posted = {p["filename"] for p in load_posted()}
-    return next((c for c in load_comics() if c.filename not in posted), None)
+    unposted = [c for c in load_comics() if c.filename not in posted]
+    for comic in unposted:
+        if comic.filename in holidays and _holiday_is_now(holidays[comic.filename], day):
+            return comic
+    return next((c for c in unposted if c.filename not in holidays), None)
 
 
 def comic_by_number(number: int) -> Comic:
