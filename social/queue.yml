@@ -272,12 +272,18 @@
 
 - catalog_number: 25
   id: angler-fish
-  posted: false
-  post_date:
-  caption:
+  posted: true
+  post_date: '2026-10-14'
+  caption: Sometimes you gotta just kick your feet up and paint something completely
+    unrecognizable
   platforms:
-    instagram:
-    pinterest:
+    instagram: 'published: https://www.instagram.com/p/DefWu7fFC_j/'
+    pinterest: 'published: https://www.pinterest.com/pin/1131177631466098822'
+    x: 'published: https://x.com/2105781742431092736/status/2110483693781299537'
+    bluesky: 'published: https://bsky.app/profile/faevad.bsky.social/post/3mxuinztmit2k'
+    mastodon: 'published: https://mastodon.art/@faevad/117441396672642784'
+    threads: 'published: https://www.threads.com/@faevad01/post/DefWvBvkgTB'
+    facebook: 'published: https://www.facebook.com/1374753972384803_122101345431508246'
 
 - catalog_number: 26
   id: aquatic-impression
