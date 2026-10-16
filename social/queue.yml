@@ -87,12 +87,18 @@
 
 - catalog_number: 5
   id: the-bedroom
-  posted: false
-  post_date:
-  caption:
+  posted: true
+  post_date: '2026-10-15'
+  caption: Big fan of fluffy quilts and blankets. Also I learned recently that some
+    people are against naps? Nobody asked me but that’s very sad imo
   platforms:
-    instagram:
-    pinterest:
+    instagram: 'published: https://www.instagram.com/p/DehqZm2IDa9/'
+    pinterest: 'published: https://www.pinterest.com/pin/1131177631466183582'
+    x: 'published: https://x.com/2105781742431092736/status/2110808300191199249'
+    bluesky: 'published: https://bsky.app/profile/faevad.bsky.social/post/3mxwqqint7f2n'
+    mastodon: 'published: https://mastodon.art/@faevad/117446468605060296'
+    threads: 'published: https://www.threads.com/@faevad01/post/DehqWTgD3Mc'
+    facebook: 'published: https://www.facebook.com/1374753972384803_122102023995508246'
 
 - catalog_number: 6
   id: sky-goddess-two
