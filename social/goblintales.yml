@@ -6,3 +6,15 @@
 # after posting (see bot/goblintales.py). Don't hand-edit except to undo a
 # post: removing an entry makes that comic come up again.
 
+- number: 1
+  filename: Gobfeed1.jpg
+  title: GOBLINS DISCOVER THE WEB
+  post_date: '2026-10-16'
+  platforms:
+    instagram: 'published: https://www.instagram.com/p/DekIG6aCVxA/'
+    pinterest: 'published: https://www.pinterest.com/pin/1131177631466270593'
+    x: 'published: https://x.com/2105781742431092736/status/2111125021447843965'
+    bluesky: 'published: https://bsky.app/profile/faevad.bsky.social/post/3mxzb4ru6cz2x'
+    mastodon: 'published: https://mastodon.art/@faevad/117451653345993008'
+    threads: 'published: https://www.threads.com/@faevad01/post/Dej6X9Tmxj2'
+    facebook: 'published: https://www.facebook.com/1374753972384803_122102808225508246'
