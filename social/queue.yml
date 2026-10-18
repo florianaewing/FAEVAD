@@ -102,12 +102,18 @@
 
 - catalog_number: 6
   id: sky-goddess-two
-  posted: false
-  post_date:
-  caption:
+  posted: true
+  post_date: '2026-10-17'
+  caption: This one is inspired by some artwork I saw once in a book about ancient
+    religions
   platforms:
-    instagram:
-    pinterest:
+    instagram: 'published: https://www.instagram.com/p/Dems5x-iSUx/'
+    pinterest: 'published: https://www.pinterest.com/pin/1131177631466362821'
+    x: 'published: https://x.com/2105781742431092736/status/2111489189371916631'
+    bluesky: 'published: https://bsky.app/profile/faevad.bsky.social/post/3my3rlpdnfe2x'
+    mastodon: 'published: https://mastodon.art/@faevad/117457315699684706'
+    threads: 'published: https://www.threads.com/@faevad01/post/Demf-wAGyyd'
+    facebook: 'published: https://www.facebook.com/1374753972384803_122103699465508246'
 
 - catalog_number: 7
   id: mysterious-strangers
