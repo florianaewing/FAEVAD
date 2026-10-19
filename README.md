@@ -23,8 +23,8 @@ A Jekyll site on GitHub Pages, with no server of its own.
     for matching payments by hand.
   - **Bitcoin:** checkout is built (`cloudflare/`, `bitcoin-<id>.html`) but switched off in
     `_config.yml`.
-- **Images:** [`images/artwork/`](images/artwork/) holds only 500px web copies with their EXIF
-  data removed, so they can't be printed at good quality. The originals stay off the repo.
+- **Images:** [`images/artwork/`](images/artwork/) holds only 500px web copies (500px on the
+  long side, or on the short side for tall pieces) with their EXIF data removed, so they can't be printed at good quality. The originals stay off the repo.
   [`images/instagram/`](images/instagram/) has white-matted copies of pieces whose shape
   Instagram won't accept.
 - **Analytics:** [GoatCounter](https://www.goatcounter.com/) counts visitors without cookies,
@@ -67,7 +67,7 @@ Setup steps are in the header of
 ## Adding a piece
 
 1. Save the full-size original outside the repo. Add a 500px copy with its EXIF data removed to
-   `images/artwork/`.
+   `images/artwork/` (500px on the long side; on the short side if the piece is taller than wide).
 2. Create its three Stripe print links.
 3. Add the piece to `_data/artwork.yml` and create its `piece-`, `buy-` and `venmo-` pages.
 4. Add it to the end of `social/queue.yml`.
