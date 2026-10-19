@@ -44,11 +44,13 @@ import requests
 import yaml
 from dotenv import load_dotenv
 from telegram import Update
+from telegram.error import NetworkError
 from telegram.ext import Application, ContextTypes, MessageHandler, filters
 
 import goblintales
 import instagram_images
 import platforms
+import site_stats
 import strategy
 import tracking
 from config import load_config
@@ -115,6 +117,7 @@ def redact(text: str) -> str:
         cfg.threads_access_token,
         cfg.facebook_page_access_token,
         cfg.github_token,
+        cfg.goatcounter_api_key,
     ]
     try:
         secrets.append(json.loads(THREADS_TOKEN_PATH.read_text())["token"])
@@ -862,11 +865,26 @@ def format_weekly_report(posts: list[dict]) -> str:
 async def send_weekly_report(context: ContextTypes.DEFAULT_TYPE) -> None:
     since = dt.datetime.now(dt.timezone.utc) - dt.timedelta(days=9)
     posts = tracking.collected_since(tracking.load_posts(), since)
-    await context.bot.send_message(chat_id=cfg.telegram_chat_id, text=format_weekly_report(posts))
+    text = format_weekly_report(posts)
+    if cfg.goatcounter_api_key:
+        try:
+            stats = await asyncio.to_thread(site_stats.fetch, cfg.goatcounter_api_key)
+            text += "\n" + site_stats.format_section(stats)
+        except Exception as exc:
+            log.error("GoatCounter stats failed: %s", redact(str(exc)))
+            text += f"\n\n🌐 Site stats unavailable: {redact(str(exc))[:200]}"
+    await context.bot.send_message(chat_id=cfg.telegram_chat_id, text=text[:TELEGRAM_MAX_CHARS])
 
 
 async def report_crash(update: object, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Sends a bug report for anything that crashes the bot mid-task."""
+    # A network blip while checking Telegram for new messages isn't a crash:
+    # the library retries the check by itself and nothing is lost. Network
+    # errors inside a job or a reply still get reported -- those mean
+    # something (like the daily prompt) didn't go out.
+    if isinstance(context.error, NetworkError) and update is None and context.job is None:
+        log.warning("Telegram polling hiccup, retrying: %s", redact(str(context.error)))
+        return
     trace = redact("".join(traceback.format_exception(context.error)))
     log.error("unhandled error:\n%s", trace)
     error_line = redact(f"{type(context.error).__name__}: {context.error}")[:120]

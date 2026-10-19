@@ -36,6 +36,8 @@ class Config:
     facebook_page_access_token: str | None = None
     # Bug reports are also filed as GitHub issues once this is set.
     github_token: str | None = None
+    # Site traffic (GoatCounter) is added to the weekly report once this is set.
+    goatcounter_api_key: str | None = None
 
     @property
     def x_enabled(self) -> bool:
@@ -93,4 +95,5 @@ def load_config() -> Config:
         facebook_page_id=optional("FACEBOOK_PAGE_ID"),
         facebook_page_access_token=optional("FACEBOOK_PAGE_ACCESS_TOKEN"),
         github_token=optional("GITHUB_TOKEN"),
+        goatcounter_api_key=optional("GOATCOUNTER_API_KEY"),
     )
