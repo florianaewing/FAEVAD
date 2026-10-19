@@ -47,6 +47,7 @@ from telegram import Update
 from telegram.error import NetworkError
 from telegram.ext import Application, ContextTypes, MessageHandler, filters
 
+import competitions
 import goblintales
 import instagram_images
 import platforms
@@ -876,6 +877,14 @@ async def send_weekly_report(context: ContextTypes.DEFAULT_TYPE) -> None:
     await context.bot.send_message(chat_id=cfg.telegram_chat_id, text=text[:TELEGRAM_MAX_CHARS])
 
 
+async def send_competition_reminders(context: ContextTypes.DEFAULT_TYPE) -> None:
+    today = dt.datetime.now(DAILY_SEND_TZ).date()
+    for kind, comp in competitions.due(competitions.load(), today):
+        await context.bot.send_message(
+            chat_id=cfg.telegram_chat_id, text=competitions.format_reminder(kind, comp)
+        )
+
+
 async def report_crash(update: object, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Sends a bug report for anything that crashes the bot mid-task."""
     # A network blip while checking Telegram for new messages isn't a crash:
@@ -911,6 +920,8 @@ def main() -> None:
     )
     jobs.run_repeating(check_comments, interval=COMMENT_CHECK_INTERVAL_SECONDS, first=60)
     jobs.run_daily(collect_metrics, time=dt.time(hour=7, minute=30, tzinfo=DAILY_SEND_TZ))
+    # Every day, posting days or not.
+    jobs.run_daily(send_competition_reminders, time=dt.time(hour=12, tzinfo=DAILY_SEND_TZ))
     # PTB numbers weekdays 0-6 from Sunday.
     jobs.run_daily(send_weekly_report, time=dt.time(hour=18, tzinfo=DAILY_SEND_TZ), days=(0,))
     log.info("faevad-social-bot starting, daily prompt at %02d:%02d", DAILY_SEND_HOUR, DAILY_SEND_MINUTE)

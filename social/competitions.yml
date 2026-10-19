@@ -1,0 +1,170 @@
+# Art competitions the bot reminds the artist about on Telegram (see
+# bot/competitions.py). For each approved competition it sends two messages,
+# both at noon Pacific: one 14 days before submissions open, and one on the
+# day they open.
+#
+# Only entries with `approved: true` get reminders; the artist approves them.
+# `opens_estimated: true` means the date is a guess from past years' calls,
+# not announced yet -- the reminder says so. Once a call is announced, set
+# the real date and change it to false. After a competition opens, move
+# `opens` (and `deadline`) to next year's call so it comes up again.
+#
+# Every competition here takes digital submissions (photos of the work) for
+# jurying. Some ask for the original to be shipped or delivered if accepted;
+# `notes` says so.
+
+- id: gallery-110-international
+  name: Gallery 110 Annual International Juried Exhibition
+  where: Seattle, WA (Pioneer Square)
+  url: https://gallery110.com
+  eligibility: Open to artists worldwide
+  media: All media
+  fee: $40 for up to 3 images, +$10 per extra image
+  opens: 2027-07-21
+  opens_estimated: true
+  deadline: ~2027-10-31
+  notes: >-
+    The 2026 call (16th) is open now until 2026-10-31; show Feb 4-27, 2027.
+    Prizes $1,000 / $500 / $300 + $200 People's Choice. Accepted work is
+    delivered or shipped to the gallery.
+  approved: false
+
+- id: cvg-show
+  name: CVG Show
+  where: Collective Visions Gallery, Bremerton, WA
+  url: https://www.cvgshow.com
+  eligibility: Washington and Oregon artists
+  media: Photography/digital, 2D, 3D
+  fee: See the CaFE listing
+  opens: 2027-08-18
+  opens_estimated: true
+  deadline: ~2027-11-07
+  notes: >-
+    The 2027 show's call is open now until 2026-11-07. Up to $10,000 in cash
+    and purchase prizes. Blind jurying. Entries through CaFE.
+  approved: false
+
+- id: nwws-international-open
+  name: Northwest Watercolor Society Annual International Open
+  where: Northwest Watercolor Society (Seattle area); online exhibition
+  url: https://nwws.org/annual-international-open/
+  eligibility: Artists in the US and internationally; no membership needed
+  media: Water media (watercolor, gouache, acrylic, mixed water media)
+  fee: See the prospectus (2022 non-member fee was $40)
+  opens: 2027-05-01
+  opens_estimated: true
+  deadline: ~2027-07-08
+  notes: >-
+    Entries open in May each year for about 60 days. Over $14,000 in awards
+    in 2026. Watercolors only.
+  approved: false
+
+- id: spokane-watercolor-national
+  name: Spokane Watercolor Society National Juried Show
+  where: Spokane, WA
+  url: https://spokanewatercolorsociety.org
+  eligibility: US residents, 18+
+  media: Original watercolor on paper, made after Jan 1 of two years earlier
+  fee: $45 first painting, $25 second
+  opens: 2026-12-01
+  opens_estimated: true
+  deadline: ~2027-02-09
+  notes: >-
+    The open date hasn't been published in past years; the deadline is
+    always about Feb 9, so check the site in late November. Final judging is
+    of the originals (delivered or shipped). Painting area 8" min short side,
+    30" max long side.
+  approved: false
+
+- id: anacortes-juried-fine-art
+  name: Anacortes Arts Festival Juried Fine Art Exhibition
+  where: Depot Art Center, Anacortes, WA
+  url: https://www.anacortesartsfestival.com
+  eligibility: Washington state artists
+  media: All 2D and 3D media (no AI-generated work)
+  fee: $35
+  opens: 2027-01-09
+  opens_estimated: true
+  deadline: ~2027-03-12
+  notes: >-
+    Up to $5,500 in awards, $2,000 Best of Show. Show runs late July - early
+    August during the festival. 1-3 pieces per artist.
+  approved: false
+
+- id: lunaria-pnw-showcase
+  name: Lunaria Gallery Pacific Northwest Showcase
+  where: Lunaria Gallery, Silverton, OR
+  url: https://www.lunariagallery.com
+  eligibility: Oregon and Washington artists
+  media: Any 2D or 3D medium except video
+  fee: $25 for up to 5 works (one listing said free)
+  opens: 2027-01-05
+  opens_estimated: true
+  deadline: ~2027-02-28
+  notes: >-
+    Open date not published; the 2026 deadline was Feb 28. Accepted work
+    must be delivered in person (no shipping). Best of Show wins a solo show
+    in the Loft Gallery.
+  approved: false
+
+- id: aws-international
+  name: American Watercolor Society Annual International Exhibition
+  where: Salmagundi Club, New York (national)
+  url: https://americanwatercolorsociety.org
+  eligibility: Artists worldwide, members and non-members
+  media: Water media on paper (Yupo and illustration board allowed)
+  fee: See the prospectus
+  opens: 2027-09-01
+  opens_estimated: true
+  deadline: ~2027-11-12
+  notes: >-
+    The 160th call is open now until 2026-11-12 at NOON Eastern. Show Apr
+    6 - May 7, 2027. Dimensions must be given in inches. Accepted work is
+    shipped to New York.
+  approved: false
+
+- id: nws-international-open
+  name: National Watercolor Society International Open Exhibition
+  where: NWS Gallery, San Pedro, CA (national)
+  url: https://www.nationalwatercolorsociety.org/exhibits
+  eligibility: Artists worldwide
+  media: Water media
+  fee: $70 non-members (2026)
+  opens: 2027-04-01
+  opens_estimated: true
+  deadline: ~2027-05-22
+  notes: >-
+    NWS says entry "typically opens April 1". Show in October. Accepted work
+    is shipped.
+  approved: false
+
+- id: jacksons-art-prize
+  name: Jackson's Art Prize
+  where: Jackson's Art Supplies, UK (international, online + exhibition)
+  url: https://www.jacksonsart.com
+  eligibility: Artists worldwide, any age
+  media: Any 2D medium -- painting, drawing (ink counts), original prints; no digital/AI art
+  fee: About GBP 5 per artwork early bird, 6.50 standard (2026)
+  opens: 2026-11-12
+  opens_estimated: true
+  deadline: ~2027-02-11
+  notes: >-
+    The 2026 edition opened Nov 12, 2025 and closed Feb 11, 2026. Cheap,
+    per-artwork entry, so several pieces can go in.
+  approved: false
+
+- id: strokes-of-genius
+  name: "Strokes of Genius: The Best of Drawing"
+  where: Artists Network (international, published in a book/magazine)
+  url: https://www.artistsnetwork.com/art-competitions/strokes
+  eligibility: 18+, worldwide
+  media: Drawing -- check that pen and ink counts (rules say "dry medium traditionally considered drawing")
+  fee: $25-$40 non-members depending on deadline
+  opens: 2026-11-12
+  opens_estimated: true
+  deadline: ~2027-05-14
+  notes: >-
+    The 18th opened Nov 12, 2025 and closed May 14, 2026; earlier entry is
+    cheaper (super early bird ~mid-January). $2,000 first prize. Winners are
+    published, no shipping.
+  approved: false
