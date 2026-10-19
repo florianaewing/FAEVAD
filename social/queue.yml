@@ -117,12 +117,17 @@
 
 - catalog_number: 7
   id: mysterious-strangers
-  posted: false
-  post_date:
-  caption:
+  posted: true
+  post_date: '2026-10-18'
+  caption: Idk what these guys are about but they’re definitely in a cult
   platforms:
-    instagram:
-    pinterest:
+    instagram: 'published: https://www.instagram.com/p/Dep0DtrGOjp/'
+    pinterest: 'published: https://www.pinterest.com/pin/1131177631466451187'
+    x: 'published: https://x.com/2105781742431092736/status/2111955550405525782'
+    bluesky: 'published: https://bsky.app/profile/faevad.bsky.social/post/3my6pi7r7b62p'
+    mastodon: 'published: https://mastodon.art/@faevad/117464394485206871'
+    threads: 'published: https://www.threads.com/@faevad01/post/Dep0DtKj6OX'
+    facebook: 'published: https://www.facebook.com/1374753972384803_122104767009508246'
 
 - catalog_number: 8
   id: supplies
