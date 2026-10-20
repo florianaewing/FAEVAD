@@ -19,14 +19,21 @@
 
     <a class="back-link" href="piece-{{ piece.id }}.html">&larr; Back to {{ piece.title }}</a>
 
+    {% assign cards = false %}{% if piece.print.format == "cards" %}{% assign cards = true %}{% endif %}
     <div class="section-head">
-        <div class="eyebrow">Print Options</div>
+        <div class="eyebrow">{% if cards %}Card Options{% else %}Print Options{% endif %}</div>
         <h1 class="display">{{ piece.title }}</h1>
+        {% if cards %}
+        <p>
+            Folded cards printed with &ldquo;{{ piece.title }}&rdquo;, sold in packs.
+        </p>
+        {% else %}
         <p>
             Every print is mailed to you centered on a cardboard backing, inside a matching
             cellophane envelope. Choose a black or white backing at checkout &mdash; it doesn't
             change the price.
         </p>
+        {% endif %}
     </div>
 
     <div class="tier-grid">
@@ -35,12 +42,16 @@
             <h2>{{ tier.size }}</h2>
             <div class="tier-price">${{ tier.price }}</div>
             <p class="tier-desc">
+                {% if cards %}
+                {{ tier.description }}
+                {% else %}
                 A print of &ldquo;{{ piece.title }}&rdquo;, mailed to you centered on a
                 {{ tier.size }} black or white cardboard backing (your choice at checkout),
                 inside a matching {{ tier.size }} cellophane envelope.
+                {% endif %}
             </p>
             {% if tier.stripe_link and tier.stripe_link != "" %}
-            <a class="buy-cta" href="{{ tier.stripe_link }}" target="_blank" rel="noopener noreferrer" data-goatcounter-click="stripe-{{ piece.id }}-{{ tier.size }}" data-goatcounter-title="{{ piece.title }} ({{ tier.size }})">Buy the {{ tier.size }}</a>
+            <a class="buy-cta" href="{{ tier.stripe_link }}" target="_blank" rel="noopener noreferrer" data-goatcounter-click="stripe-{{ piece.id }}-{{ tier.size }}" data-goatcounter-title="{{ piece.title }} ({{ tier.size }})">{% if cards %}Buy a pack{% else %}Buy the {{ tier.size }}{% endif %}</a>
             {% else %}
             <span class="unavailable-tag">Coming soon</span>
             {% endif %}
@@ -53,8 +64,13 @@
             <div class="eyebrow">Alternative Payment</div>
             <h2>Pay with Venmo</h2>
             <p>
+                {% if cards %}
+                Prefer Venmo? You'll fill out a short form with your shipping address first
+                &mdash; we need that before we can ship your cards.
+                {% else %}
                 Prefer Venmo? You'll fill out a short form with your size, backing color, and
                 shipping address first &mdash; we need that before we can ship your print.
+                {% endif %}
             </p>
         </div>
 

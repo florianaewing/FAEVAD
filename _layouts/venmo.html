@@ -17,13 +17,14 @@
 <div class="wrap">
     {% include nav.html %}
 
-    <a class="back-link" href="buy-{{ piece.id }}.html">&larr; Back to print options</a>
+    {% assign cards = false %}{% if piece.print.format == "cards" %}{% assign cards = true %}{% endif %}
+    <a class="back-link" href="buy-{{ piece.id }}.html">&larr; Back to {% if cards %}card{% else %}print{% endif %} options</a>
 
     <div class="section-head">
         <div class="eyebrow">Venmo Order Form</div>
         <h1 class="display">{{ piece.title }}</h1>
         <p>
-            Fill out your size, backing color, and shipping address below. Once it's submitted
+            Fill out your {% if cards %}order{% else %}size, backing color,{% endif %} and shipping address below. Once it's submitted
             we'll email ourselves your order and show you a Venmo payment link with an order
             code already in the note &mdash; please leave that note as-is, it's how we match
             your payment to your order.
@@ -69,7 +70,7 @@
         </div>
 
         <div class="form-row">
-            <label for="v-size">Print size</label>
+            <label for="v-size">{% if cards %}Pack{% else %}Print size{% endif %}</label>
             <select id="v-size" name="size" required>
                 {% for tier in piece.print.tiers %}
                 <option value="{{ tier.size }}" data-price="{{ tier.price }}">{{ tier.size }} &mdash; ${{ tier.price }}</option>
@@ -77,6 +78,7 @@
             </select>
         </div>
 
+        {% unless cards %}
         <div class="form-row">
             <span class="form-label">Backing color</span>
             <div class="radio-group">
@@ -84,6 +86,7 @@
                 <label><input type="radio" name="backing_color" value="white"> White</label>
             </div>
         </div>
+        {% endunless %}
 
         <button type="submit" class="buy-cta venmo-submit">Continue to Venmo &mdash; <span class="venmo-price">${{ piece.print.tiers[0].price }}</span></button>
         <p class="venmo-status" hidden></p>

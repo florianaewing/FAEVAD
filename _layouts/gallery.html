@@ -40,9 +40,9 @@
 
                 <div class="offers">
                     <div class="offer-row">
-                        <span class="label">Print</span>
+                        <span class="label">{% if piece.print.format == "cards" %}Cards{% else %}Print{% endif %}</span>
                         {% if piece.print.available %}
-                            <span class="price">From ${{ piece.print.tiers[0].price }}</span>
+                            <span class="price">{% if piece.print.format == "cards" %}${{ piece.print.tiers[0].price }} / 5-pack{% else %}From ${{ piece.print.tiers[0].price }}{% endif %}</span>
                             <a class="buy" href="buy-{{ piece.id }}.html">View</a>
                         {% else %}
                             <span class="price">&mdash;</span>

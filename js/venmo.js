@@ -40,8 +40,10 @@
         form.addEventListener('submit', function (evt) {
             evt.preventDefault();
 
+            // Cards have no backing color, so their form has no backing choice.
+            var hasBacking = !!form.querySelector('input[name="backing_color"]');
             var colorInput = form.querySelector('input[name="backing_color"]:checked');
-            if (!colorInput) {
+            if (hasBacking && !colorInput) {
                 showStatus('Please choose a backing color.');
                 return;
             }
@@ -50,7 +52,7 @@
             var pieceTitle = form.getAttribute('data-piece-title');
             var size = sizeSelect.value;
             var price = currentPrice();
-            var color = colorInput.value;
+            var color = colorInput ? colorInput.value : null;
             var orderCode = makeOrderCode(pieceId);
 
             var formData = new FormData(form);
@@ -73,7 +75,7 @@
                 statusEl.hidden = true;
                 form.hidden = true;
 
-                var note = 'FAEVAD ' + orderCode + ' — ' + pieceTitle + ', ' + size + ', ' + color + ' backing';
+                var note = 'FAEVAD ' + orderCode + ' — ' + pieceTitle + ', ' + size + (color ? ', ' + color + ' backing' : '');
                 var params = new URLSearchParams({ txn: 'pay', amount: price, note: note });
                 var venmoUrl = 'https://venmo.com/u/' + venmoUsername + '?' + params.toString();
 

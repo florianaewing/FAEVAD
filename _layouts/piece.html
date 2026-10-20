@@ -38,7 +38,7 @@
 
             <div class="purchase-links">
                 {% if piece.print.available %}
-                <a class="buy-cta" href="buy-{{ piece.id }}.html">Purchase print &mdash; from ${{ piece.print.tiers[0].price }}</a>
+                <a class="buy-cta" href="buy-{{ piece.id }}.html">{% if piece.print.format == "cards" %}Purchase cards &mdash; ${{ piece.print.tiers[0].price }}{% else %}Purchase print &mdash; from ${{ piece.print.tiers[0].price }}{% endif %}</a>
                 {% endif %}
 
                 {% if piece.original.status == "available" %}

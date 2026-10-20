@@ -15,6 +15,8 @@
 #     reprinted any number of times.
 #       available    true while print editions are offered at all
 #       currency     ISO code (only "USD" is rendered with a $ sign today)
+#       format       optional; "cards" for greeting cards instead of prints
+#                    (no backing color; each tier needs a `description`)
 #       tiers        one entry per size — size, price (number, no symbol),
 #                    and stripe_link. Leave a tier's stripe_link blank to
 #                    show "Coming soon" instead of a Buy button for that
@@ -591,6 +593,486 @@ collections:
             - size: "11x14"
               price: 50
               stripe_link: "https://buy.stripe.com/5kQfZjajndBv4pt513gEg1j"
+        original:
+          status: "available"
+          stripe_link: ""
+
+      - id: aphids
+        title: "Aphids"
+        medium: "Acrylic pigment on watercolor paper"
+        year: 2024
+        image: "images/artwork/Aphids.png"
+        alt: ""
+        description: ""
+        print:
+          available: true
+          currency: "USD"
+          tiers:
+            - size: "5x7"
+              price: 15
+              stripe_link: "https://buy.stripe.com/5kQbJ3dvzcxrcVZbprgEg37"
+            - size: "8x10"
+              price: 30
+              stripe_link: "https://buy.stripe.com/4gMcN7fDHcxrbRV657gEg38"
+            - size: "11x14"
+              price: 50
+              stripe_link: "https://buy.stripe.com/6oU5kF4Z3cxr6xB2SVgEg39"
+        original:
+          status: "available"
+          stripe_link: ""
+      - id: ariel-likes-this-one
+        title: "Ariel Likes This One"
+        medium: "Acrylic pigment on watercolor paper"
+        year: 2024
+        image: "images/artwork/ArielLikesThisOne.png"
+        alt: ""
+        description: ""
+        print:
+          available: true
+          currency: "USD"
+          tiers:
+            - size: "5x7"
+              price: 15
+              stripe_link: "https://buy.stripe.com/5kQ4gBdvz0OJbRV513gEg3a"
+            - size: "8x10"
+              price: 30
+              stripe_link: "https://buy.stripe.com/3cIaEZ8bf0OJe0379bgEg3b"
+            - size: "11x14"
+              price: 50
+              stripe_link: "https://buy.stripe.com/cNi8wR1MRbtnaNR9hjgEg3c"
+        original:
+          status: "available"
+          stripe_link: ""
+      - id: entertainment-center
+        title: "Entertainment Center"
+        medium: "Acrylic pigment on watercolor paper"
+        year: 2024
+        image: "images/artwork/EntertainmentCenter.png"
+        alt: ""
+        description: ""
+        print:
+          available: true
+          currency: "USD"
+          tiers:
+            - size: "5x7"
+              price: 15
+              stripe_link: "https://buy.stripe.com/14A28tfDH1SN3lp79bgEg3d"
+            - size: "8x10"
+              price: 30
+              stripe_link: "https://buy.stripe.com/bJe5kF8bf7d7g8b8dfgEg3e"
+            - size: "11x14"
+              price: 50
+              stripe_link: "https://buy.stripe.com/aFa7sNbnreFz2hleBDgEg3f"
+        original:
+          status: "available"
+          stripe_link: ""
+      - id: halloween-one
+        title: "Halloween One"
+        medium: "Acrylic pigment on watercolor paper"
+        year: 2024
+        image: "images/artwork/HalloweenOne.png"
+        alt: ""
+        description: ""
+        print:
+          available: true
+          currency: "USD"
+          tiers:
+            - size: "5x7"
+              price: 15
+              stripe_link: "https://buy.stripe.com/7sY9AV3UZ9lf2hldxzgEg3g"
+            - size: "8x10"
+              price: 30
+              stripe_link: "https://buy.stripe.com/8x228tbnr0OJg8b9hjgEg3h"
+            - size: "11x14"
+              price: 50
+              stripe_link: "https://buy.stripe.com/3cI4gBcrvapj9JN1ORgEg3i"
+        original:
+          status: "available"
+          stripe_link: ""
+      - id: halloween-two
+        title: "Halloween Two"
+        medium: "Acrylic pigment on watercolor paper"
+        year: 2024
+        image: "images/artwork/HalloweenTwo.png"
+        alt: ""
+        description: ""
+        print:
+          available: true
+          currency: "USD"
+          tiers:
+            - size: "5x7"
+              price: 15
+              stripe_link: "https://buy.stripe.com/7sYbJ38bf54Zf47bprgEg3j"
+            - size: "8x10"
+              price: 30
+              stripe_link: "https://buy.stripe.com/8x200lajnbtne03alngEg3k"
+            - size: "11x14"
+              price: 50
+              stripe_link: "https://buy.stripe.com/bJe6oJfDH1SN9JNeBDgEg3l"
+        original:
+          status: "available"
+          stripe_link: ""
+      - id: halloween-three
+        title: "Halloween Three"
+        medium: "Acrylic pigment on watercolor paper"
+        year: 2024
+        image: "images/artwork/HalloweenThree.png"
+        alt: ""
+        description: ""
+        print:
+          available: true
+          currency: "USD"
+          tiers:
+            - size: "5x7"
+              price: 15
+              stripe_link: "https://buy.stripe.com/28E3cxajnfJDg8bctvgEg3m"
+            - size: "8x10"
+              price: 30
+              stripe_link: "https://buy.stripe.com/9B66oJ63754Z8FJgJLgEg3n"
+            - size: "11x14"
+              price: 50
+              stripe_link: "https://buy.stripe.com/7sYbJ3crv40V1dhfFHgEg3o"
+        original:
+          status: "available"
+          stripe_link: ""
+      - id: heart-in-a-jar
+        title: "Heart in a Jar"
+        medium: "Acrylic pigment on watercolor paper"
+        year: 2026
+        image: "images/artwork/HeartInAJar.jpg"
+        alt: ""
+        description: ""
+        print:
+          available: true
+          currency: "USD"
+          tiers:
+            - size: "5x7"
+              price: 15
+              stripe_link: "https://buy.stripe.com/bJefZj1MR40V9JN8dfgEg3p"
+            - size: "8x10"
+              price: 30
+              stripe_link: "https://buy.stripe.com/dRm4gB8bfeFz6xB1ORgEg3q"
+            - size: "11x14"
+              price: 50
+              stripe_link: "https://buy.stripe.com/14A3cx637gNH2hl2SVgEg3r"
+        original:
+          status: "available"
+          stripe_link: ""
+      - id: living-room-2
+        title: "Living Room 2"
+        medium: "Acrylic pigment on watercolor paper"
+        year: 2024
+        image: "images/artwork/LivingRoom2.png"
+        alt: ""
+        description: ""
+        print:
+          available: true
+          currency: "USD"
+          tiers:
+            - size: "5x7"
+              price: 15
+              stripe_link: "https://buy.stripe.com/28E14p8bffJD5tx513gEg3s"
+            - size: "8x10"
+              price: 30
+              stripe_link: "https://buy.stripe.com/eVqcN7ezDeFz9JN513gEg3t"
+            - size: "11x14"
+              price: 50
+              stripe_link: "https://buy.stripe.com/cNi3cx0IN9lf1dhctvgEg3u"
+        original:
+          status: "available"
+          stripe_link: ""
+      - id: midday-nap
+        title: "Midday Nap"
+        medium: "Acrylic pigment on watercolor paper"
+        year: 2024
+        image: "images/artwork/MiddayNap.png"
+        alt: ""
+        description: ""
+        print:
+          available: true
+          currency: "USD"
+          tiers:
+            - size: "5x7"
+              price: 15
+              stripe_link: "https://buy.stripe.com/dRmdRb9fj6939JNalngEg3v"
+            - size: "8x10"
+              price: 30
+              stripe_link: "https://buy.stripe.com/fZu14p8bf1SNe03bprgEg3w"
+            - size: "11x14"
+              price: 50
+              stripe_link: "https://buy.stripe.com/00waEZ9fjapjf4779bgEg3x"
+        original:
+          status: "available"
+          stripe_link: ""
+      - id: outskirts
+        title: "Outskirts"
+        medium: "Acrylic pigment on watercolor paper"
+        year: 2024
+        image: "images/artwork/Outskirts.png"
+        alt: ""
+        description: ""
+        print:
+          available: true
+          currency: "USD"
+          tiers:
+            - size: "5x7"
+              price: 15
+              stripe_link: "https://buy.stripe.com/14A14pcrvbtng8b79bgEg3y"
+            - size: "8x10"
+              price: 30
+              stripe_link: "https://buy.stripe.com/fZu14p637apj7BFalngEg3z"
+            - size: "11x14"
+              price: 50
+              stripe_link: "https://buy.stripe.com/4gM4gBcrvdBv8FJgJLgEg3A"
+        original:
+          status: "available"
+          stripe_link: ""
+      - id: striation-one
+        title: "Striation One"
+        medium: "Acrylic pigment on watercolor paper"
+        year: 2024
+        image: "images/artwork/StriationOne.png"
+        alt: ""
+        description: ""
+        print:
+          available: true
+          currency: "USD"
+          tiers:
+            - size: "5x7"
+              price: 15
+              stripe_link: "https://buy.stripe.com/9B6bJ32QV54Z3lpfFHgEg3B"
+            - size: "8x10"
+              price: 30
+              stripe_link: "https://buy.stripe.com/cNicN7dvzcxrg8beBDgEg3C"
+            - size: "11x14"
+              price: 50
+              stripe_link: "https://buy.stripe.com/cNi28tgHL1SN8FJ2SVgEg3D"
+        original:
+          status: "available"
+          stripe_link: ""
+      - id: striation-two
+        title: "Striation Two"
+        medium: "Acrylic pigment on watercolor paper"
+        year: 2024
+        image: "images/artwork/StriationTwo.png"
+        alt: ""
+        description: ""
+        print:
+          available: true
+          currency: "USD"
+          tiers:
+            - size: "5x7"
+              price: 15
+              stripe_link: "https://buy.stripe.com/eVqaEZgHL7d7cVZeBDgEg3E"
+            - size: "8x10"
+              price: 30
+              stripe_link: "https://buy.stripe.com/fZu9AV4Z3693cVZ2SVgEg3F"
+            - size: "11x14"
+              price: 50
+              stripe_link: "https://buy.stripe.com/7sY8wRdvzdBvg8b657gEg3G"
+        original:
+          status: "available"
+          stripe_link: ""
+      - id: striation-three
+        title: "Striation Three"
+        medium: "Acrylic pigment on watercolor paper"
+        year: 2024
+        image: "images/artwork/StriationThree.png"
+        alt: ""
+        description: ""
+        print:
+          available: true
+          currency: "USD"
+          tiers:
+            - size: "5x7"
+              price: 15
+              stripe_link: "https://buy.stripe.com/00wfZj77bcxre03bprgEg3H"
+            - size: "8x10"
+              price: 30
+              stripe_link: "https://buy.stripe.com/3cI6oJ63740Vf4779bgEg3I"
+            - size: "11x14"
+              price: 50
+              stripe_link: "https://buy.stripe.com/6oU8wRfDH8hb4pteBDgEg3J"
+        original:
+          status: "available"
+          stripe_link: ""
+      - id: striation-four
+        title: "Striation Four"
+        medium: "Acrylic pigment on watercolor paper"
+        year: 2024
+        image: "images/artwork/StriationFour.png"
+        alt: ""
+        description: ""
+        print:
+          available: true
+          currency: "USD"
+          tiers:
+            - size: "5x7"
+              price: 15
+              stripe_link: "https://buy.stripe.com/28EdRb0IN1SN7BF79bgEg3K"
+            - size: "8x10"
+              price: 30
+              stripe_link: "https://buy.stripe.com/dRm3cx3UZapj2hl8dfgEg3L"
+            - size: "11x14"
+              price: 50
+              stripe_link: "https://buy.stripe.com/5kQdRbbnr2WRf479hjgEg3M"
+        original:
+          status: "available"
+          stripe_link: ""
+      - id: striation-five
+        title: "Striation Five"
+        medium: "Acrylic pigment on watercolor paper"
+        year: 2024
+        image: "images/artwork/StriationFive.png"
+        alt: ""
+        description: ""
+        print:
+          available: true
+          currency: "USD"
+          tiers:
+            - size: "5x7"
+              price: 15
+              stripe_link: "https://buy.stripe.com/eVq7sNcrv54Z8FJ2SVgEg3N"
+            - size: "8x10"
+              price: 30
+              stripe_link: "https://buy.stripe.com/dRmfZj77b9lff4779bgEg3O"
+            - size: "11x14"
+              price: 50
+              stripe_link: "https://buy.stripe.com/aFa5kF1MR0OJ9JN513gEg3P"
+        original:
+          status: "available"
+          stripe_link: ""
+      - id: untidiness
+        title: "Untidiness"
+        medium: "Acrylic pigment on watercolor paper"
+        year: 2024
+        image: "images/artwork/Untidiness.png"
+        alt: ""
+        description: ""
+        print:
+          available: true
+          currency: "USD"
+          tiers:
+            - size: "5x7"
+              price: 15
+              stripe_link: "https://buy.stripe.com/eVqcN7ajn54Z3lpeBDgEg3Q"
+            - size: "8x10"
+              price: 30
+              stripe_link: "https://buy.stripe.com/6oU8wRajnapj3lpdxzgEg3R"
+            - size: "11x14"
+              price: 50
+              stripe_link: "https://buy.stripe.com/dRm8wR77bgNHcVZeBDgEg3S"
+        original:
+          status: "available"
+          stripe_link: ""
+      - id: familiar-objects
+        title: "Familiar Objects"
+        medium: "Acrylic pigment on watercolor paper"
+        year: 2024
+        image: "images/artwork/familiarObjects.png"
+        alt: ""
+        description: ""
+        print:
+          available: true
+          currency: "USD"
+          tiers:
+            - size: "5x7"
+              price: 15
+              stripe_link: "https://buy.stripe.com/00w4gBbnr6935txdxzgEg3T"
+            - size: "8x10"
+              price: 30
+              stripe_link: "https://buy.stripe.com/eVq00l9fj8hbcVZ2SVgEg3U"
+            - size: "11x14"
+              price: 50
+              stripe_link: "https://buy.stripe.com/4gM3cx3UZ54Z5txalngEg3V"
+        original:
+          status: "available"
+          stripe_link: ""
+      - id: hiker
+        title: "Hiker"
+        medium: "Acrylic pigment on watercolor paper"
+        year: 2024
+        image: "images/artwork/hiker.png"
+        alt: ""
+        description: ""
+        print:
+          available: true
+          currency: "USD"
+          tiers:
+            - size: "5x7"
+              price: 15
+              stripe_link: "https://buy.stripe.com/dRmbJ39fj0OJf47dxzgEg3W"
+            - size: "8x10"
+              price: 30
+              stripe_link: "https://buy.stripe.com/4gM7sN3UZ1SN09d8dfgEg3X"
+            - size: "11x14"
+              price: 50
+              stripe_link: "https://buy.stripe.com/cNi14p3UZeFz2hlctvgEg3Y"
+        original:
+          status: "available"
+          stripe_link: ""
+      - id: decrepit-shrine-two
+        title: "Decrepit Shrine Two"
+        medium: "Acrylic pigment on watercolor paper"
+        year: 2024
+        image: "images/artwork/homolith2.png"
+        alt: ""
+        description: ""
+        print:
+          available: true
+          currency: "USD"
+          tiers:
+            - size: "5x7"
+              price: 15
+              stripe_link: "https://buy.stripe.com/7sYfZj2QV2WR7BFeBDgEg3Z"
+            - size: "8x10"
+              price: 30
+              stripe_link: "https://buy.stripe.com/7sYaEZ4Z3apj2hlalngEg40"
+            - size: "11x14"
+              price: 50
+              stripe_link: "https://buy.stripe.com/5kQ14pdvzgNHaNRctvgEg41"
+        original:
+          status: "available"
+          stripe_link: ""
+      - id: the-streets
+        title: "The Streets"
+        medium: "Acrylic pigment on watercolor paper"
+        year: 2024
+        image: "images/artwork/theStreets.png"
+        alt: ""
+        description: ""
+        print:
+          available: true
+          currency: "USD"
+          tiers:
+            - size: "5x7"
+              price: 15
+              stripe_link: "https://buy.stripe.com/eVqcN73UZapj7BFctvgEg42"
+            - size: "8x10"
+              price: 30
+              stripe_link: "https://buy.stripe.com/28E4gBfDH40V7BF657gEg43"
+            - size: "11x14"
+              price: 50
+              stripe_link: "https://buy.stripe.com/3cI9AV4Z38hbe033WZgEg44"
+        original:
+          status: "available"
+          stripe_link: ""
+      - id: christmas-card-2024
+        title: "Christmas Card 2024"
+        medium: "Acrylic pigment on watercolor paper"
+        year: 2024
+        image: "images/artwork/christmasCard_2024.jpg"
+        alt: ""
+        description: ""
+        print:
+          available: true
+          currency: "USD"
+          format: "cards"
+          tiers:
+            - size: "3x5 folded cards, pack of 5"
+              price: 20
+              stripe_link: "https://buy.stripe.com/6oU8wRezD40V1dh2SVgEg45"
+              description: "Five 3x5 folded cards printed with &ldquo;Christmas Card 2024&rdquo;."
         original:
           status: "available"
           stripe_link: ""
