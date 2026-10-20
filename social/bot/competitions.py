@@ -34,26 +34,19 @@ def due(competitions: list[dict], today: dt.date) -> list[tuple[str, dict]]:
     return reminders
 
 
-def _details(comp: dict) -> list[str]:
-    lines = [f"Where: {comp['where']}", f"Who can enter: {comp['eligibility']}", f"Media: {comp['media']}",
-             f"Fee: {comp['fee']}"]
-    if comp.get("deadline"):
-        lines.append(f"Deadline: {comp['deadline']}")
-    if comp.get("notes"):
-        lines.append(comp["notes"])
-    lines.append(comp["url"])
-    return lines
+def _date(day: dt.date) -> str:
+    return day.strftime("%B %-d, %Y")
 
 
 def format_reminder(kind: str, comp: dict) -> str:
-    opens = comp["opens"].strftime("%A %b %-d")
-    estimated = comp.get("opens_estimated")
+    """The artist's own wording, filled in."""
     if kind == "heads_up":
-        head = f"📅 In two weeks ({opens}): submissions open for {comp['name']}."
-        if estimated:
-            head += " That date is estimated from past years -- check the site to confirm."
-    else:
-        head = f"🎨 Submissions open today for {comp['name']}. Time to submit!"
-        if estimated:
-            head += " (Today was estimated from past years -- if it isn't open yet, check the site.)"
-    return "\n".join([head, "", *_details(comp)])
+        return (
+            f"Applications to the {comp['name']} art competition open on {_date(comp['opens'])}, "
+            f"you have two weeks to prepare. Read the submission requirements carefully here at "
+            f"{comp['url']}."
+        )
+    return (
+        f"The application period for the {comp.get('year', comp['opens'].year)} {comp['name']} art competition is "
+        f"officially open. Apply here {comp['url']} before {_date(comp['deadline'])} for a shot at winning."
+    )

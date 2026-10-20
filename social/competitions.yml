@@ -4,10 +4,13 @@
 # day they open.
 #
 # Only entries with `approved: true` get reminders; the artist approves them.
-# `opens_estimated: true` means the date is a guess from past years' calls,
-# not announced yet -- the reminder says so. Once a call is announced, set
-# the real date and change it to false. After a competition opens, move
+# `opens_estimated: true` means the dates are a guess from past years' calls,
+# not announced yet. Once a call is announced, set the real `opens` and
+# `deadline` and change it to false. After a competition opens, move
 # `opens` (and `deadline`) to next year's call so it comes up again.
+#
+# `year` is the edition's year as the organizer names it, used in the
+# opening-day message; leave it out when that's just the year it opens.
 #
 # Every competition here takes digital submissions (photos of the work) for
 # jurying. Some ask for the original to be shipped or delivered if accepted;
@@ -22,7 +25,7 @@
   fee: $40 for up to 3 images, +$10 per extra image
   opens: 2027-07-21
   opens_estimated: true
-  deadline: ~2027-10-31
+  deadline: 2027-10-31
   notes: >-
     The 2026 call (16th) is open now until 2026-10-31; show Feb 4-27, 2027.
     Prizes $1,000 / $500 / $300 + $200 People's Choice. Accepted work is
@@ -36,9 +39,10 @@
   eligibility: Washington and Oregon artists
   media: Photography/digital, 2D, 3D
   fee: See the CaFE listing
+  year: 2028
   opens: 2027-08-18
   opens_estimated: true
-  deadline: ~2027-11-07
+  deadline: 2027-11-07
   notes: >-
     The 2027 show's call is open now until 2026-11-07. Up to $10,000 in cash
     and purchase prizes. Blind jurying. Entries through CaFE.
@@ -53,7 +57,7 @@
   fee: See the prospectus (2022 non-member fee was $40)
   opens: 2027-05-01
   opens_estimated: true
-  deadline: ~2027-07-08
+  deadline: 2027-07-08
   notes: >-
     Entries open in May each year for about 60 days. Over $14,000 in awards
     in 2026. Watercolors only.
@@ -68,7 +72,7 @@
   fee: $35
   opens: 2027-01-09
   opens_estimated: true
-  deadline: ~2027-03-12
+  deadline: 2027-03-12
   notes: >-
     Up to $5,500 in awards, $2,000 Best of Show. Show runs late July - early
     August during the festival. 1-3 pieces per artist.
@@ -83,7 +87,7 @@
   fee: See the prospectus
   opens: 2027-09-01
   opens_estimated: true
-  deadline: ~2027-11-12
+  deadline: 2027-11-12
   notes: >-
     The 160th call is open now until 2026-11-12 at NOON Eastern. Show Apr
     6 - May 7, 2027. Dimensions must be given in inches. Accepted work is
@@ -97,9 +101,10 @@
   eligibility: Artists worldwide, any age
   media: Any 2D medium -- painting, drawing (ink counts), original prints; no digital/AI art
   fee: About GBP 5 per artwork early bird, 6.50 standard (2026)
+  year: 2027
   opens: 2026-11-12
   opens_estimated: true
-  deadline: ~2027-02-11
+  deadline: 2027-02-11
   notes: >-
     The 2026 edition opened Nov 12, 2025 and closed Feb 11, 2026. Cheap,
     per-artwork entry, so several pieces can go in.
