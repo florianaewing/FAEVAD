@@ -881,7 +881,7 @@ async def send_competition_reminders(context: ContextTypes.DEFAULT_TYPE) -> None
     today = dt.datetime.now(DAILY_SEND_TZ).date()
     for kind, comp in competitions.due(competitions.load(), today):
         await context.bot.send_message(
-            chat_id=cfg.telegram_chat_id, text=competitions.format_reminder(kind, comp)
+            chat_id=cfg.telegram_chat_id, text=competitions.format_reminder(kind, comp, today)
         )
 
 
