@@ -587,7 +587,15 @@ nav.top a[aria-current="page"] {
   font-size: clamp(1.3rem, 2.6vw, 1.7rem);
 }
 
-.venmo-prices {
+/* The sections draw their own divider, so their headers don't add a second. */
+.venmo-section .section-head,
+.card-section .section-head {
+  border-top: none;
+  padding-top: 0;
+}
+
+.section-head .venmo-prices {
+  margin-bottom: 10px;
   font-weight: 700;
   color: var(--pigment-ink);
 }
