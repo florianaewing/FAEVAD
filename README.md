@@ -53,6 +53,11 @@ are set in [`social/strategy.yml`](social/strategy.yml)). On each posting day:
 5. Afterwards, it forwards new comments for a few hours and records each post's stats after 48
    hours.
 
+**Posting a piece on a set day.** Give its `queue.yml` entry a `post_on` date (for example
+`post_on: 2026-12-10`). The piece is held until that day and then goes ahead of the normal
+order. If the bot misses the day, the piece goes back into the normal order. Watercolor and ink
+days still apply, so pick a day that matches the piece.
+
 **Weekly summary.** Every Sunday at 18:00 it sends each platform's stats for the week. When
 `GOATCOUNTER_API_KEY` is set, the summary also covers the site: visits, where visitors came
 from, the most-viewed pages and clicks on the buy buttons
