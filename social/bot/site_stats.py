@@ -2,8 +2,8 @@
 
 Read-only: the API key only needs GoatCounter's "Read statistics" permission.
 The social links carry utm_source=<platform>, which GoatCounter lists as the
-visit's source, and the buy buttons are counted as click events
-("stripe-<piece>-<size>" for card checkout, "venmo-<piece>" for Venmo) -- so this shows which platforms send visitors and which
+visit's source, and the buy buttons are counted as "stripe-<piece>-<size>"
+click events -- so this shows which platforms send visitors and which
 pieces get checkout clicks.
 """
 
@@ -42,7 +42,7 @@ def fetch(api_key: str, days: int = 7) -> dict:
     hits = _get(api_key, "/stats/hits", start, end, limit=100).get("hits", [])
     refs = _get(api_key, "/stats/toprefs", start, end, limit=100).get("stats", [])
     pages = [h for h in hits if not h.get("event")]
-    clicks = [h for h in hits if h.get("event") and h.get("path", "").startswith(("stripe-", "venmo-"))]
+    clicks = [h for h in hits if h.get("event") and h.get("path", "").startswith("stripe-")]
     return {
         "visits": total.get("total", 0),
         # The site lives under /FAEVAD/; drop that so page names read short.

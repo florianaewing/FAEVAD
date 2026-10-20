@@ -576,28 +576,9 @@ nav.top a[aria-current="page"] {
   padding-bottom: 72px;
 }
 
-.card-section {
-  padding-top: 32px;
-  border-top: 1px solid var(--line);
-}
-
-.card-section h2,
 .venmo-section h2 {
   margin: 10px 0 14px;
   font-size: clamp(1.3rem, 2.6vw, 1.7rem);
-}
-
-/* The sections draw their own divider, so their headers don't add a second. */
-.venmo-section .section-head,
-.card-section .section-head {
-  border-top: none;
-  padding-top: 0;
-}
-
-.section-head .venmo-prices {
-  margin-bottom: 10px;
-  font-weight: 700;
-  color: var(--pigment-ink);
 }
 
 .venmo-button {
