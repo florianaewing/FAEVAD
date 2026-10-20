@@ -114,3 +114,21 @@
     The 2026 edition opened Nov 12, 2025 and closed Feb 11, 2026. Cheap,
     per-artwork entry, so several pieces can go in.
   approved: false
+
+- id: nws-international-open
+  name: National Watercolor Society International Open Exhibition
+  where: NWS Gallery, San Pedro, CA (national)
+  url: https://www.nationalwatercolorsociety.org/exhibits
+  eligibility: Artists worldwide
+  media: Water media
+  fee: $70 non-members (2026)
+  year: 2027
+  opens: 2027-01-01
+  opens_estimated: false
+  # Not announced yet: the 2026 call closed May 22. Correct it once NWS posts it.
+  deadline: 2027-05-21
+  deadline_estimated: true
+  notes: >-
+    Opening date confirmed by the artist. Show in the fall at the NWS
+    Gallery. Accepted work is shipped.
+  approved: true
