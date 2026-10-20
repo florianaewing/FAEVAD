@@ -737,7 +737,7 @@ collections:
           stripe_link: ""
       - id: heart-in-a-jar
         title: "Heart in a Jar"
-        medium: "Acrylic pigment on watercolor paper"
+        medium: "Ink"
         year: 2026
         image: "images/artwork/HeartInAJar.jpg"
         alt: ""
@@ -829,7 +829,7 @@ collections:
           stripe_link: ""
       - id: striation-one
         title: "Striation One"
-        medium: "Acrylic pigment on watercolor paper"
+        medium: "Ink"
         year: 2024
         image: "images/artwork/StriationOne.png"
         alt: ""
@@ -852,7 +852,7 @@ collections:
           stripe_link: ""
       - id: striation-two
         title: "Striation Two"
-        medium: "Acrylic pigment on watercolor paper"
+        medium: "Ink"
         year: 2024
         image: "images/artwork/StriationTwo.png"
         alt: ""
@@ -875,7 +875,7 @@ collections:
           stripe_link: ""
       - id: striation-three
         title: "Striation Three"
-        medium: "Acrylic pigment on watercolor paper"
+        medium: "Ink"
         year: 2024
         image: "images/artwork/StriationThree.png"
         alt: ""
@@ -898,7 +898,7 @@ collections:
           stripe_link: ""
       - id: striation-four
         title: "Striation Four"
-        medium: "Acrylic pigment on watercolor paper"
+        medium: "Ink"
         year: 2024
         image: "images/artwork/StriationFour.png"
         alt: ""
@@ -921,7 +921,7 @@ collections:
           stripe_link: ""
       - id: striation-five
         title: "Striation Five"
-        medium: "Acrylic pigment on watercolor paper"
+        medium: "Ink"
         year: 2024
         image: "images/artwork/StriationFive.png"
         alt: ""

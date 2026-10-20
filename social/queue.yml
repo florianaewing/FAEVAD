@@ -9,6 +9,11 @@
 # before it can be queued — the daily post is always of something currently
 # purchasable, never a preview of unpublished work.
 #
+# post_on (optional) holds a piece for that date: it's skipped until then and
+# goes first on the day itself, ahead of the normal order (a missed date
+# falls back into the normal order). Watercolor/ink days still apply, so pick
+# a matching day.
+#
 # posted / post_date / platforms are written by the bot itself after
 # posting — instagram/pinterest/x go via Buffer; bluesky/mastodon/threads/
 # facebook are posted to directly. A platform only shows up under
@@ -646,6 +651,7 @@
 
 - catalog_number: 64
   id: halloween-one
+  post_on: 2026-10-29
   posted: false
   post_date:
   caption:
@@ -655,6 +661,7 @@
 
 - catalog_number: 65
   id: halloween-two
+  post_on: 2026-11-01
   posted: false
   post_date:
   caption:
@@ -664,6 +671,7 @@
 
 - catalog_number: 66
   id: halloween-three
+  post_on: 2026-10-31
   posted: false
   post_date:
   caption:

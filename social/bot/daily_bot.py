@@ -244,6 +244,12 @@ def next_unposted_entry(queue: list[dict], artwork: dict, day: dt.date) -> dict 
     unposted = sorted(
         (e for e in queue if not e.get("posted")), key=lambda e: e["catalog_number"]
     )
+    # A piece with `post_on` is held for that date and goes first on it. If
+    # that day was missed, it falls back into normal queue order.
+    pinned = [e for e in unposted if e.get("post_on") == day]
+    if pinned:
+        return pinned[0]
+    unposted = [e for e in unposted if not (e.get("post_on") and e["post_on"] > day)]
     is_wednesday = day.weekday() == 2
     todays = [
         e for e in unposted
