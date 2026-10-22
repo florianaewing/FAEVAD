@@ -309,12 +309,17 @@
 
 - catalog_number: 26
   id: aquatic-impression
-  posted: false
-  post_date:
-  caption:
+  posted: true
+  post_date: '2026-10-21'
+  caption: The sky looks a little bit like this today
   platforms:
-    instagram:
-    pinterest:
+    instagram: 'published: https://www.instagram.com/p/DexOQKsD3w0/'
+    pinterest: 'published: https://www.pinterest.com/pin/1131177631466705391'
+    x: 'published: https://x.com/2105781742431092736/status/2112998316707303622'
+    bluesky: 'published: https://bsky.app/profile/faevad.bsky.social/post/3myfwzj3b6h2d'
+    mastodon: 'published: https://mastodon.art/@faevad/117480687732078722'
+    threads: 'published: https://www.threads.com/@faevad01/post/DexOQJPkn95'
+    facebook: 'published: https://www.facebook.com/1374753972384803_122107456677508246'
 
 - catalog_number: 27
   id: autumn-forest
