@@ -136,12 +136,17 @@
 
 - catalog_number: 8
   id: supplies
-  posted: false
-  post_date:
-  caption:
+  posted: true
+  post_date: '2026-10-22'
+  caption: Every home needs at least one huge jar full of coffee beans
   platforms:
-    instagram:
-    pinterest:
+    instagram: 'published: https://www.instagram.com/p/DezzsLrGPrV/'
+    pinterest: 'published: https://www.pinterest.com/pin/1131177631466798456'
+    x: 'published: https://x.com/2105781742431092736/status/2113362116572852581'
+    bluesky: 'published: https://bsky.app/profile/faevad.bsky.social/post/3myihsh7ged2q'
+    mastodon: 'published: https://mastodon.art/@faevad/117486372066586860'
+    threads: 'published: https://www.threads.com/@faevad01/post/DezzsIggfd6'
+    facebook: 'published: https://www.facebook.com/1374753972384803_122108005761508246'
 
 - catalog_number: 9
   id: the-knife
