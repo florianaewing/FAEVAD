@@ -150,12 +150,17 @@
 
 - catalog_number: 9
   id: the-knife
-  posted: false
-  post_date:
-  caption:
+  posted: true
+  post_date: '2026-10-24'
+  caption: Study of an old hunting knife I found way out in backwoods Oregon
   platforms:
-    instagram:
-    pinterest:
+    instagram: 'published: https://www.instagram.com/p/De4ud9jIOlO/'
+    pinterest: 'published: https://www.pinterest.com/pin/1131177631467007066'
+    x: 'published: https://x.com/2105781742431092736/status/2114024121315049755'
+    bluesky: 'published: https://bsky.app/profile/faevad.bsky.social/post/3myneu5mskv2t'
+    mastodon: 'published: https://mastodon.art/@faevad/117496951792317596'
+    threads: 'published: https://www.threads.com/@faevad01/post/De4gvCymxmG'
+    facebook: 'published: https://www.facebook.com/1374753972384803_122108941119508246'
 
 - catalog_number: 10
   id: dragon-hoard
