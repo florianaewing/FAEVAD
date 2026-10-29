@@ -333,12 +333,17 @@
 
 - catalog_number: 27
   id: autumn-forest
-  posted: false
-  post_date:
-  caption:
+  posted: true
+  post_date: '2026-10-28'
+  caption: Get ready for six months of vitamin d deficiency
   platforms:
-    instagram:
-    pinterest:
+    instagram: 'published: https://www.instagram.com/p/DfDHWvSCX6k/'
+    pinterest: 'published: https://www.pinterest.com/pin/1131177631467378604'
+    x: 'published: https://x.com/2105781742431092736/status/2115516424953147825'
+    bluesky: 'published: https://bsky.app/profile/faevad.bsky.social/post/3myxgpt6naz2z'
+    mastodon: 'published: https://mastodon.art/@faevad/117520033101577406'
+    threads: 'published: https://www.threads.com/@faevad01/post/DfDHWw9D3al'
+    facebook: 'published: https://www.facebook.com/1374753972384803_122110902783508246'
 
 - catalog_number: 28
   id: bird-of-paradise
