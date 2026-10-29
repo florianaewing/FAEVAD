@@ -666,7 +666,7 @@ collections:
         medium: "Acrylic pigment on watercolor paper"
         year: 2024
         image: "images/artwork/HalloweenOne.png"
-        alt: ""
+        alt: "Three ghosts observe an axe embedded in a tree stump surrounded by pumpkins, books, plants, candles, and trees near a house under the light of a crescent moon"
         description: ""
         print:
           available: true
@@ -689,7 +689,7 @@ collections:
         medium: "Acrylic pigment on watercolor paper"
         year: 2024
         image: "images/artwork/HalloweenTwo.png"
-        alt: ""
+        alt: "Four ghosts observe an axe embedded in a tree stump surrounded by pumpkins, plants, and trees near a jack'o'lantern topped scarecrow under the light of a crescent moon"
         description: ""
         print:
           available: true
