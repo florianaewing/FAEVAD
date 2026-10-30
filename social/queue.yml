@@ -672,12 +672,17 @@
 - catalog_number: 64
   id: halloween-one
   post_on: 2026-10-29
-  posted: false
-  post_date:
-  caption:
+  posted: true
+  post_date: '2026-10-29'
+  caption: Only two nights left until we can speak with the dead
   platforms:
-    instagram:
-    pinterest:
+    instagram: 'published: https://www.instagram.com/p/DfGMLwcGHhE/'
+    pinterest: 'published: https://www.pinterest.com/pin/1131177631467468815'
+    x: 'published: https://x.com/2105781742431092736/status/2115949254522859784'
+    bluesky: 'published: https://bsky.app/profile/faevad.bsky.social/post/3mz2gb6oyma2i'
+    mastodon: 'published: https://mastodon.art/@faevad/117526796102710000'
+    threads: 'published: https://www.threads.com/@faevad01/post/DfGMLy1j7ow'
+    facebook: 'published: https://www.facebook.com/1374753972384803_122111361753508246'
 
 - catalog_number: 65
   id: halloween-two
