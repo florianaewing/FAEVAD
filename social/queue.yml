@@ -697,12 +697,17 @@
 - catalog_number: 66
   id: halloween-three
   post_on: 2026-10-31
-  posted: false
-  post_date:
-  caption:
+  posted: true
+  post_date: '2026-10-31'
+  caption: Another spooky addition to the collection
   platforms:
-    instagram:
-    pinterest:
+    instagram: 'published: https://www.instagram.com/p/DfLAXHSG-_6/'
+    pinterest: 'published: https://www.pinterest.com/pin/1131177631467638279'
+    x: 'published: https://x.com/2105781742431092736/status/2116626946289213701'
+    bluesky: 'published: https://bsky.app/profile/faevad.bsky.social/post/3mz74qi5xqb2z'
+    mastodon: 'published: https://mastodon.art/@faevad/117537385070592438'
+    threads: 'published: https://www.threads.com/@faevad01/post/DfLAXNgj3Ex'
+    facebook: 'published: https://www.facebook.com/1374753972384803_122112075045508246'
 
 - catalog_number: 67
   id: heart-in-a-jar
