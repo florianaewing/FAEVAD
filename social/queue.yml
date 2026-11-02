@@ -687,12 +687,17 @@
 - catalog_number: 65
   id: halloween-two
   post_on: 2026-11-01
-  posted: false
-  post_date:
-  caption:
+  posted: true
+  post_date: '2026-11-01'
+  caption: Only 364 days until next Halloween!
   platforms:
-    instagram:
-    pinterest:
+    instagram: 'published: https://www.instagram.com/p/DfNbsVyoCSR/'
+    pinterest: 'published: https://www.pinterest.com/pin/1131177631467726905'
+    x: 'published: https://x.com/2105781742431092736/status/2116938696440033512'
+    bluesky: 'published: https://bsky.app/profile/faevad.bsky.social/post/3mzblwshqvj2j'
+    mastodon: 'published: https://mastodon.art/@faevad/117542486317449270'
+    threads: 'published: https://www.threads.com/@faevad01/post/DfNOIX6mNuI'
+    facebook: 'published: https://www.facebook.com/1374753972384803_122112374601508246'
 
 - catalog_number: 66
   id: halloween-three
