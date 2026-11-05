@@ -347,12 +347,17 @@
 
 - catalog_number: 28
   id: bird-of-paradise
-  posted: false
-  post_date:
-  caption:
+  posted: true
+  post_date: '2026-11-04'
+  caption: This is the one that got me started on using color
   platforms:
-    instagram:
-    pinterest:
+    instagram: 'published: https://www.instagram.com/p/DfVUjwuCR9K/'
+    pinterest: 'published: https://www.pinterest.com/pin/1131177631467972199'
+    x: 'published: https://x.com/2105781742431092736/status/2118078732682367452'
+    bluesky: 'published: https://bsky.app/profile/faevad.bsky.social/post/3mzj73zwrm42i'
+    mastodon: 'published: https://mastodon.art/@faevad/117560069197520918'
+    threads: 'published: https://www.threads.com/@faevad01/post/DfVUjulgXzU'
+    facebook: 'published: https://www.facebook.com/1374753972384803_122113775811508246'
 
 - catalog_number: 29
   id: bonsai-factory
