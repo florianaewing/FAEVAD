@@ -164,12 +164,18 @@
 
 - catalog_number: 10
   id: dragon-hoard
-  posted: false
-  post_date:
-  caption:
+  posted: true
+  post_date: '2026-11-05'
+  caption: One of my favorites, I was up very late one night in Portland sketching
+    this out
   platforms:
-    instagram:
-    pinterest:
+    instagram: 'published: https://www.instagram.com/p/DfXu4AwiQRK/'
+    pinterest: 'published: https://www.pinterest.com/pin/1131177631468050523'
+    x: 'published: https://x.com/2105781742431092736/status/2118387886672191512'
+    bluesky: 'published: https://bsky.app/profile/faevad.bsky.social/post/3mzlnsiaxtp2z'
+    mastodon: 'published: https://mastodon.art/@faevad/117565135553797677'
+    threads: 'published: https://www.threads.com/@faevad01/post/DfXhI75mvB2'
+    facebook: 'published: https://www.facebook.com/1374753972384803_122114100867508246'
 
 - catalog_number: 11
   id: lost-in-the-music
