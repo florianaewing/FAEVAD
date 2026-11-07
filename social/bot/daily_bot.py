@@ -755,8 +755,20 @@ async def resume_schedule(application: Application) -> None:
         return
     now = dt.datetime.now(DAILY_SEND_TZ)
     for platform, slot in schedule["platforms"].items():
-        if slot["result"] is None:
-            arm_slot(application.job_queue, platform, max(dt.datetime.fromisoformat(slot["due"]), now))
+        # A bad slot must not stop startup: post_init errors skip the crash
+        # handler, so the bot would restart-loop without ever reporting it.
+        try:
+            await resume_slot(application, schedule, platform, slot, now)
+        except Exception:
+            log.exception("couldn't re-arm %s post after restart", platform)
+
+
+async def resume_slot(application: Application, schedule: dict, platform: str, slot: dict, now: dt.datetime) -> None:
+    if slot["result"] is None:
+        arm_slot(application.job_queue, platform, max(dt.datetime.fromisoformat(slot["due"]), now))
+        if "goblintales" in schedule:
+            log.info("re-armed %s post for Goblin Tales #%s", platform, schedule["goblintales"])
+        else:
             log.info("re-armed %s post for catalog #%s", platform, schedule["catalog_number"])
 
 
