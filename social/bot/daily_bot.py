@@ -37,10 +37,12 @@ import logging
 import os
 import subprocess
 import traceback
+from types import SimpleNamespace
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
 import requests
+import telegram
 import yaml
 from dotenv import load_dotenv
 from telegram import Update
@@ -751,16 +753,22 @@ async def handle_caption_reply(update: Update, context: ContextTypes.DEFAULT_TYP
 async def resume_schedule(application: Application) -> None:
     """Re-arms any posting slots left over from before a restart."""
     schedule = load_state().get("schedule")
-    if not schedule:
-        return
-    now = dt.datetime.now(DAILY_SEND_TZ)
-    for platform, slot in schedule["platforms"].items():
-        # A bad slot must not stop startup: post_init errors skip the crash
-        # handler, so the bot would restart-loop without ever reporting it.
-        try:
-            await resume_slot(application, schedule, platform, slot, now)
-        except Exception:
-            log.exception("couldn't re-arm %s post after restart", platform)
+    if schedule:
+        now = dt.datetime.now(DAILY_SEND_TZ)
+        for platform, slot in schedule["platforms"].items():
+            # A bad slot must not stop startup -- report it and carry on.
+            try:
+                await resume_slot(application, schedule, platform, slot, now)
+            except Exception as exc:
+                log.exception("couldn't re-arm %s post after restart", platform)
+                trace = redact("".join(traceback.format_exception(exc)))
+                await send_bug_report(
+                    application,
+                    f"Couldn't re-arm {platform} post after restart",
+                    f"🐞 Bug report: after a restart, the {platform} post couldn't be "
+                    f"re-scheduled, so it won't go out on its own.\n\n{trace}",
+                )
+    await announce_recovery(application)
 
 
 async def resume_slot(application: Application, schedule: dict, platform: str, slot: dict, now: dt.datetime) -> None:
@@ -923,6 +931,67 @@ async def report_crash(update: object, context: ContextTypes.DEFAULT_TYPE) -> No
         log.exception("couldn't send the crash report")
 
 
+# --- Startup crash alerts --------------------------------------------------
+
+# A crash during startup (e.g. while re-arming the saved schedule) happens
+# before the error handler is live, and systemd restarts the bot every 30s,
+# so it would crash-loop silently. main() reports it here instead -- once per
+# distinct error, repeated every few hours while it keeps happening -- and the
+# next successful start says the bot is back.
+STARTUP_CRASH_PATH = STATE_PATH.parent / "startup_crash.json"
+STARTUP_CRASH_REMIND_AFTER = dt.timedelta(hours=6)
+
+
+def alert_startup_crash(exc: BaseException) -> None:
+    # Telegram itself unreachable (e.g. no network yet right after boot):
+    # the alert couldn't go out either, and the restart usually fixes it.
+    if isinstance(exc, NetworkError):
+        return
+    error_line = redact(f"{type(exc).__name__}: {exc}")[:120]
+    now = dt.datetime.now(DAILY_SEND_TZ)
+    try:
+        last = json.loads(STARTUP_CRASH_PATH.read_text())
+    except (FileNotFoundError, ValueError):
+        last = {}
+    if last.get("error") == error_line and now - dt.datetime.fromisoformat(last["alerted_at"]) < STARTUP_CRASH_REMIND_AFTER:
+        return
+    trace = redact("".join(traceback.format_exception(exc)))
+    text = (
+        "🐞 Bug report: the bot crashes on startup and is stuck restarting -- "
+        "no prompts or posts will go out until it's fixed. I'll say when it's back.\n\n" + trace
+    )
+
+    async def send() -> None:
+        async with telegram.Bot(cfg.telegram_bot_token) as bot:
+            await send_bug_report(SimpleNamespace(bot=bot), f"Bot crashes on startup: {error_line}", text)
+
+    try:
+        asyncio.run(send())
+    except Exception:
+        log.exception("couldn't send the startup crash alert")
+        return
+    STARTUP_CRASH_PATH.parent.mkdir(parents=True, exist_ok=True)
+    STARTUP_CRASH_PATH.write_text(json.dumps({"error": error_line, "alerted_at": now.isoformat()}))
+
+
+async def announce_recovery(application: Application) -> None:
+    """After a startup crash was reported, says the bot is running again."""
+    try:
+        last = json.loads(STARTUP_CRASH_PATH.read_text())
+    except (FileNotFoundError, ValueError):
+        return
+    try:
+        await application.bot.send_message(
+            chat_id=cfg.telegram_chat_id,
+            text=f"✅ The bot is running again (it had been crashing on startup: {last.get('error', '?')}).\n"
+            "Any prompt or post that was due while it was down didn't go out -- check today's.",
+        )
+    except Exception:
+        log.exception("couldn't send the recovery message")
+        return
+    STARTUP_CRASH_PATH.unlink(missing_ok=True)
+
+
 def main() -> None:
     application = (
         Application.builder().token(cfg.telegram_bot_token).post_init(resume_schedule).build()
@@ -943,7 +1012,11 @@ def main() -> None:
     # PTB numbers weekdays 0-6 from Sunday.
     jobs.run_daily(send_weekly_report, time=dt.time(hour=18, tzinfo=DAILY_SEND_TZ), days=(0,))
     log.info("faevad-social-bot starting, daily prompt at %02d:%02d", DAILY_SEND_HOUR, DAILY_SEND_MINUTE)
-    application.run_polling()
+    try:
+        application.run_polling()
+    except Exception as exc:
+        alert_startup_crash(exc)
+        raise
 
 
 if __name__ == "__main__":
