@@ -179,12 +179,17 @@
 
 - catalog_number: 11
   id: lost-in-the-music
-  posted: false
-  post_date:
-  caption:
+  posted: true
+  post_date: '2026-11-07'
+  caption: Doobeedoobeedoo
   platforms:
-    instagram:
-    pinterest:
+    instagram: 'published: https://www.instagram.com/p/Dfc6LjtmkCP/'
+    pinterest: 'published: https://www.pinterest.com/pin/1131177631468220226'
+    x: 'published: https://x.com/2105781742431092736/status/2119146628288323889'
+    bluesky: 'published: https://bsky.app/profile/faevad.bsky.social/post/3mzqoqdfccl2c'
+    mastodon: 'published: https://mastodon.art/@faevad/117576755045648131'
+    threads: 'published: https://www.threads.com/@faevad01/post/Dfc6Lp7D01c'
+    facebook: 'published: https://www.facebook.com/1374753972384803_122114859579508246'
 
 - catalog_number: 12
   id: decrepit-shrine
