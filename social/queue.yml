@@ -193,12 +193,17 @@
 
 - catalog_number: 12
   id: decrepit-shrine
-  posted: false
-  post_date:
-  caption:
+  posted: true
+  post_date: '2026-11-08'
+  caption: Inspired by a little rock garden in Denver
   platforms:
-    instagram:
-    pinterest:
+    instagram: 'published: https://www.instagram.com/p/DffdQd4I4bw/'
+    pinterest: 'published: https://www.pinterest.com/pin/1131177631468305042'
+    x: 'published: https://x.com/2105781742431092736/status/2119475038898282777'
+    bluesky: 'published: https://bsky.app/profile/faevad.bsky.social/post/3mzt77antat2o'
+    mastodon: 'published: https://mastodon.art/@faevad/117582122395934248'
+    threads: 'published: https://www.threads.com/@faevad01/post/DffPhj0Gki0'
+    facebook: 'published: https://www.facebook.com/1374753972384803_122115171579508246'
 
 - catalog_number: 13
   id: kind-of-blue
