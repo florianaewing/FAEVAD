@@ -377,12 +377,17 @@
 
 - catalog_number: 29
   id: bonsai-factory
-  posted: false
-  post_date:
-  caption:
+  posted: true
+  post_date: '2026-11-11'
+  caption: '#29 Bonsai Factory'
   platforms:
-    instagram:
-    pinterest:
+    instagram: 'published: https://www.instagram.com/p/DfnLpJXlCV_/'
+    pinterest: 'published: https://www.pinterest.com/pin/1131177631468532999'
+    x: 'published: https://x.com/2105781742431092736/status/2120586288847823129'
+    bluesky: 'published: https://bsky.app/profile/faevad.bsky.social/post/3n22qlzgclg2m'
+    mastodon: 'published: https://mastodon.art/@faevad/117599249824897308'
+    threads: 'published: https://www.threads.com/@faevad01/post/DfnI3NLmRvf'
+    facebook: 'published: https://www.facebook.com/1374753972384803_122116218645508246'
 
 - catalog_number: 30
   id: candy-shoppe
