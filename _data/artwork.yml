@@ -1072,6 +1072,30 @@ collections:
           status: "available"
           stripe_link: ""
 
+      - id: bottles-and-bricks
+        title: "Bottles and Bricks"
+        medium: "Acrylic pigment on watercolor paper"
+        year: 2026
+        image: "images/artwork/BottlesAndBricks.jpg"
+        alt: ""
+        description: ""
+        print:
+          available: true
+          currency: "USD"
+          tiers:
+            - size: "5x7"
+              price: 15
+              stripe_link: "https://buy.stripe.com/6oU9AVcrvapjf47fFHgEg46"
+            - size: "8x10"
+              price: 30
+              stripe_link: "https://buy.stripe.com/9B63cx3UZ7d7aNRfFHgEg47"
+            - size: "11x14"
+              price: 50
+              stripe_link: "https://buy.stripe.com/7sY8wR3UZcxr4pteBDgEh00"
+        original:
+          status: "available"
+          stripe_link: ""
+
   - slug: watercolors
     title: "Watercolors"
     intro:
@@ -1155,6 +1179,54 @@ collections:
           status: "available"
           stripe_link: ""
 
+      - id: ascendant-holy-lands
+        title: "Ascendant Holy Lands"
+        medium: "Watercolor on paper"
+        year: 2026
+        image: "images/artwork/AscendantHolyLands.jpg"
+        alt: ""
+        description: ""
+        print:
+          available: true
+          currency: "USD"
+          tiers:
+            - size: "5x7"
+              price: 15
+              stripe_link: "https://buy.stripe.com/aFa6oJ2QVdBvaNRalngEh01"
+            - size: "8x10"
+              price: 30
+              stripe_link: "https://buy.stripe.com/7sY3cxdvz0OJ9JN79bgEh02"
+            - size: "11x14"
+              price: 50
+              stripe_link: "https://buy.stripe.com/28E3cxcrv8hb1dh2SVgEh03"
+        original:
+          status: "available"
+          stripe_link: ""
+
+      - id: ascendant-holy-lands-2
+        title: "Ascendant Holy Lands 2"
+        medium: "Watercolor on paper"
+        year: 2026
+        image: "images/artwork/AscendantHolyLands2.jpg"
+        alt: ""
+        description: ""
+        print:
+          available: true
+          currency: "USD"
+          tiers:
+            - size: "5x7"
+              price: 15
+              stripe_link: "https://buy.stripe.com/9B6bJ3dvzeFz6xB3WZgEh04"
+            - size: "8x10"
+              price: 30
+              stripe_link: "https://buy.stripe.com/6oU4gBbnr9lff472SVgEh05"
+            - size: "11x14"
+              price: 50
+              stripe_link: "https://buy.stripe.com/4gM4gB1MR8hbcVZeBDgEh06"
+        original:
+          status: "available"
+          stripe_link: ""
+
       - id: autumn-forest
         title: "Autumn Forest"
         medium: "Watercolor on paper"
@@ -1175,6 +1247,30 @@ collections:
             - size: "11x14"
               price: 50
               stripe_link: "https://buy.stripe.com/4gM7sN77bcxr9JN3WZgEg1v"
+        original:
+          status: "available"
+          stripe_link: ""
+
+      - id: autumn-leaves
+        title: "Autumn Leaves"
+        medium: "Watercolor on paper"
+        year: 2026
+        image: "images/artwork/AutumnLeaves.jpg"
+        alt: ""
+        description: ""
+        print:
+          available: true
+          currency: "USD"
+          tiers:
+            - size: "5x7"
+              price: 15
+              stripe_link: "https://buy.stripe.com/28E00l4Z3dBv7BF513gEh07"
+            - size: "8x10"
+              price: 30
+              stripe_link: "https://buy.stripe.com/28EdRb1MR693cVZeBDgEh08"
+            - size: "11x14"
+              price: 50
+              stripe_link: "https://buy.stripe.com/aFacN7gHL2WR7BF79bgEh09"
         original:
           status: "available"
           stripe_link: ""
@@ -1223,6 +1319,78 @@ collections:
             - size: "11x14"
               price: 50
               stripe_link: "https://buy.stripe.com/5kQcN70INgNH4pteBDgEg1B"
+        original:
+          status: "available"
+          stripe_link: ""
+
+      - id: bonsai-factory-2
+        title: "Bonsai Factory 2"
+        medium: "Watercolor on paper"
+        year: 2026
+        image: "images/artwork/BonsaiFactory2.jpg"
+        alt: ""
+        description: ""
+        print:
+          available: true
+          currency: "USD"
+          tiers:
+            - size: "5x7"
+              price: 15
+              stripe_link: "https://buy.stripe.com/9B65kF77b40V7BF657gEh0a"
+            - size: "8x10"
+              price: 30
+              stripe_link: "https://buy.stripe.com/3cI28t77b8hb4pt0KNgEh0b"
+            - size: "11x14"
+              price: 50
+              stripe_link: "https://buy.stripe.com/bJeeVf8bf54Z1dh8dfgEh0c"
+        original:
+          status: "available"
+          stripe_link: ""
+
+      - id: bonsai-factory-3
+        title: "Bonsai Factory 3"
+        medium: "Watercolor on paper"
+        year: 2026
+        image: "images/artwork/BonsaiFactory3.jpg"
+        alt: ""
+        description: ""
+        print:
+          available: true
+          currency: "USD"
+          tiers:
+            - size: "5x7"
+              price: 15
+              stripe_link: "https://buy.stripe.com/3cI8wR637dBv7BF1ORgEh0d"
+            - size: "8x10"
+              price: 30
+              stripe_link: "https://buy.stripe.com/aFaeVfdvz693e03gJLgEh0e"
+            - size: "11x14"
+              price: 50
+              stripe_link: "https://buy.stripe.com/6oUaEZ3UZ1SNe03fFHgEh0f"
+        original:
+          status: "available"
+          stripe_link: ""
+
+      - id: bonsai-factory-4
+        title: "Bonsai Factory 4"
+        medium: "Watercolor on paper"
+        year: 2026
+        image: "images/artwork/BonsaiFactory4.jpg"
+        alt: ""
+        description: ""
+        print:
+          available: true
+          currency: "USD"
+          tiers:
+            - size: "5x7"
+              price: 15
+              stripe_link: "https://buy.stripe.com/fZubJ3ajn9lfbRVbprgEh0g"
+            - size: "8x10"
+              price: 30
+              stripe_link: "https://buy.stripe.com/9B6bJ34Z3gNH6xB0KNgEh0h"
+            - size: "11x14"
+              price: 50
+              stripe_link: "https://buy.stripe.com/dRm4gB8bf9lfg8b9hjgEh0i"
         original:
           status: "available"
           stripe_link: ""
@@ -1443,6 +1611,30 @@ collections:
           status: "available"
           stripe_link: ""
 
+      - id: desert-tower-3
+        title: "Desert Tower 3"
+        medium: "Watercolor on paper"
+        year: 2026
+        image: "images/artwork/DesertTower3.jpg"
+        alt: ""
+        description: ""
+        print:
+          available: true
+          currency: "USD"
+          tiers:
+            - size: "5x7"
+              price: 15
+              stripe_link: "https://buy.stripe.com/8x27sNezD54ZcVZalngEh0j"
+            - size: "8x10"
+              price: 30
+              stripe_link: "https://buy.stripe.com/7sY14p8bf0OJ4ptdxzgEh0k"
+            - size: "11x14"
+              price: 50
+              stripe_link: "https://buy.stripe.com/cNieVf77b9lf6xB1ORgEh0l"
+        original:
+          status: "available"
+          stripe_link: ""
+
       - id: heart-shaped-leaves
         title: "Heart Shaped Leaves"
         medium: "Watercolor on paper"
@@ -1535,6 +1727,102 @@ collections:
             - size: "11x14"
               price: 50
               stripe_link: "https://buy.stripe.com/28E5kFgHLcxraNRalngEg2e"
+        original:
+          status: "available"
+          stripe_link: ""
+
+      - id: prairie-cabin
+        title: "Prairie Cabin"
+        medium: "Watercolor on paper"
+        year: 2026
+        image: "images/artwork/PrairieCabin.jpg"
+        alt: ""
+        description: ""
+        print:
+          available: true
+          currency: "USD"
+          tiers:
+            - size: "5x7"
+              price: 15
+              stripe_link: "https://buy.stripe.com/9B628tdvzapj7BFbprgEh0m"
+            - size: "8x10"
+              price: 30
+              stripe_link: "https://buy.stripe.com/eVq9AVgHLapjf47513gEh0n"
+            - size: "11x14"
+              price: 50
+              stripe_link: "https://buy.stripe.com/8x25kF4Z30OJcVZ8dfgEh0o"
+        original:
+          status: "available"
+          stripe_link: ""
+
+      - id: roadside-scarecrow
+        title: "Roadside Scarecrow"
+        medium: "Watercolor on paper"
+        year: 2026
+        image: "images/artwork/RoadsideScarecrow.jpg"
+        alt: ""
+        description: ""
+        print:
+          available: true
+          currency: "USD"
+          tiers:
+            - size: "5x7"
+              price: 15
+              stripe_link: "https://buy.stripe.com/9B65kFgHL2WR5tx0KNgEh0p"
+            - size: "8x10"
+              price: 30
+              stripe_link: "https://buy.stripe.com/dRm5kFajn8hb4pt8dfgEh0q"
+            - size: "11x14"
+              price: 50
+              stripe_link: "https://buy.stripe.com/7sY14p3UZ0OJ2hl2SVgEh0r"
+        original:
+          status: "available"
+          stripe_link: ""
+
+      - id: ruined-castle
+        title: "Ruined Castle"
+        medium: "Watercolor on paper"
+        year: 2026
+        image: "images/artwork/RuinedCastle.jpg"
+        alt: ""
+        description: ""
+        print:
+          available: true
+          currency: "USD"
+          tiers:
+            - size: "5x7"
+              price: 15
+              stripe_link: "https://buy.stripe.com/cNi00l0INeFze030KNgEh0s"
+            - size: "8x10"
+              price: 30
+              stripe_link: "https://buy.stripe.com/00w7sN1MR0OJ8FJeBDgEh0t"
+            - size: "11x14"
+              price: 50
+              stripe_link: "https://buy.stripe.com/aFa14p3UZ0OJ5txctvgEh0u"
+        original:
+          status: "available"
+          stripe_link: ""
+
+      - id: ruined-castle-2
+        title: "Ruined Castle 2"
+        medium: "Watercolor on paper"
+        year: 2026
+        image: "images/artwork/RuinedCastle2.jpg"
+        alt: ""
+        description: ""
+        print:
+          available: true
+          currency: "USD"
+          tiers:
+            - size: "5x7"
+              price: 15
+              stripe_link: "https://buy.stripe.com/28EdRb8bf693f47gJLgEh0v"
+            - size: "8x10"
+              price: 30
+              stripe_link: "https://buy.stripe.com/dRm3cx63740V5tx657gEh0w"
+            - size: "11x14"
+              price: 50
+              stripe_link: "https://buy.stripe.com/dRmbJ30IN1SNe03bprgEh0x"
         original:
           status: "available"
           stripe_link: ""
@@ -1799,6 +2087,30 @@ collections:
             - size: "11x14"
               price: 50
               stripe_link: "https://buy.stripe.com/fZuaEZbnr40V2hl79bgEg2L"
+        original:
+          status: "available"
+          stripe_link: ""
+
+      - id: towering-cedar
+        title: "Towering Cedar"
+        medium: "Watercolor on paper"
+        year: 2026
+        image: "images/artwork/ToweringCedar.jpg"
+        alt: ""
+        description: ""
+        print:
+          available: true
+          currency: "USD"
+          tiers:
+            - size: "5x7"
+              price: 15
+              stripe_link: "https://buy.stripe.com/bJecN78bf2WRf47gJLgEh0y"
+            - size: "8x10"
+              price: 30
+              stripe_link: "https://buy.stripe.com/bJecN7dvz1SNe038dfgEh0z"
+            - size: "11x14"
+              price: 50
+              stripe_link: "https://buy.stripe.com/28E9AVcrv8hb7BFalngEh0A"
         original:
           status: "available"
           stripe_link: ""
