@@ -207,12 +207,17 @@
 
 - catalog_number: 13
   id: kind-of-blue
-  posted: false
-  post_date:
-  caption:
+  posted: true
+  post_date: '2026-11-12'
+  caption: '#13 Kind of Blue'
   platforms:
-    instagram:
-    pinterest:
+    instagram: 'published: https://www.instagram.com/p/DfpwcGBo6Rb/'
+    pinterest: 'published: https://www.pinterest.com/pin/1131177631468614680'
+    x: 'published: https://x.com/2105781742431092736/status/2120953445473505668'
+    bluesky: 'published: https://bsky.app/profile/faevad.bsky.social/post/3n25b2wrlg52j'
+    mastodon: 'published: https://mastodon.art/@faevad/117604986520335027'
+    threads: 'published: https://www.threads.com/@faevad01/post/Dfpv01uD01W'
+    facebook: 'published: https://www.facebook.com/1374753972384803_122116529241508246'
 
 - catalog_number: 14
   id: death-arrives
