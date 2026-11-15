@@ -221,12 +221,17 @@
 
 - catalog_number: 14
   id: death-arrives
-  posted: false
-  post_date:
-  caption:
+  posted: true
+  post_date: '2026-11-14'
+  caption: '#14 Death Arrives'
   platforms:
-    instagram:
-    pinterest:
+    instagram: 'published: https://www.instagram.com/p/Dfu6Bv0mUuz/'
+    pinterest: 'published: https://www.pinterest.com/pin/1131177631468784173'
+    x: 'published: https://x.com/2105781742431092736/status/2121649365794070806'
+    bluesky: 'published: https://bsky.app/profile/faevad.bsky.social/post/3n2cbyri4um2f'
+    mastodon: 'published: https://mastodon.art/@faevad/117616096237888311'
+    threads: 'published: https://www.threads.com/@faevad01/post/DfusSwsGkoA'
+    facebook: 'published: https://www.facebook.com/1374753972384803_122117150685508246'
 
 - catalog_number: 15
   id: fanny-pack
