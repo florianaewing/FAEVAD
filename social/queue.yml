@@ -235,12 +235,17 @@
 
 - catalog_number: 15
   id: fanny-pack
-  posted: false
-  post_date:
-  caption:
+  posted: true
+  post_date: '2026-11-15'
+  caption: '#15 Fanny Pack'
   platforms:
-    instagram:
-    pinterest:
+    instagram: 'published: https://www.instagram.com/p/Dfxe0iJFOMP/'
+    pinterest: 'published: https://www.pinterest.com/pin/1131177631468866356'
+    x: 'published: https://x.com/2105781742431092736/status/2122011753722658863'
+    bluesky: 'published: https://bsky.app/profile/faevad.bsky.social/post/3n2eshotqps2f'
+    mastodon: 'published: https://mastodon.art/@faevad/117621758659930030'
+    threads: 'published: https://www.threads.com/@faevad01/post/DfxRFqfmj64'
+    facebook: 'published: https://www.facebook.com/1374753972384803_122117452371508246'
 
 - catalog_number: 16
   id: modern-knight
