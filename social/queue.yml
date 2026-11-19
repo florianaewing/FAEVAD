@@ -406,12 +406,17 @@
 
 - catalog_number: 30
   id: candy-shoppe
-  posted: false
-  post_date:
-  caption:
+  posted: true
+  post_date: '2026-11-18'
+  caption: '#30 Candy Shop'
   platforms:
-    instagram:
-    pinterest:
+    instagram: 'published: https://www.instagram.com/p/Df5NNmJmJai/'
+    pinterest: 'published: https://www.pinterest.com/pin/1131177631469088865'
+    x: 'published: https://x.com/2105781742431092736/status/2123121729518092498'
+    bluesky: 'published: https://bsky.app/profile/faevad.bsky.social/post/3n2mduhnmss2v'
+    mastodon: 'published: https://mastodon.art/@faevad/117638865737748463'
+    threads: 'published: https://www.threads.com/@faevad01/post/Df5J1zVGYB5'
+    facebook: 'published: https://www.facebook.com/1374753972384803_122118356967508246'
 
 - catalog_number: 31
   id: castle-archway
