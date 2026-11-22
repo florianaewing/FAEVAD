@@ -249,12 +249,17 @@
 
 - catalog_number: 16
   id: modern-knight
-  posted: false
-  post_date:
-  caption:
+  posted: true
+  post_date: '2026-11-21'
+  caption: '#16 Modern Knight'
   platforms:
-    instagram:
-    pinterest:
+    instagram: 'published: https://www.instagram.com/p/DgA7l3kmcyq/'
+    pinterest: 'published: https://www.pinterest.com/pin/1131177631469327016'
+    x: 'published: https://x.com/2105781742431092736/status/2124192669060513921'
+    bluesky: 'published: https://bsky.app/profile/faevad.bsky.social/post/3n2tvba2x3f2f'
+    mastodon: 'published: https://mastodon.art/@faevad/117655732399966859'
+    threads: 'published: https://www.threads.com/@faevad01/post/DgAw2pJmhZC'
+    facebook: 'published: https://www.facebook.com/1374753972384803_122119116171508246'
 
 - catalog_number: 17
   id: ravenous-cuzco
