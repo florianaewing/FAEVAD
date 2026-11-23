@@ -263,12 +263,17 @@
 
 - catalog_number: 17
   id: ravenous-cuzco
-  posted: false
-  post_date:
-  caption:
+  posted: true
+  post_date: '2026-11-22'
+  caption: '#17 Ravenous Cuzco'
   platforms:
-    instagram:
-    pinterest:
+    instagram: 'published: https://www.instagram.com/p/DgEQmUIFBMe/'
+    pinterest: 'published: https://www.pinterest.com/pin/1131177631469408445'
+    x: 'published: https://x.com/2105781742431092736/status/2124684582993768856'
+    bluesky: 'published: https://bsky.app/profile/faevad.bsky.social/post/3n2wzvghpnv2j'
+    mastodon: 'published: https://mastodon.art/@faevad/117663285559547367'
+    threads: 'published: https://www.threads.com/@faevad01/post/DgEQjUJGioS'
+    facebook: 'published: https://www.facebook.com/1374753972384803_122119428255508246'
 
 - catalog_number: 18
   id: reposed-ariel
