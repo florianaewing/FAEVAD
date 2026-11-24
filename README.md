@@ -80,6 +80,12 @@ passed are skipped. Only entries with `approved: true` get reminders, and the bo
 to anything itself. Once a competition's deadline passes, update its entry with the next year's
 dates.
 
+**Running-low warnings.** At noon Pacific the bot also counts each gallery's unposted pieces in
+`queue.yml`. When a gallery is down to its last ten, it sends one Telegram warning with the date
+that gallery's last queued piece is expected to post. It works that date out by replaying the
+posting rules day by day ([`social/bot/runway.py`](social/bot/runway.py)). Once new pieces bring the
+gallery back above ten, the warning can fire again.
+
 API keys and other secrets live outside the repo in `~/.config/faevad-social-bot/.env`.
 [`social/bot/.env.example`](social/bot/.env.example) explains where each one comes from.
 Setup steps are in the header of

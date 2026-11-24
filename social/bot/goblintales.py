@@ -103,7 +103,11 @@ def next_comic(day: dt.date, holidays: dict[str, str]) -> Comic | None:
     holidays maps a comic's filename to its holiday's date (MM-DD).
     """
     posted = {p["filename"] for p in load_posted()}
-    unposted = [c for c in load_comics() if c.filename not in posted]
+    return pick_comic([c for c in load_comics() if c.filename not in posted], day, holidays)
+
+
+def pick_comic(unposted: list[Comic], day: dt.date, holidays: dict[str, str]) -> Comic | None:
+    """next_comic's choice among the given unposted comics (also used by runway.py)."""
     for comic in unposted:
         if comic.filename in holidays and _holiday_is_now(holidays[comic.filename], day):
             return comic

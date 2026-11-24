@@ -53,6 +53,8 @@ import competitions
 import goblintales
 import instagram_images
 import platforms
+import runway
+from runway import collection_of, next_unposted_entry
 import site_stats
 import strategy
 import tracking
@@ -227,37 +229,6 @@ def find_piece(artwork: dict, piece_id: str) -> dict | None:
             if piece["id"] == piece_id:
                 return piece
     return None
-
-
-# Watercolors get Wednesdays; the other posting days post from the other
-# collections (inks). When a day's own pool runs dry it falls back to the
-# other one, so the queue only reports empty once everything is posted.
-WEDNESDAY_COLLECTION = "watercolors"
-
-
-def collection_of(artwork: dict, piece_id: str) -> str | None:
-    for collection in artwork["collections"]:
-        if any(piece["id"] == piece_id for piece in collection["pieces"]):
-            return collection["slug"]
-    return None
-
-
-def next_unposted_entry(queue: list[dict], artwork: dict, day: dt.date) -> dict | None:
-    unposted = sorted(
-        (e for e in queue if not e.get("posted")), key=lambda e: e["catalog_number"]
-    )
-    # A piece with `post_on` is held for that date and goes first on it. If
-    # that day was missed, it falls back into normal queue order.
-    pinned = [e for e in unposted if e.get("post_on") == day]
-    if pinned:
-        return pinned[0]
-    unposted = [e for e in unposted if not (e.get("post_on") and e["post_on"] > day)]
-    is_wednesday = day.weekday() == 2
-    todays = [
-        e for e in unposted
-        if (collection_of(artwork, e["id"]) == WEDNESDAY_COLLECTION) == is_wednesday
-    ]
-    return (todays or unposted or [None])[0]
 
 
 def git_commit_and_push(path: str, message: str) -> None:
@@ -911,6 +882,21 @@ async def send_competition_reminders(context: ContextTypes.DEFAULT_TYPE) -> None
         )
 
 
+async def send_runway_warnings(context: ContextTypes.DEFAULT_TYPE) -> None:
+    """Warns once when a gallery is down to its last ten queued posts (runway.py)."""
+    today = dt.datetime.now(DAILY_SEND_TZ).date()
+    state = load_state()
+    warned = set(state.get("runway_warned", []))
+    messages, warned = runway.warnings(
+        load_queue(), load_artwork(), strategy.load_strategy(), today, warned
+    )
+    for text in messages:
+        await context.bot.send_message(chat_id=cfg.telegram_chat_id, text=text)
+    state = load_state()
+    state["runway_warned"] = sorted(warned)
+    save_state(state)
+
+
 async def report_crash(update: object, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Sends a bug report for anything that crashes the bot mid-task."""
     # A network blip while checking Telegram for new messages isn't a crash:
@@ -1009,6 +995,7 @@ def main() -> None:
     jobs.run_daily(collect_metrics, time=dt.time(hour=7, minute=30, tzinfo=DAILY_SEND_TZ))
     # Every day, posting days or not.
     jobs.run_daily(send_competition_reminders, time=dt.time(hour=12, tzinfo=DAILY_SEND_TZ))
+    jobs.run_daily(send_runway_warnings, time=dt.time(hour=12, minute=1, tzinfo=DAILY_SEND_TZ))
     # PTB numbers weekdays 0-6 from Sunday.
     jobs.run_daily(send_weekly_report, time=dt.time(hour=18, tzinfo=DAILY_SEND_TZ), days=(0,))
     log.info("faevad-social-bot starting, daily prompt at %02d:%02d", DAILY_SEND_HOUR, DAILY_SEND_MINUTE)
