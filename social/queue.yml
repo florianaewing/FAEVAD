@@ -430,12 +430,17 @@
 
 - catalog_number: 31
   id: castle-archway
-  posted: false
-  post_date:
-  caption:
+  posted: true
+  post_date: '2026-11-25'
+  caption: '#31 Castle Archway'
   platforms:
-    instagram:
-    pinterest:
+    instagram: 'published: https://www.instagram.com/p/DgL9lkSke29/'
+    pinterest: 'published: https://www.pinterest.com/pin/1131177631469640956'
+    x: 'published: https://x.com/2105781742431092736/status/2125768778583593066'
+    bluesky: 'published: https://bsky.app/profile/faevad.bsky.social/post/3n36kn3xjfw2e'
+    mastodon: 'published: https://mastodon.art/@faevad/117680226117690596'
+    threads: 'published: https://www.threads.com/@faevad01/post/DgL9ljtmuqU'
+    facebook: 'published: https://www.facebook.com/1374753972384803_122120166009508246'
 
 - catalog_number: 32
   id: cathedral-vault
