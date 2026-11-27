@@ -277,12 +277,17 @@
 
 - catalog_number: 18
   id: reposed-ariel
-  posted: false
-  post_date:
-  caption:
+  posted: true
+  post_date: '2026-11-26'
+  caption: '#18 Reposed Ariel'
   platforms:
-    instagram:
-    pinterest:
+    instagram: 'published: https://www.instagram.com/p/DgOcrfmicm0/'
+    pinterest: 'published: https://www.pinterest.com/pin/1131177631469719888'
+    x: 'published: https://x.com/2105781742431092736/status/2126118628751782320'
+    bluesky: 'published: https://bsky.app/profile/faevad.bsky.social/post/3n3aycwgcph24'
+    mastodon: 'published: https://mastodon.art/@faevad/117685692536808335'
+    threads: 'published: https://www.threads.com/@faevad01/post/DgOcrggHUlG'
+    facebook: 'published: https://www.facebook.com/1374753972384803_122120407263508246'
 
 - catalog_number: 19
   id: scaling
